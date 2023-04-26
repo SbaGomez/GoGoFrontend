@@ -1,7 +1,7 @@
 {
   "name": "Frontend",
   "version": "1.0.0",
-  "homepage": "https://github.com/SbaGomez/GoGo.git",
+  "homepage": "https://github.com/SbaGomez/GoGoFrontend.git",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
