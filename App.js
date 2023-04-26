@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import GoGo from './Components/GoGo'
-import Login from './Components/Login'
+import GoGo2 from './Components/GoGo2'
+import Login2 from './Components/Login2'
+import { View } from 'react-native';
 
 class App extends Component {
   render() {
     return (
-      <div className="App" style={{ width: '100%', justifyContent: 'center' }}>
-        <GoGo />
-        <Login/>
-      </div>
+      <View style={{ flex: 1 }}>
+        <GoGo2/>
+        <Login2/>
+      </View>
     );
   }
 }
