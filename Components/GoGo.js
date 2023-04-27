@@ -1,35 +1,39 @@
+import React from "react";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {NavigationContainer} from  "@react-navigation/native";
+import {Feather} from '@expo/vector-icons'; 
 
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+//screens
+import LoginScreen from "./Login";
+import RegistroScreen from "./Registro";
 
-export default function GoGo() {
+
+const Tab = createBottomTabNavigator();
+
+function Navegation() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Tab.Navigator initialRoutName="Login" screenOptions={{ tabBarActiveBackgroundColor: '#fff' }}>
+      <Tab.Screen name="Login" component={LoginScreen} 
+        options={{ 
+          tabBarLabel: 'Loguearme', 
+          tabBarIcon: ({ color, size }) => (<Feather name="user" size={24} color="black" />), 
+          }}
+      />
+      <Tab.Screen name="Registro" component={RegistroScreen} 
+        options={{ 
+          tabBarLabel: 'Registrarme', 
+          tabBarIcon: ({ color, size }) => (<Feather name="user-plus" size={24} color="black" />), 
+          headerBackTitleVisible: false,  
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
-      {/* MENU DE LA APP GOGO */}
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            GoGo
-          </Typography>
-          {/*<Button color="inherit">Login</Button>*/}
-        </Toolbar>
-      </AppBar>
-
-    </Box>
+export default function GoGo3() {
+  return (
+    <NavigationContainer>
+      <Navegation />
+    </NavigationContainer>
   );
 }

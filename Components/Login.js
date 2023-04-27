@@ -1,41 +1,35 @@
-import * as React from 'react-native';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
+import React from "react";
 import logoImage from '../assets/GOGO.png';
+import { Surface, Stack, Button } from "@react-native-material/core";
+import { Image } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import {useNavigation} from "@react-navigation/native";
 
-export default function Login() {
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '100%' },
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '80vh',
+function Login2(){
+  const navigation = useNavigation();
+  return(
+  <Stack fill center spacing={4}>
+     <Surface
+      elevation={4}
+      category="medium"
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        width: 600,
+        height: 600,
       }}
-      noValidate
-      autoComplete="off"
     >
-      <Paper elevation="1" style={{ width: '600px', height: '500px', justifyContent: 'center', alignItems: 'center', padding: '30px' }}>
+        <Image source={logoImage} style={{width: '100%', height: 150, maxWidth: 270, maxHeight: 150, marginBottom: 30}} />
 
-      <div style={{textAlign: 'center', margin: '20px' }}>
-        <img src={logoImage} alt="logo" style={{ width: '100%', maxWidth: '270px', maxHeight: '150px' }} />
-      </div>
+        <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" right={<TextInput.Affix text="/50" />} style={{ width: '60%', height: 50, marginBottom: 15 , display: 'flex', justifyContent: 'center'}}/>
+        <TextInput label="Contraseña" mode="outlined" placeholder="Contraseña" secureTextEntry right={<TextInput.Affix text="/15" />}  style={{ width: '60%', height: 50, marginBottom: 50 , display: 'flex', justifyContent: 'center'}}/>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '20px', marginBottom: '10px' }}>
-        <TextField id="clave" label="Usuario" placeholder="Usuario" variant="outlined" style={{ width: '60%', marginBottom: '10px' }}/>
-        <TextField id="user" label="Contraseña" placeholder="Contraseña" variant="outlined" style={{ width: '60%', marginBottom: '10px' }}/>
-      </Box>
+        <Button title="Ingresar" style={{ width: '60%', height: 50, marginBottom: 15 , display: 'flex', justifyContent: 'center'}}/>
+        <Button title="Registrarme" onPress={() => navigation.navigate("Registro")} style={{ width: '60%', height: 50, display: 'flex', justifyContent: 'center' }}/>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '20px', marginBottom: '40px' }}>
-          <Button variant="contained" sx={{ width: '60%', height: '50px', marginBottom: '15px' }}>Ingresar</Button>
-          <Button variant="contained" sx={{ width: '60%', height: '50px' }}>Registrarme</Button>
-      </Box>
-
-      </Paper>
-    </Box>
+    </Surface>
+  </Stack>
   );
 }
+
+export default Login2;
