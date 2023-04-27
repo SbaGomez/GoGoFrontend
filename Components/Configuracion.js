@@ -1,7 +1,9 @@
 import React from "react";
-import { Surface, Stack } from "@react-native-material/core";
+import { Surface, Stack, Button } from "@react-native-material/core";
+import {useNavigation} from "@react-navigation/native";
 
 function Configuracion(){
+  const navigation = useNavigation();
   return(
   <Stack fill center spacing={4}>
      <Surface
@@ -14,6 +16,7 @@ function Configuracion(){
         height: 600,
       }}
     >
+    <Button title="Volver" onPress={() => navigation.navigate("Login")} style={{ width: '60%', height: 50, display: 'flex', justifyContent: 'center' }}/>
     </Surface>
   </Stack>
   );
