@@ -5,7 +5,7 @@ import { Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 
-function Login2(){
+function Login(){
   const navigation = useNavigation();
   return(
   <Stack fill center spacing={4}>
@@ -32,4 +32,4 @@ function Login2(){
   );
 }
 
-export default Login2;
+export default Login;
