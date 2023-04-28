@@ -4,6 +4,7 @@ import { TextInput, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { View } from 'react-native';
 import axios from "axios";
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'; 
 
 function Registro() {
 
@@ -28,7 +29,7 @@ function Registro() {
   return (
     <Stack fill center spacing={4}>
       <Surface
-        elevation={4}
+        elevation={6}
         category="medium"
         style={{
           justifyContent: "center",
@@ -45,7 +46,7 @@ function Registro() {
         <TextInput name="dni" label="DNI" mode="outlined" placeholder="DNI" right={<TextInput.Affix text="/50" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
         <TextInput name="password" label="Password" mode="outlined" placeholder="Password" maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '60%', height: 50, marginBottom: 20, display: 'flex', justifyContent: 'center' }} />
 
-        <View style={{ flexDirection: 'row', width: '45%', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', width: '30%', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <RadioButton.Group
               onValueChange={handleSexoChange}
@@ -56,8 +57,9 @@ function Registro() {
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <RadioButton value="M" color="#24CAE8" />
-                <Text color="#49454F" variant="h6">Masculino</Text>
+                <RadioButton value="M" color="purple" />
+              {/*<Text color="#49454F" variant="h6">Masculino </Text>*/}
+                <FontAwesome name="male" size={44} color="skyblue" />
               </View>
             </RadioButton.Group>
           </View>
@@ -72,8 +74,9 @@ function Registro() {
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <RadioButton value="F" color="#24CAE8" />
-                <Text color="#49454F" variant="h6">Femenino</Text>
+                <RadioButton value="F" color="purple" />
+                {/*<Text color="#49454F" variant="h6">Femenino </Text>*/}
+                <FontAwesome5 name="female" size={44} color="pink" />
               </View>
             </RadioButton.Group>
           </View>

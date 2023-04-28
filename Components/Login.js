@@ -10,7 +10,7 @@ function Login() {
   return (
     <Stack fill center spacing={4}>
       <Surface
-        elevation={4}
+        elevation={6}
         category="medium"
         style={{
           justifyContent: "center",
