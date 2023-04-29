@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Divider, Text } from "@react-native-material/core";
 import { TextInput, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { View, Modal, StyleSheet, Dimensions } from 'react-native';
+import { View, Modal, StyleSheet } from 'react-native';
 import axios from "axios";
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 function Registro() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
 
   const styles = StyleSheet.create({
     centeredView: {
@@ -51,9 +48,10 @@ function Registro() {
     setSexo(value);
   };
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const uadeEmailPattern = /@uade\.edu\.ar$/;
 
-  let nameRegex = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
+  let nameRegex = /^[zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
 
   const validarFormulario = () => {
     let erroresTemp = [];
@@ -61,12 +59,12 @@ function Registro() {
       erroresTemp.push('La contraseña debe tener entre 8 y 15 caracteres.');
     }
 
-    if (!email || !nombre || !apellido || !edad || !dni || !clave || !sexo) {
-      erroresTemp.push('Por favor, complete todos los campos.');
+    if (!pattern.test(email) || !uadeEmailPattern.test(email)) {
+      erroresTemp.push('El correo electrónico no es válido o no pertenece a UADE');
     }
 
-    if (!emailRegex.test(email)) {
-      erroresTemp.push('Por favor, ingrese una dirección de correo electrónico válida.');
+    if (nameRegex.test(nombre)) {
+      erroresTemp.push('Por favor, ingrese un nombre valido.');
     }
 
     if (!sexo) {
@@ -142,11 +140,11 @@ function Registro() {
 
         <View onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100%' }}>
 
-          <TextInput name="email" label="Email" mode="outlined" value={email} onChangeText={setEmail} right={<TextInput.Affix text="/50" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-          <TextInput name="nombre" label="Nombre" mode="outlined" value={nombre} onChangeText={setNombre} right={<TextInput.Affix text="/50" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-          <TextInput name="apellido" label="Apellido" mode="outlined" value={apellido} onChangeText={setApellido} right={<TextInput.Affix text="/50" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
+          <TextInput name="email" label="Email" mode="outlined" value={email} maxLength={30} onChangeText={setEmail} right={<TextInput.Affix text="/30" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
+          <TextInput name="nombre" label="Nombre" mode="outlined" maxLength={15} value={nombre} onChangeText={setNombre} right={<TextInput.Affix text="/15" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
+          <TextInput name="apellido" label="Apellido" mode="outlined" maxLength={15} value={apellido} onChangeText={setApellido} right={<TextInput.Affix text="/15" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
           <TextInput name="edad" label="Edad" mode="outlined" maxLength={3} value={edad} onChangeText={setEdad} right={<TextInput.Affix text="/3" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-          <TextInput name="dni" label="DNI" mode="outlined" value={dni} onChangeText={setDni} right={<TextInput.Affix text="/50" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
+          <TextInput name="dni" label="DNI" mode="outlined" maxLength={8} value={dni} onChangeText={setDni} right={<TextInput.Affix text="/8" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
           <TextInput name="clave" label="Contraseña" mode="outlined" value={clave} onChangeText={setClave} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '60%', height: 50, marginBottom: 20, display: 'flex', justifyContent: 'center' }} />
 
           <View style={{ flexDirection: 'row', width: '30%', justifyContent: 'space-between' }}>
@@ -188,15 +186,15 @@ function Registro() {
           <Divider color="#ccc" style={{ width: '70%', marginBottom: 30, marginTop: 25, display: 'flex', justifyContent: 'center' }} />
 
           <View style={styles.centeredView}>
-  <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
-    <View style={styles.modalView}>
-      {errores.map((error, index) => (
-        <Text key={index} style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
-      ))}
-      <Button title="Cerrar" style={{ marginTop: 20 }} onPress={() => setModalVisible(false)} />
-    </View>
-  </Modal>
-</View>
+            <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
+              <View style={styles.modalView}>
+                {errores.map((error, index) => (
+                  <Text key={index} style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
+                ))}
+                <Button title="Cerrar" style={{ marginTop: 20 }} onPress={() => setModalVisible(false)} />
+              </View>
+            </Modal>
+          </View>
 
 
           <Button title="Registrarme" onPress={handleSubmit} style={{ backgroundColor: '#24CAE8', width: '60%', height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
