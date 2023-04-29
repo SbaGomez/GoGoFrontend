@@ -14,15 +14,17 @@ function Registro() {
   const windowHeight = Dimensions.get('window').height;
 
   const styles = StyleSheet.create({
-    modalView: {
-      position: 'absolute',
-      top: windowHeight / 2 - 150,
-      left: windowWidth / 2 - 250,
+    centeredView: {
+      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    modalView: {
+      position: 'absolute',
       backgroundColor: '#fff',
       borderRadius: 20,
       padding: 35,
+      marginTop: 100,
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -30,28 +32,10 @@ function Registro() {
       },
       shadowOpacity: 0.5,
       shadowRadius: 10,
-      elevation: 5,
-      width: 'auto',
+      elevation: 4,
+      width: '100%',
       height: 'auto',
-    },
-    erroresContainer: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    errorText: {
-      color: 'red',
-    },
-    divider: {
-      width: '70%',
-      marginBottom: 30,
-      marginTop: 25,
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    closeButton: {
-      marginTop: 15,
-    },
+    }
   });
 
   const [email, setEmail] = useState("");
@@ -203,14 +187,17 @@ function Registro() {
 
           <Divider color="#ccc" style={{ width: '70%', marginBottom: 30, marginTop: 25, display: 'flex', justifyContent: 'center' }} />
 
-          <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
-            <View style={styles.modalView}>
-              {errores.map((error, index) => (
-                <Text key={index} style={{ color: 'red' }}>{error}</Text>
-              ))}
-              <Button title="Cerrar" style={{ marginTop: 20 }} onPress={() => setModalVisible(false)} />
-            </View>
-          </Modal>
+          <View style={styles.centeredView}>
+  <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
+    <View style={styles.modalView}>
+      {errores.map((error, index) => (
+        <Text key={index} style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
+      ))}
+      <Button title="Cerrar" style={{ marginTop: 20 }} onPress={() => setModalVisible(false)} />
+    </View>
+  </Modal>
+</View>
+
 
           <Button title="Registrarme" onPress={handleSubmit} style={{ backgroundColor: '#24CAE8', width: '60%', height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
 
