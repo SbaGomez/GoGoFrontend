@@ -16,10 +16,7 @@ function Success() {
           height: 600,
         }}
       >
-
-        <Text style={{ color: 'green' }}>Te registraste correctamente !</Text>
-
-        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '60%', height: 50, display: 'flex', marginTop:30 ,justifyContent: 'center' }} />
+        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '60%', height: 50, display: 'flex', marginTop: 30, justifyContent: 'center' }} />
       </Surface>
     </Stack>
   );

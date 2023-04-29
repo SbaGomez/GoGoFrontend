@@ -21,7 +21,7 @@ function MainStack() {
     <Stack.Navigator>
       <Stack.Screen name="TabNav" component={TabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Registro" component={RegistroScreen} options={{ headerShown: true }} />
-      <Stack.Screen name="Success" component={SuccessScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="Success" component={SuccessScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Alertas" component={AlertasScreen} options={{ headerShown: true }} />
     </Stack.Navigator>
   );
@@ -29,6 +29,7 @@ function MainStack() {
 
 function TabNavigator() {
   const navigation = useNavigation();
+  const goBack = () => navigation.goBack();
   return (
     <Tab.Navigator initialRoutName="Login" screenOptions={{ tabBarActiveBackgroundColor: '#680AEF', tabBarInactiveBackgroundColor: '#680AEF' }}>
       <Tab.Screen name="Login" component={LoginScreen}
@@ -53,8 +54,8 @@ function TabNavigator() {
           headerBackTitleVisible: false,
           headerBackVisible: true,
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <FontAwesome name="arrow-left" size={30} color="#474545" style={{ marginLeft: 15, height: 64, lineHeight: 64 }} />
+            <TouchableOpacity onPress={goBack} style={{ marginLeft: 15, lineHeight: 64 }}>
+              <FontAwesome name="arrow-left" size={30} color="#474545" />
             </TouchableOpacity>
           )
         }}
@@ -68,8 +69,8 @@ function TabNavigator() {
           headerBackTitleVisible: false,
           headerBackVisible: true,
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <FontAwesome name="arrow-left" size={30} color="#474545" style={{ marginLeft: 15, height: 64, lineHeight: 64 }} />
+            <TouchableOpacity onPress={goBack} style={{ marginLeft: 15, lineHeight: 64 }}>
+              <FontAwesome name="arrow-left" size={30} color="#474545" />
             </TouchableOpacity>
           )
         }}

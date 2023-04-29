@@ -21,11 +21,11 @@ function Login() {
       >
         <Image source={logoImage} style={{ width: '100%', height: 150, maxWidth: 270, maxHeight: 150, marginBottom: 30 }} />
 
-        <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" right={<TextInput.Affix text="/50" />} style={{ width: '60%', height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-        <TextInput label="Contraseña" mode="outlined" placeholder="Contraseña" maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '60%', height: 50, marginBottom: 50, display: 'flex', justifyContent: 'center' }} />
+        <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" right={<TextInput.Affix text="/50" />} style={{ width: '80vw', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
+        <TextInput label="Contraseña" mode="outlined" placeholder="Contraseña" maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '80vw', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 50, display: 'flex', justifyContent: 'center' }} />
 
-        <Button title="Ingresar" style={{ backgroundColor: '#24CAE8', width: '60%', height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-        <Button title="Registrarme" onPress={() => navigation.navigate("Registro")} style={{ backgroundColor: '#24CAE8', width: '60%', height: 50, display: 'flex', justifyContent: 'center' }} />
+        <Button title="Ingresar" style={{ backgroundColor: '#24CAE8', width: '80vw', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
+        <Button title="Registrarme" onPress={() => navigation.navigate("Registro")} style={{ backgroundColor: '#24CAE8', width: '80vw', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, display: 'flex', justifyContent: 'center' }} />
 
       </Surface>
     </Stack>
