@@ -22,11 +22,10 @@ function Registro() {
       alignItems: 'center',
     },
     modalView: {
-      position: 'absolute',
       backgroundColor: '#fff',
       borderRadius: 20,
       padding: 35,
-      marginTop: 100,
+      marginTop: 250,
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -35,9 +34,11 @@ function Registro() {
       shadowOpacity: 0.5,
       shadowRadius: 10,
       elevation: 4,
-      width: '100%',
+      width: 560,
       height: 'auto',
-    }
+      left: '50%',
+      marginLeft: -280,
+    },
   });
 
   const [email, setEmail] = useState("");
@@ -55,24 +56,67 @@ function Registro() {
 
   const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const uadeEmailPattern = /@uade\.edu\.ar$/;
-  let nameRegex = /^[zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
+  const nameRegex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/;
+  const dniRegex = /^[0-9]{8}$/;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,15}$/;
+  const edadMinima = 18;
+  const edadMaxima = 99;
 
   const validarFormulario = () => {
     let erroresTemp = [];
-    if (clave.length < 8 || clave.length > 15) {
-      erroresTemp.push('La contraseña debe tener entre 8 y 15 caracteres.');
+    if (!clave) {
+      erroresTemp.push('Por favor, ingrese su contraseña.');
+    } else {
+      if (clave.length < 8 || clave.length > 15) {
+        erroresTemp.push('La contraseña debe tener entre 8 y 15 caracteres.');
+      }
+      else {
+        if (!passwordRegex.test(clave)) {
+          erroresTemp.push('La contraseña debe tener al menos una letra mayúscula, al menos un número y al menos un carácter especial.');
+        }
+      }
     }
 
-    if (!email || !nombre || !apellido || !edad || !dni || !clave || !sexo) {
-      erroresTemp.push('Por favor, complete todos los campos.');
+    if (!email) {
+      erroresTemp.push('Por favor, ingrese su correo electrónico.');
     } else {
       if (!pattern.test(email) || !uadeEmailPattern.test(email)) {
         erroresTemp.push('El correo electrónico no es válido o no pertenece a UADE');
       }
     }
 
-    if (nameRegex.test(nombre)) {
-      erroresTemp.push('Por favor, ingrese un nombre valido.');
+    if (!nombre) {
+      erroresTemp.push('Por favor, ingrese su nombre.');
+    } else {
+      if (!nameRegex.test(nombre)) {
+        erroresTemp.push('Por favor, ingrese un nombre válido.');
+      }
+    }
+
+    if (!apellido) {
+      erroresTemp.push('Por favor, ingrese su apellido.');
+    } else {
+      if (!nameRegex.test(apellido)) {
+        erroresTemp.push('Por favor, ingrese un apellido válido.');
+      }
+    }
+
+    if (!edad) {
+      erroresTemp.push('Por favor, ingrese su edad.');
+    } else {
+      if (isNaN(edad)) {
+        erroresTemp.push('Por favor, ingrese un número válido para la edad.');
+      } else if (parseInt(edad) < edadMinima || parseInt(edad) > edadMaxima) {
+        erroresTemp.push(`Por favor, ingrese una edad válida entre ${edadMinima} y ${edadMaxima} años.`);
+      }
+    }
+
+    if (!dni) {
+      erroresTemp.push('Por favor, ingrese su DNI.');
+    } else {
+      if (!dniRegex.test(dni)) {
+        erroresTemp.push('Por favor, ingrese un DNI válido (8 dígitos numéricos).');
+      }
     }
 
     if (!sexo) {
@@ -83,6 +127,7 @@ function Registro() {
 
     return erroresTemp;
   }
+
 
   useEffect(() => {
     if (errores.length > 0) {
@@ -97,13 +142,7 @@ function Registro() {
 
     if (erroresFormulario.length === 0) {
       const data = {
-        email,
-        nombre,
-        apellido,
-        edad,
-        dni,
-        clave,
-        sexo,
+        email, nombre, apellido, edad, dni, clave, sexo,
       };
 
       axios.post("http://localhost:8282/user/addUser", data)
@@ -138,8 +177,7 @@ function Registro() {
           height: 700,
         }}
       >
-
-        <View onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100%' }}>
+        <View onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 25, flexDirection: 'column', width: '100%' }}>
 
           <TextInput name="email" label="Email" mode="outlined" value={email} maxLength={30} onChangeText={setEmail} right={<TextInput.Affix text="/30" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
           <TextInput name="nombre" label="Nombre" mode="outlined" maxLength={15} value={nombre} onChangeText={setNombre} right={<TextInput.Affix text="/15" />} style={{ width: '60%', height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
@@ -186,25 +224,25 @@ function Registro() {
 
           <Divider color="#ccc" style={{ width: '70%', marginBottom: 30, marginTop: 25, display: 'flex', justifyContent: 'center' }} />
 
-          <View style={styles.centeredView}>
-            <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
-              <View style={styles.modalView}>
-                {errores.map((error, index) => (
-                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                    <Feather name="x-octagon" size={24} color="#900" />
-                    <Text style={{ fontFamily: 'BebasNeue', fontSize: 19, color: 'black', marginLeft: 10 }}>{error}</Text>
-                  </View>
-                ))}
-                <Button title="Cerrar" style={{ marginTop: 20 }} onPress={() => setModalVisible(false)} />
-              </View>
-            </Modal>
-          </View>
-
           <Button title="Registrarme" onPress={handleSubmit} style={{ backgroundColor: '#24CAE8', width: '60%', height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
 
         </View>
 
         <Button title="Volver al login" onPress={() => navigation.navigate("Login")} style={{ width: '60%', height: 50, display: 'flex', justifyContent: 'center' }} />
+
+        <View style={styles.centeredView}>
+          <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
+            <View style={styles.modalView}>
+              {errores.map((error, index) => (
+                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                  <Feather name="x-octagon" size={24} color="#900" />
+                  <Text style={{ fontFamily: 'BebasNeue', fontSize: 19, color: 'black', marginLeft: 10 }}>{error}</Text>
+                </View>
+              ))}
+              <Button title="Cerrar" style={{ marginTop: 20 }} onPress={() => setModalVisible(false)} />
+            </View>
+          </Modal>
+        </View>
 
       </Surface>
     </Stack>
