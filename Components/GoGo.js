@@ -1,5 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -8,11 +9,23 @@ import { AntDesign } from '@expo/vector-icons';
 import LoginScreen from "./Login";
 import RegistroScreen from "./Registro";
 import ConfiguracionScreen from "./Configuracion";
+import SuccessScreen from "./Success";
+import AlertasScreen from "./Alertas";
 
-
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function Navegation() {
+function MainStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="TabNav" component={TabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Success" component={SuccessScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="Alertas" component={AlertasScreen} options={{ headerShown: true }} />
+    </Stack.Navigator>
+  );
+}
+
+function TabNavigator() {
   return (
     <Tab.Navigator initialRoutName="Login" screenOptions={{ tabBarActiveBackgroundColor: '#680AEF', tabBarInactiveBackgroundColor: '#680AEF' }}>
       <Tab.Screen name="Login" component={LoginScreen}
@@ -48,7 +61,7 @@ function Navegation() {
 export default function GoGo() {
   return (
     <NavigationContainer>
-      <Navegation />
+      <MainStack />
     </NavigationContainer>
   );
 }
