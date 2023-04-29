@@ -63,8 +63,12 @@ function Registro() {
       erroresTemp.push('La contraseña debe tener entre 8 y 15 caracteres.');
     }
 
-    if (!pattern.test(email) || !uadeEmailPattern.test(email)) {
-      erroresTemp.push('El correo electrónico no es válido o no pertenece a UADE');
+    if (!email || !nombre || !apellido || !edad || !dni || !clave || !sexo) {
+      erroresTemp.push('Por favor, complete todos los campos.');
+    } else {
+      if (!pattern.test(email) || !uadeEmailPattern.test(email)) {
+        erroresTemp.push('El correo electrónico no es válido o no pertenece a UADE');
+      }
     }
 
     if (nameRegex.test(nombre)) {
@@ -114,16 +118,9 @@ function Registro() {
         });
 
       // Reiniciamos los estados
-      setEmail("");
-      setNombre("");
-      setApellido("");
-      setEdad("");
-      setDni("");
-      setClave("");
-      setSexo("");
-      setErrores([]);
-
-    } else {
+      setEmail(""); setNombre(""); setApellido(""); setEdad(""); setDni(""); setClave(""); setSexo(""); setErrores([]);
+    }
+    else {
       // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
       console.log(errores);
     }
