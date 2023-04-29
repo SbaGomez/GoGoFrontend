@@ -149,7 +149,7 @@ function Registro() {
         .then((response) => {
           console.log(response.data);
           // Aquí puedes hacer algo después de que se ha registrado el usuario
-          navigation.navigate("Success");
+          navigation.navigate('Success', { nombre: nombre });
         })
         .catch((error) => {
           console.error(error);
