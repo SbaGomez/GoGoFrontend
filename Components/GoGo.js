@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer,useNavigation } from "@react-navigation/native";
-import { Feather } from '@expo/vector-icons';
-import { AntDesign, FontAwesome  } from '@expo/vector-icons';
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { Feather, Entypo } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 
 //screens
@@ -38,6 +38,9 @@ function TabNavigator() {
           tabBarLabelStyle: { color: '#ccc' },
           tabBarIcon: ({ color, size }) => (<Feather name="user" size={26} color="white" />),
           headerShown: true,
+          headerLeft: () => (
+            <Entypo name="home" size={30} color="#474545" style={{ marginLeft: 15, height: 64, lineHeight: 64 }} />
+          )
         }}
       />
       <Tab.Screen name="Config" component={ConfiguracionScreen}
@@ -51,7 +54,7 @@ function TabNavigator() {
           headerBackVisible: true,
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <FontAwesome name="arrow-left" size={30} color="#474545" style={{marginLeft: 15, height:64, lineHeight: 64 }} />
+              <FontAwesome name="arrow-left" size={30} color="#474545" style={{ marginLeft: 15, height: 64, lineHeight: 64 }} />
             </TouchableOpacity>
           )
         }}
@@ -66,7 +69,7 @@ function TabNavigator() {
           headerBackVisible: true,
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <FontAwesome name="arrow-left" size={30} color="#474545" style={{marginLeft: 15, height:64, lineHeight: 64 }} />
+              <FontAwesome name="arrow-left" size={30} color="#474545" style={{ marginLeft: 15, height: 64, lineHeight: 64 }} />
             </TouchableOpacity>
           )
         }}
