@@ -4,11 +4,16 @@ import { TextInput, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { View, Modal, StyleSheet } from 'react-native';
 import axios from "axios";
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, Feather } from '@expo/vector-icons';
+import { useFonts } from "expo-font";
 
 function Registro() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+
+  let [fontsLoaded] = useFonts({
+    "BebasNeue": require('../assets/fonts/BebasNeue.ttf'),
+  })
 
   const styles = StyleSheet.create({
     centeredView: {
@@ -50,7 +55,6 @@ function Registro() {
 
   const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const uadeEmailPattern = /@uade\.edu\.ar$/;
-
   let nameRegex = /^[zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
 
   const validarFormulario = () => {
@@ -189,13 +193,15 @@ function Registro() {
             <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
               <View style={styles.modalView}>
                 {errores.map((error, index) => (
-                  <Text key={index} style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
+                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                    <Feather name="x-octagon" size={24} color="#900" />
+                    <Text style={{ fontFamily: 'BebasNeue', fontSize: 19, color: 'black', marginLeft: 10 }}>{error}</Text>
+                  </View>
                 ))}
                 <Button title="Cerrar" style={{ marginTop: 20 }} onPress={() => setModalVisible(false)} />
               </View>
             </Modal>
           </View>
-
 
           <Button title="Registrarme" onPress={handleSubmit} style={{ backgroundColor: '#24CAE8', width: '60%', height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
 
