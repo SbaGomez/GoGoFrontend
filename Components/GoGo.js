@@ -1,9 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer,useNavigation } from "@react-navigation/native";
 import { Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome  } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
 
 //screens
 import LoginScreen from "./Login";
@@ -19,6 +20,7 @@ function MainStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="TabNav" component={TabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Registro" component={RegistroScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Success" component={SuccessScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Alertas" component={AlertasScreen} options={{ headerShown: true }} />
     </Stack.Navigator>
@@ -26,6 +28,7 @@ function MainStack() {
 }
 
 function TabNavigator() {
+  const navigation = useNavigation();
   return (
     <Tab.Navigator initialRoutName="Login" screenOptions={{ tabBarActiveBackgroundColor: '#680AEF', tabBarInactiveBackgroundColor: '#680AEF' }}>
       <Tab.Screen name="Login" component={LoginScreen}
@@ -44,6 +47,13 @@ function TabNavigator() {
           tabBarLabelStyle: { color: '#ccc' },
           tabBarIcon: ({ color, size }) => (<AntDesign name="setting" size={26} color="white" />),
           headerShown: true,
+          headerBackTitleVisible: false,
+          headerBackVisible: true,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <FontAwesome name="arrow-left" size={30} color="#474545" style={{marginLeft: 15, height:64, lineHeight: 64 }} />
+            </TouchableOpacity>
+          )
         }}
       />
       <Tab.Screen name="Registro" component={RegistroScreen}
@@ -52,6 +62,13 @@ function TabNavigator() {
           tabBarLabelStyle: { color: '#ccc' },
           tabBarIcon: ({ color, size }) => (<Feather name="user-plus" size={26} color="white" />),
           headerShown: true,
+          headerBackTitleVisible: false,
+          headerBackVisible: true,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <FontAwesome name="arrow-left" size={30} color="#474545" style={{marginLeft: 15, height:64, lineHeight: 64 }} />
+            </TouchableOpacity>
+          )
         }}
       />
     </Tab.Navigator>
