@@ -17,7 +17,8 @@ function Configuracion() {
           height: 600,
         }}
       >
-        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '80vw', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
+
+        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '80%', textAlign: 'center', maxWidth: "40%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
       </Surface>
     </Stack>
   );

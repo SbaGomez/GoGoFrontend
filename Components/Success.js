@@ -27,14 +27,14 @@ const Success = () => {
         <View style={{ margin: 10 }}>
           <Octicons name="verified" size={90} color="#24CAE8" />
         </View>
-        <Text style={{ width: '80vw', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, color: 'green' }}>¡ Registro exitoso !</Text>
-        <Text category="h4" style={{ width: '80vw', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, marginTop: 20 }}>
+        <Text style={{ width: '80%', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, color: 'green' }}>¡ Registro exitoso !</Text>
+        <Text category="h4" style={{ width: '80%', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, marginTop: 20 }}>
           ¡Bienvenido/a, {route.params.nombre}!
         </Text>
-        <Text category="h4" style={{ width: '80vw', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, marginTop: 20, maxWidth: "90%" }}>
+        <Text category="h4" style={{ width: '70%', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, marginTop: 20, maxWidth: "70%" }}>
           Verifique su casilla de correo para confirmar la cuenta.
         </Text>
-        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '80vw', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
+        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '80%', textAlign: 'center', maxWidth: "40%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
 
       </Surface>
     </Stack>
