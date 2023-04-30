@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Divider, Text } from "@react-native-material/core";
-import { TextInput, RadioButton } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { View, Modal, StyleSheet } from 'react-native';
+import { View, Modal, StyleSheet, Switch } from 'react-native';
 import axios from "axios";
 import { FontAwesome, FontAwesome5, Feather } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
@@ -116,7 +116,7 @@ function Registro() {
         erroresTemp.push('Por favor, ingrese un número válido para la edad.');
       } else if (parseInt(edad) < edadMinima || parseInt(edad) > edadMaxima) {
         erroresTemp.push(`Por favor, ingrese una edad válida entre ${edadMinima} y ${edadMaxima} años.`);
-      }1
+      } 1
     }
 
     if (!dni) {
@@ -196,40 +196,30 @@ function Registro() {
           <TextInput name="dni" label="DNI" mode="outlined" maxLength={8} value={dni} onChangeText={setDni} right={<TextInput.Affix text="/8" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
           <TextInput name="clave" label="Contraseña" mode="outlined" value={clave} onChangeText={setClave} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 20, display: 'flex', justifyContent: 'center' }} />
 
-          <View style={{ flexDirection: 'row', width: '30%', justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <RadioButton.Group
-                onValueChange={handleSexoChange}
-                value={sexo}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <RadioButton value="M" color="purple" />
-                  {/*<Text color="#49454F" variant="h6">Masculino </Text>*/}
-                  <FontAwesome name="male" size={44} color="skyblue" />
-                </View>
-              </RadioButton.Group>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 80 }}>
+              <Switch
+                value={sexo === 'M'}
+                onValueChange={() => handleSexoChange('M')}
+                trackColor={{ true: 'skyblue', false: 'gray' }}
+                ios_backgroundColor="gray"
+                style={{ marginRight: 15 }}
+              />
+              <FontAwesome name="male" size={44} color="skyblue" />
             </View>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <RadioButton.Group
-                onValueChange={handleSexoChange}
-                value={sexo}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <RadioButton value="F" color="purple" />
-                  {/*<Text color="#49454F" variant="h6">Femenino </Text>*/}
-                  <FontAwesome5 name="female" size={44} color="pink" />
-                </View>
-              </RadioButton.Group>
+              <Switch
+                value={sexo === 'F'}
+                onValueChange={() => handleSexoChange('F')}
+                trackColor={{ true: 'pink', false: 'gray' }}
+                ios_backgroundColor="gray"
+                style={{ marginRight: 15 }}
+              />
+              <FontAwesome5 name="female" size={44} color="pink" />
             </View>
+
           </View>
 
           <Divider color="#ccc" style={{ width: '70%', marginBottom: 30, marginTop: 25, display: 'flex', justifyContent: 'center' }} />
