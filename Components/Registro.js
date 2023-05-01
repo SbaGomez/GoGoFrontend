@@ -179,14 +179,14 @@ function Registro() {
   // el submit para hacer el registro del usuario
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const erroresFormulario = validarFormulario();
-  
+
     if (erroresFormulario.length === 0) {
       const data = {
         email, nombre, apellido, edad, dni, clave, sexo,
       };
-  
+
       try {
         const response = await axios.post(
           "http://192.168.1.100:8282/user/addUser",
@@ -206,7 +206,7 @@ function Registro() {
       console.log(errores);
     }
   };
-  
+
 
   return (
     <Stack fill center spacing={4}>

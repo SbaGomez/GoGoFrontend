@@ -85,12 +85,14 @@ function Login() {
           clave: clave
         });
         const token = response.data;
-        // Save the JWT token to AsyncStorage or another storage mechanism
         console.log(token);
         navigation.navigate('Home', { email: email });
       } catch (error) {
+        if (error.response && error.response.data === "Email o contraseña incorrectos") {
+          setErrores(["Email o contraseña incorrectos."]);
+          setModalVisible(true);
+        }
         console.error(error);
-        // Handle the error
       }
     }
   }
