@@ -73,7 +73,7 @@ function Registro() {
 
   const validarEmail = async (email) => {
     try {
-      const response = await axios.get(`http://localhost:8282/user/emailExists?email=${email}`);
+      const response = await axios.post('http://localhost:8282/user/emailExists', {  email: email });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -83,7 +83,7 @@ function Registro() {
 
   const validarDni = async (dni) => {
     try {
-      const response = await axios.get(`http://localhost:8282/user/dniExists?dni=${dni}`);
+      const response = await axios.post('http://localhost:8282/user/dniExists', { dni:dni });
       return response.data;
     } catch (error) {
       console.error(error);
