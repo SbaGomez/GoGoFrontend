@@ -6,6 +6,7 @@ import { View, Modal, StyleSheet, Switch } from 'react-native';
 import axios from "axios";
 import { FontAwesome, FontAwesome5, Feather } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
+import styles from '../Utils/Styles';
 
 function Registro() {
   const navigation = useNavigation();
@@ -15,37 +16,6 @@ function Registro() {
   let [fontsLoaded] = useFonts({
     "BebasNeue": require('../assets/fonts/BebasNeue.ttf'),
   })
-
-  // Estilos del modal
-  const styles = StyleSheet.create({
-    centeredView: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '80%',
-      textAlign: 'center',
-    },
-    modalView: {
-      backgroundColor: '#fff',
-      borderRadius: 20,
-      padding: 35,
-      marginTop: 140,
-      shadowColor: '#000',
-      width: '80%',
-      textAlign: 'center',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.5,
-      shadowRadius: 10,
-      elevation: 4,
-      width: 560,
-      height: 'auto',
-      left: '50%',
-      marginLeft: -280,
-    },
-  });
 
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
