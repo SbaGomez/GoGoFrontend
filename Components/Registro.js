@@ -71,9 +71,9 @@ function Registro() {
 
   // Funciones para ver si existe el mail y el dni
 
-  const validarEmail = async (email) => {
+  const validarEmail = (email) => {
     try {
-      const response = await axios.post('http://localhost:8282/user/emailExists', {  email: email });
+      const response = axios.post('http://localhost:8282/user/emailExists', { email: email });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -81,9 +81,9 @@ function Registro() {
     }
   };
 
-  const validarDni = async (dni) => {
+  const validarDni = (dni) => {
     try {
-      const response = await axios.post('http://localhost:8282/user/dniExists', { dni:dni });
+      const response = axios.post('http://localhost:8282/user/dniExists', { dni: dni });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -92,7 +92,7 @@ function Registro() {
   };
 
   // Funcion para las validaciones
-  const validarFormulario = async () => {
+  const validarFormulario = () => {
     let erroresTemp = [];
     if (!clave) {
       erroresTemp.push('Por favor, ingrese su contraseña.');
@@ -113,7 +113,7 @@ function Registro() {
       if (!pattern.test(email) || !uadeEmailPattern.test(email)) {
         erroresTemp.push('El correo electrónico no es válido o no pertenece a UADE');
       } else {
-        const emailExiste = await validarEmail(email);
+        const emailExiste = validarEmail(email);
         if (emailExiste) {
           erroresTemp.push('El correo electrónico ya está registrado');
         }
@@ -143,7 +143,7 @@ function Registro() {
         erroresTemp.push('Por favor, ingrese un número válido para la edad.');
       } else if (parseInt(edad) < edadMinima || parseInt(edad) > edadMaxima) {
         erroresTemp.push(`Por favor, ingrese una edad válida entre ${edadMinima} y ${edadMaxima} años.`);
-      } 
+      }
     }
 
     if (!dni) {
@@ -152,12 +152,12 @@ function Registro() {
       if (!dniRegex.test(dni)) {
         erroresTemp.push('Por favor, ingrese un DNI válido (8 dígitos numéricos).');
       } else {
-        const dniExiste = await validarDni(dni);
+        const dniExiste = validarDni(dni);
         if (dniExiste) {
           erroresTemp.push('El DNI ya está registrado');
         }
       }
-    } 
+    }
 
     if (!sexo) {
       erroresTemp.push('Por favor, seleccione su sexo.');
@@ -177,35 +177,36 @@ function Registro() {
 
 
   // el submit para hacer el registro del usuario
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const erroresFormulario = validarFormulario();
-
+  
     if (erroresFormulario.length === 0) {
       const data = {
         email, nombre, apellido, edad, dni, clave, sexo,
       };
-
-      axios.post("http://localhost:8282/user/addUser", data)
-        .then((response) => {
-          console.log(response.data);
-          // Aquí puedes hacer algo después de que se ha registrado el usuario
-          navigation.navigate('Success', { nombre: nombre });
-        })
-        .catch((error) => {
-          console.error(error);
-          // Aquí puedes manejar el error
-        });
-
-      // Reiniciamos los estados
-      setEmail(""); setNombre(""); setApellido(""); setEdad(""); setDni(""); setClave(""); setSexo(""); setErrores([]);
-    }
-    else {
+  
+      try {
+        const response = await axios.post(
+          "http://localhost:8282/user/addUser",
+          data
+        );
+        console.log(response.data);
+        // Aquí puedes hacer algo después de que se ha registrado el usuario
+        navigation.navigate("Success", { nombre: nombre });
+        // Reiniciamos los estados
+        setEmail(""); setNombre(""); setApellido(""); setEdad(""); setDni(""); setClave(""); setSexo(""); setErrores([]);
+      } catch (error) {
+        console.error(error);
+        // Aquí puedes manejar el error
+      }
+    } else {
       // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
       console.log(errores);
     }
   };
+  
 
   return (
     <Stack fill center spacing={4}>
