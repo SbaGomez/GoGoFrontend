@@ -13,16 +13,27 @@ import ConfiguracionScreen from "./Configuracion";
 import SuccessScreen from "./Success";
 import AlertasScreen from "./Alertas";
 import HomeScreen from "./Home";
+import RecuperoScreen from "./Recupero";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainStack() {
+  const navigation = useNavigation();
   return (
     <Stack.Navigator>
       <Stack.Screen name="TabNav" component={TabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Registro" component={RegistroScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Success" component={SuccessScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Recupero" component={RecuperoScreen} options={{
+        headerShown: true,
+        headerTitle: "Recuperar contraseña",
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{ marginLeft: 15, lineHeight: 64 }}>
+            <FontAwesome name="arrow-left" size={30} color="#474545" />
+          </TouchableOpacity>
+        )
+      }} />
       <Stack.Screen name="Alertas" component={AlertasScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
