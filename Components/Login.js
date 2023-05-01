@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Text } from "@react-native-material/core";
 import logoImage from '../assets/GOGO.png';
-import { View, Modal, Image, StyleSheet } from 'react-native';
+import { View, Modal, Image } from 'react-native';
 import axios from "axios";
 import { TextInput } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import styles from '../Utils/Styles';
 
 function Login() {
   const navigation = useNavigation();
@@ -19,37 +20,6 @@ function Login() {
   let [fontsLoaded] = useFonts({
     "BebasNeue": require('../assets/fonts/BebasNeue.ttf'),
   })
-
-  // Estilos del modal
-  const styles = StyleSheet.create({
-    centeredView: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '80%',
-      textAlign: 'center',
-    },
-    modalView: {
-      backgroundColor: '#fff',
-      borderRadius: 20,
-      padding: 35,
-      marginTop: 140,
-      shadowColor: '#000',
-      width: '80%',
-      textAlign: 'center',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.5,
-      shadowRadius: 10,
-      elevation: 4,
-      width: 560,
-      height: 'auto',
-      left: '50%',
-      marginLeft: -280,
-    },
-  });
 
   // Funcion para las validaciones
   const validarLogin = () => {
@@ -109,7 +79,7 @@ function Login() {
           height: 600,
         }}
       >
-        <Image source={logoImage} style={{ width: '100%', height: 150, maxWidth: 270, maxHeight: 150, marginBottom: 30 }} />
+        <Image source={logoImage} style={styles.logo} />
 
         <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" value={email} onChangeText={text => setEmail(text)} right={<TextInput.Affix text="/50" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
         <TextInput label="Contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 50, display: 'flex', justifyContent: 'center' }} />
