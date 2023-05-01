@@ -69,8 +69,30 @@ function Registro() {
   const edadMinima = 17;
   const edadMaxima = 99;
 
+  // Funciones para ver si existe el mail y el dni
+
+  const validarEmail = async (email) => {
+    try {
+      const response = await axios.get(`http://localhost:8282/user/emailExists?email=${email}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const validarDni = async (dni) => {
+    try {
+      const response = await axios.get(`http://localhost:8282/user/dniExists?dni=${dni}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
   // Funcion para las validaciones
-  const validarFormulario = () => {
+  const validarFormulario = async () => {
     let erroresTemp = [];
     if (!clave) {
       erroresTemp.push('Por favor, ingrese su contraseña.');
@@ -90,6 +112,11 @@ function Registro() {
     } else {
       if (!pattern.test(email) || !uadeEmailPattern.test(email)) {
         erroresTemp.push('El correo electrónico no es válido o no pertenece a UADE');
+      } else {
+        const emailExiste = await validarEmail(email);
+        if (emailExiste) {
+          erroresTemp.push('El correo electrónico ya está registrado');
+        }
       }
     }
 
@@ -116,7 +143,7 @@ function Registro() {
         erroresTemp.push('Por favor, ingrese un número válido para la edad.');
       } else if (parseInt(edad) < edadMinima || parseInt(edad) > edadMaxima) {
         erroresTemp.push(`Por favor, ingrese una edad válida entre ${edadMinima} y ${edadMaxima} años.`);
-      } 1
+      } 
     }
 
     if (!dni) {
@@ -124,8 +151,13 @@ function Registro() {
     } else {
       if (!dniRegex.test(dni)) {
         erroresTemp.push('Por favor, ingrese un DNI válido (8 dígitos numéricos).');
+      } else {
+        const dniExiste = await validarDni(dni);
+        if (dniExiste) {
+          erroresTemp.push('El DNI ya está registrado');
+        }
       }
-    }
+    } 
 
     if (!sexo) {
       erroresTemp.push('Por favor, seleccione su sexo.');
