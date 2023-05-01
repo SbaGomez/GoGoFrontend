@@ -41,9 +41,9 @@ function Registro() {
 
   // Funciones para ver si existe el mail y el dni
 
-  const validarEmail = (email) => {
+  const validarEmail = async (email) => {
     try {
-      const response = axios.post('http://192.168.1.100:8282/user/emailExists', { email: email });
+      const response = await axios.post('http://localhost:8282/user/emailExists', { email: email });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -51,9 +51,9 @@ function Registro() {
     }
   };
 
-  const validarDni = (dni) => {
+  const validarDni = async (dni) => {
     try {
-      const response = axios.post('http://192.168.1.100:8282/user/dniExists', { dni: dni });
+      const response = await axios.post('http://localhost:8282/user/dniExists', { dni: dni });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -62,7 +62,7 @@ function Registro() {
   };
 
   // Funcion para las validaciones
-  const validarFormulario = () => {
+  const validarFormulario = async () => {
     let erroresTemp = [];
     if (!clave) {
       erroresTemp.push('Por favor, ingrese su contraseña.');
@@ -83,7 +83,7 @@ function Registro() {
       if (!pattern.test(email) || !uadeEmailPattern.test(email)) {
         erroresTemp.push('El correo electrónico no es válido o no pertenece a UADE');
       } else {
-        const emailExiste = validarEmail(email);
+        const emailExiste = await validarEmail(email);
         if (emailExiste) {
           erroresTemp.push('El correo electrónico ya está registrado');
         }
@@ -122,7 +122,7 @@ function Registro() {
       if (!dniRegex.test(dni)) {
         erroresTemp.push('Por favor, ingrese un DNI válido (8 dígitos numéricos).');
       } else {
-        const dniExiste = validarDni(dni);
+        const dniExiste = await validarDni(dni);
         if (dniExiste) {
           erroresTemp.push('El DNI ya está registrado');
         }
@@ -152,18 +152,18 @@ function Registro() {
 
     const erroresFormulario = validarFormulario();
 
-    if (erroresFormulario.length === 0) {
+    if (!erroresFormulario.length) {
       const data = {
         email, nombre, apellido, edad, dni, clave, sexo,
       };
 
       try {
         const response = await axios.post(
-          "http://192.168.1.100:8282/user/addUser",
+          "http://localhost:8282/user/addUser",
           data
         );
-        console.log(response.data);
         // Aquí puedes hacer algo después de que se ha registrado el usuario
+        console.log(response.data);
         navigation.navigate("Success", { nombre: nombre });
         // Reiniciamos los estados
         setEmail(""); setNombre(""); setApellido(""); setEdad(""); setDni(""); setClave(""); setSexo(""); setErrores([]);
@@ -173,7 +173,7 @@ function Registro() {
       }
     } else {
       // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
-      console.log(errores);
+      console.log("hubo un error 01");
     }
   };
 
