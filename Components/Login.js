@@ -80,7 +80,7 @@ function Login() {
     const errores = validarLogin();
     if (errores.length === 0) {
       try {
-        const response = await axios.post('http://localhost:8282/auth/login', {
+        const response = await axios.post('http://192.168.1.100:8282/auth/login', {
           email: email,
           clave: clave
         });

@@ -73,7 +73,7 @@ function Registro() {
 
   const validarEmail = (email) => {
     try {
-      const response = axios.post('http://localhost:8282/user/emailExists', { email: email });
+      const response = axios.post('http://192.168.1.100:8282/user/emailExists', { email: email });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -83,7 +83,7 @@ function Registro() {
 
   const validarDni = (dni) => {
     try {
-      const response = axios.post('http://localhost:8282/user/dniExists', { dni: dni });
+      const response = axios.post('http://192.168.1.100:8282/user/dniExists', { dni: dni });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -189,7 +189,7 @@ function Registro() {
   
       try {
         const response = await axios.post(
-          "http://localhost:8282/user/addUser",
+          "http://192.168.1.100:8282/user/addUser",
           data
         );
         console.log(response.data);

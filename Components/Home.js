@@ -12,7 +12,7 @@ function Home() {
     <Stack fill center spacing={4}>
       <Surface elevation={4} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 600, }}>
 
-        <Text category="h4" style={{ width: '70%', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, marginTop: 20, maxWidth: "70%" }}>
+        <Text category="h4" style={{ width: '65%', textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 30, marginTop: 20, maxWidth: "65%" }}>
           Bienvenido, {route.params.email} !
         </Text>
 
