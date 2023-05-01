@@ -12,6 +12,7 @@ import RegistroScreen from "./Registro";
 import ConfiguracionScreen from "./Configuracion";
 import SuccessScreen from "./Success";
 import AlertasScreen from "./Alertas";
+import HomeScreen from "./Home";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,6 +24,7 @@ function MainStack() {
       <Stack.Screen name="Registro" component={RegistroScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Success" component={SuccessScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Alertas" component={AlertasScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
