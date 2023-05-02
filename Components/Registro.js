@@ -180,16 +180,8 @@ function Registro() {
 
   return (
     <Stack fill center spacing={4}>
-      <Surface
-        elevation={6}
-        category="medium"
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          width: 600,
-          height: 700,
-        }}
-      >
+      <Surface elevation={6} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 700 }}>
+        
         <View onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 25, flexDirection: 'column', width: '100%' }}>
 
           <TextInput name="email" label="Email" mode="outlined" value={email} maxLength={30} onChangeText={setEmail} right={<TextInput.Affix text="/30" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
