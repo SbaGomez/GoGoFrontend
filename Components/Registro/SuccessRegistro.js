@@ -13,7 +13,7 @@ const Success = () => {
   // Font propia
   const loadFontAsync = async () => {
     await Font.loadAsync({
-      'BebasNeue': require('../assets/fonts/BebasNeue.ttf'),
+      'BebasNeue': require('../../assets/fonts/BebasNeue.ttf'),
     });
     setFontLoaded(true);
   }
@@ -40,9 +40,6 @@ const Success = () => {
         <Text style={{ width: '80%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, color: 'green' }}>¡ Registro exitoso !</Text>
         <Text category="h4" style={{ width: '80%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, marginTop: 20 }}>
           ¡Bienvenido/a, {route.params.nombre}!
-        </Text>
-        <Text category="h4" style={{ width: '65%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, marginTop: 20, maxWidth: "65%" }}>
-          Verifique su casilla de correo para confirmar la cuenta.
         </Text>
         <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '80%', textAlign: 'center', maxWidth: "40%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
 

@@ -21,7 +21,7 @@ function Recupero() {
   // Font propia
   const loadFontAsync = async () => {
     await Font.loadAsync({
-      'BebasNeue': require('../assets/fonts/BebasNeue.ttf'),
+      'BebasNeue': require('../../assets/fonts/BebasNeue.ttf'),
     });
     setFontLoaded(true);
   }

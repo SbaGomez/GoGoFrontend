@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Text } from "@react-native-material/core";
-import logoImage from '../assets/GOGO.png';
+import logoImage from '../../assets/GOGO.png';
 import { View, Modal, Image } from 'react-native';
 import axios from "axios";
 import { TextInput } from 'react-native-paper';
@@ -20,7 +20,7 @@ function Login() {
   // Font propia
   const loadFontAsync = async () => {
     await Font.loadAsync({
-      'BebasNeue': require('../assets/fonts/BebasNeue.ttf'),
+      'BebasNeue': require('../../assets/fonts/BebasNeue.ttf'),
     });
     setFontLoaded(true);
   }
