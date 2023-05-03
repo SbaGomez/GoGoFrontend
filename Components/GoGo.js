@@ -25,8 +25,8 @@ function MainStack() {
     <Stack.Navigator>
       <Stack.Screen name="TabNav" component={TabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Registro" component={RegistroScreen} options={{ headerShown: true }} />
-      <Stack.Screen name="Recupero" component={RecuperoScreen} options={{ headerShown: true }} />
-      <Stack.Screen name="SuccessRecupero" component={SuccessRecuperoScreen} options={{
+      <Stack.Screen name="SuccessRegistro" component={SuccessRegistroScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Recupero" component={RecuperoScreen} options={{
         headerShown: true,
         headerTitle: "Recuperar contraseña",
         headerLeft: () => (
@@ -35,9 +35,9 @@ function MainStack() {
           </TouchableOpacity>
         )
       }} />
-      <Stack.Screen name="SuccessRegistro" component={SuccessRegistroScreen} options={{
+      <Stack.Screen name="SuccessRecupero" component={SuccessRecuperoScreen} options={{
         headerShown: true,
-        headerTitle: "Registro",
+        headerTitle: "Recuperar contraseña",
         headerLeft: () => (
           <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{ marginLeft: 15, lineHeight: 64 }}>
             <FontAwesome name="arrow-left" size={30} color="#474545" />
