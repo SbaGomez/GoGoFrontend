@@ -24,16 +24,7 @@ const Success = () => {
 
   return (
     <Stack fill center spacing={4}>
-      <Surface
-        elevation={4}
-        category="medium"
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          width: 600,
-          height: 600,
-        }}
-      >
+      <Surface elevation={4} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 600, }} >
         <View style={{ margin: 10 }}>
           <Octicons name="verified" size={90} color="#24CAE8" />
         </View>
