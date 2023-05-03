@@ -150,27 +150,27 @@ function Registro() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const erroresFormulario = validarFormulario();
-
-    if (!erroresFormulario.length) {
+    const erroresFormulario = await validarFormulario();
+    console.log(erroresFormulario);
+    if (erroresFormulario.length == 0) {
       const data = {
-        email, nombre, apellido, edad, dni, clave, sexo,
-      };
+          email, nombre, apellido, edad, dni, clave, sexo
+        };
 
-      try {
-        const response = await axios.post(
-          "http://localhost:8282/user/addUser",
-          data
-        );
-        // Aquí puedes hacer algo después de que se ha registrado el usuario
-        console.log(response.data);
-        navigation.navigate("Success", { nombre: nombre });
-        // Reiniciamos los estados
-        setEmail(""); setNombre(""); setApellido(""); setEdad(""); setDni(""); setClave(""); setSexo(""); setErrores([]);
-      } catch (error) {
-        console.error(error);
-        // Aquí puedes manejar el error
-      }
+        try {
+          const response = await axios.post(
+            "http://localhost:8282/user/addUser",
+            data
+          );
+          // Aquí puedes hacer algo después de que se ha registrado el usuario
+          console.log(response.data);
+          navigation.navigate("Success", { nombre: nombre });
+          // Reiniciamos los estados
+          setEmail(""); setNombre(""); setApellido(""); setEdad(""); setDni(""); setClave(""); setSexo(""); setErrores([]);
+        } catch (error) {
+          console.error(error);
+          // Aquí puedes manejar el error
+        }
     } else {
       // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
       console.log("hubo un error 01");
