@@ -78,7 +78,7 @@ function TabNavigator() {
           headerBackTitleVisible: false,
           headerBackVisible: true,
           headerLeft: () => (
-            <TouchableOpacity onPress={goBack} style={{ marginLeft: 15, lineHeight: 64 }}>
+            <TouchableOpacity onPress={goBack} style={{ marginTop: 25, marginLeft: 15, height: 100, height: 64, lineHeight: 64 }}>
               <FontAwesome name="arrow-left" size={30} color="#474545" />
             </TouchableOpacity>
           )
@@ -94,7 +94,7 @@ function TabNavigator() {
           headerBackTitleVisible: false,
           headerBackVisible: true,
           headerLeft: () => (
-            <TouchableOpacity onPress={goBack} style={{ marginLeft: 15, lineHeight: 64 }}>
+            <TouchableOpacity onPress={goBack} style={{ marginTop: 25, marginLeft: 15, height: 64,  lineHeight: 64 }}>
               <FontAwesome name="arrow-left" size={30} color="#474545" />
             </TouchableOpacity>
           )
