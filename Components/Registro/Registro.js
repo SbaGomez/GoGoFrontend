@@ -14,6 +14,7 @@ function Registro() {
   const [modalVisible, setModalVisible] = useState(false);
   const [mostrarCodigo, setMostrarCodigo] = useState(false);
   const [errores, setErrores] = useState([]);
+  const [tipoEmail, setTipoEmail] = useState(0);
 
   // Font propia
   const loadFontAsync = async () => {
@@ -168,25 +169,25 @@ function Registro() {
         email, nombre, apellido, edad, dni, clave, sexo
       };
 
-      const tipoEmail = 0;
-
       try {
+        setTipoEmail(0);
         setMostrarCodigo(true);
         const response = await axios.post(
           "http://localhost:8282/user/addUser",
-          data, tipoEmail,
+          data, tipoEmail
         );
         // Aquí puedes hacer algo después de que se ha registrado el usuario
         console.log(response.data);
         // Reiniciamos los estados
         setEmail(""); setNombre(""); setApellido(""); setEdad(""); setDni(""); setClave(""); setSexo(""); setErrores([]);
       } catch (error) {
-        console.error(error);
         // Aquí puedes manejar el error
+        console.error(error);
+        console.log("error registro 02");
       }
     } else {
       // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
-      console.log("hubo un error 01");
+      console.log("error registro 01");
     }
   };
 
