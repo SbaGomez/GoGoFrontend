@@ -168,11 +168,13 @@ function Registro() {
         email, nombre, apellido, edad, dni, clave, sexo
       };
 
+      const tipoEmail = 0;
+
       try {
         setMostrarCodigo(true);
         const response = await axios.post(
           "http://localhost:8282/user/addUser",
-          data
+          data, tipoEmail,
         );
         // Aquí puedes hacer algo después de que se ha registrado el usuario
         console.log(response.data);
@@ -212,23 +214,23 @@ function Registro() {
   return (
     <ScrollView>
       <Stack fill center spacing={4}>
-        <Surface elevation={6} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 700, marginTop: 70 }}>
+        <Surface elevation={6} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 700, marginTop: 50, marginBottom: 50 }}>
 
-          <View style={{ justifyContent: "center", alignItems: "center", width: 600, height: 700 }}>
+          <View style={styles.viewRegistroTotal}>
             {!mostrarCodigo ? (
               <>
-                <View onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 25, flexDirection: 'column', width: '100%' }}>
+                <View onSubmit={handleSubmit} style={styles.viewRegistro}>
 
-                  <TextInput name="email" label="Email" mode="outlined" value={email} maxLength={30} onChangeText={setEmail} right={<TextInput.Affix text="/30" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-                  <TextInput name="nombre" label="Nombre" mode="outlined" maxLength={15} value={nombre} onChangeText={setNombre} right={<TextInput.Affix text="/15" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-                  <TextInput name="apellido" label="Apellido" mode="outlined" maxLength={15} value={apellido} onChangeText={setApellido} right={<TextInput.Affix text="/15" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-                  <TextInput name="edad" label="Edad" mode="outlined" maxLength={3} value={edad} onChangeText={setEdad} right={<TextInput.Affix text="/3" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-                  <TextInput name="dni" label="DNI" mode="outlined" maxLength={8} value={dni} onChangeText={setDni} right={<TextInput.Affix text="/8" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 10, display: 'flex', justifyContent: 'center' }} />
-                  <TextInput name="clave" label="Contraseña" mode="outlined" value={clave} onChangeText={setClave} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 20, display: 'flex', justifyContent: 'center' }} />
+                  <TextInput name="email" label="Email" mode="outlined" value={email} maxLength={30} onChangeText={setEmail} right={<TextInput.Affix text="/30" />} style={styles.textInputRegistro} />
+                  <TextInput name="nombre" label="Nombre" mode="outlined" maxLength={15} value={nombre} onChangeText={setNombre} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistro} />
+                  <TextInput name="apellido" label="Apellido" mode="outlined" maxLength={15} value={apellido} onChangeText={setApellido} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistro} />
+                  <TextInput name="edad" label="Edad" mode="outlined" maxLength={3} value={edad} onChangeText={setEdad} right={<TextInput.Affix text="/3" />} style={styles.textInputRegistro} />
+                  <TextInput name="dni" label="DNI" mode="outlined" maxLength={8} value={dni} onChangeText={setDni} right={<TextInput.Affix text="/8" />} style={styles.textInputRegistro} />
+                  <TextInput name="clave" label="Contraseña" mode="outlined" value={clave} onChangeText={setClave} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={styles.textInputRegistro} />
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}>
+                  <View style={styles.viewGeneroRegistro}>
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 80 }}>
+                    <View style={styles.viewSwitchMale}>
                       <Switch
                         value={sexo === 'M'}
                         onValueChange={() => handleSexoChange('M')}
@@ -239,7 +241,7 @@ function Registro() {
                       <FontAwesome name="male" size={44} color="skyblue" />
                     </View>
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.viewSwitchFem}>
                       <Switch
                         value={sexo === 'F'}
                         onValueChange={() => handleSexoChange('F')}
@@ -252,23 +254,21 @@ function Registro() {
 
                   </View>
 
-                  <Divider color="#ccc" style={{ width: '70%', marginBottom: 30, marginTop: 25, display: 'flex', justifyContent: 'center' }} />
+                  <Divider color="#ccc" style={styles.divider} />
 
-                  <Button title="Registrarme" onPress={handleSubmit} style={{ backgroundColor: '#24CAE8', width: '80%', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-
+                  <Button title="Registrarme" onPress={handleSubmit} style={styles.buttonRegistrarme} />
                 </View>
-
-                <Button title="Volver al login" onPress={() => navigation.navigate("Login")} style={{ width: '80%', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, display: 'flex', justifyContent: 'center' }} />
+                <Button title="Volver al login" onPress={() => navigation.navigate("Login")} style={styles.buttonVolverLogin} />
               </>
             ) : (
-              <View onSubmit={handleVerificar} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 25, flexDirection: 'column', width: '100%' }}>
+              <View onSubmit={handleVerificar} style={styles.viewRegistroVerificar}>
 
-                <Text category="h4" style={{ width: '65%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, marginBottom: 20, maxWidth: "65%" }}>
+                <Text style={styles.textTituloRegistro}>
                   Verifique su casilla de correo electronico e ingrese el codigo.
                 </Text>
 
-                <TextInput label="Ingrese el código" mode="outlined" placeholder="Código de verificacion" value={codigo} onChangeText={text => setCode(text)} maxLength={6} right={<TextInput.Affix text="/6" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-                <Button title="Verificar cuenta" onPress={async () => await handleVerificar(codigo)} style={{ backgroundColor: '#24CAE8', width: '80%', textAlign: 'center', maxWidth: "40%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
+                <TextInput label="Ingrese el código" mode="outlined" placeholder="Código de verificacion" value={codigo} onChangeText={text => setCode(text)} maxLength={6} right={<TextInput.Affix text="/6" />} style={styles.textInputRegistroCodigo} />
+                <Button title="Verificar cuenta" onPress={async () => await handleVerificar(codigo)} style={styles.buttonRegistroCodigo} />
               </View>
             )}
           </View>
@@ -277,15 +277,13 @@ function Registro() {
             <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
               <View style={styles.modalView}>
                 {errores.map((error, index) => (
-                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center', height: 25, marginBottom: 20, justifyContent: 'center' }}>
+                  <View key={index} style={styles.viewModalText}>
                     <Feather name="x-octagon" size={22} color="#900" />
-                    <Text style={{ fontFamily: 'BebasNeue', fontSize: 18, color: 'black', marginTop: 4, marginLeft: 10 }}>{error}</Text>
+                    <Text style={styles.textModalError}>{error}</Text>
                   </View>
                 ))}
-                <View style={{ width: '100%', alignItems: 'center' }}>
-                  <View style={{ width: '80%', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 60, display: 'flex', marginTop: 20, justifyContent: 'center' }}>
-                    <Button title="Cerrar" onPress={() => setModalVisible(false)} />
-                  </View>
+                <View style={styles.viewModalButton}>
+                  <Button title="Cerrar" onPress={() => setModalVisible(false)} />
                 </View>
               </View>
             </Modal>

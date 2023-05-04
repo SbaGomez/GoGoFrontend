@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from 'expo-font';
 import { Octicons } from '@expo/vector-icons';
 import { View } from 'react-native';
+import styles from '../Utils/Styles';
 
 const Success = () => {
   const navigation = useNavigation();
@@ -24,15 +25,15 @@ const Success = () => {
 
   return (
     <Stack fill center spacing={4}>
-      <Surface elevation={4} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 600, }} >
+      <Surface elevation={4} category="medium" style={styles.surfaceGeneral} >
         <View style={{ margin: 10 }}>
           <Octicons name="verified" size={90} color="#24CAE8" />
         </View>
-        <Text style={{ width: '80%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, color: 'green' }}>¡ Registro exitoso !</Text>
-        <Text category="h4" style={{ width: '80%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, marginTop: 20 }}>
+        <Text style={styles.textExito}>¡ Registro exitoso !</Text>
+        <Text style={styles.textTituloRegistro}>
           ¡Bienvenido/a, {route.params.nombre}!
         </Text>
-        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={{ width: '80%', textAlign: 'center', maxWidth: "40%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
+        <Button title="Loguearme" onPress={() => navigation.navigate("Login")} style={styles.buttonExito} />
 
       </Surface>
     </Stack>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Surface, Stack, Text } from "@react-native-material/core";
 import { useRoute } from "@react-navigation/native";
 import * as Font from 'expo-font';
+import styles from './Utils/Styles';
 
 function Home() {
   const route = useRoute();
@@ -21,8 +22,8 @@ function Home() {
 
   return (
     <Stack fill center spacing={4}>
-      <Surface elevation={4} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 600, }}>
-        <Text category="h4" style={{ width: '65%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, marginTop: 20, maxWidth: "65%" }}>
+      <Surface elevation={4} category="medium" style={styles.surfaceGeneral}>
+        <Text style={styles.titulo}>
           Bienvenido, {route.params.email} !
         </Text>
 

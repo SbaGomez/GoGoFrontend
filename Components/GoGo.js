@@ -85,6 +85,7 @@ function TabNavigator() {
       />
       <Tab.Screen name="Registro" component={RegistroScreen}
         options={{
+          tabBarLabel: 'Registro',
           tabBarShowLabel: false,
           tabBarLabelStyle: { color: '#ccc' },
           tabBarIcon: ({ color, size }) => (<Feather name="user-plus" size={26} color="white" />),

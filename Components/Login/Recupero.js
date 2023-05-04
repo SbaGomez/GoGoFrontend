@@ -35,7 +35,7 @@ function Recupero() {
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,15}$/;
 
   // Funcion para las validaciones
-  const validar = () => {
+  const validar = async () => {
     let erroresTemp = [];
 
     if (!email) {
@@ -78,11 +78,12 @@ function Recupero() {
 
   //Funcion validar Mail
   async function handleValidar(email) {
-    const errores = validar();
+    const errores = await validar();
     if (errores.length === 0) {
+      const tipoEmail = 1;
       try {
         const response = await axios.post('http://localhost:8282/recupero/validarMail', {
-          email
+          email, tipoEmail
         });
         setMostrarCodigo(true);
         console.log(response.data);
@@ -99,7 +100,7 @@ function Recupero() {
 
   //Funcion Update clave
   async function handleUpdate(codigo, clave) {
-    const errores = validar();
+    const errores = await validar();
     if (errores.length !== 0) return;
 
     try {
@@ -123,28 +124,29 @@ function Recupero() {
 
   return (
     <Stack fill center spacing={4}>
-      <Surface elevation={4} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 600 }} >
+      <Surface elevation={4} category="medium" style={styles.surfaceGeneral} >
 
-        <View style={{ justifyContent: "center", alignItems: "center", width: 600, height: 600 }}>
+        <View style={styles.surfaceGeneral}>
           {!mostrarCodigo ? (
             <>
-              <Text category="h4" style={{ width: '65%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, marginBottom: 20, maxWidth: "65%" }}>
+              <Text style={styles.textTituloRecupero}>
                 Ingrese el mail de la cuenta a recuperar.
               </Text>
-              <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" value={email} onChangeText={text => setEmail(text)} right={<TextInput.Affix text="/50" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-              <Button title="Recuperar contraseña" onPress={async () => await handleValidar(email)} style={{ backgroundColor: '#24CAE8', width: '80%', textAlign: 'center', maxWidth: "50%", minWidth: "40%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
+              <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" value={email} onChangeText={text => setEmail(text)} maxLength={30} right={<TextInput.Affix text="/30" />} style={styles.textInputRecupero} />
+              <Button title="Recuperar contraseña" onPress={async () => await handleValidar(email)} style={styles.buttonRecupero} />
             </>
           ) : (
-            <View onSubmit={handleUpdate} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 25, flexDirection: 'column', width: '100%' }}>
+            <View onSubmit={handleUpdate} style={styles.viewIngreseCodigo}>
 
-              <Text category="h4" style={{ width: '65%', textAlign: 'center', fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 30, marginBottom: 20, maxWidth: "65%" }}>
+              <Text style={styles.textTituloRecupero}>
                 Verifique su casilla de correo electronico e ingrese el codigo.
               </Text>
 
-              <TextInput label="Ingrese el código" mode="outlined" placeholder="Código de recuperación" value={codigo} onChangeText={text => setCode(text)} maxLength={6} right={<TextInput.Affix text="/6" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-              <TextInput label="Nueva contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-              <Button title="Cambiar contraseña" onPress={async () => await handleUpdate(codigo, clave)} style={{ backgroundColor: '#24CAE8', width: '80%', textAlign: 'center', maxWidth: "40%", minWidth: "30%", height: 50, display: 'flex', marginTop: 40, justifyContent: 'center' }} />
-              <Button title="Reenviar email" onPress={handleReenviar} style={{ width: '80%', textAlign: 'center', maxWidth: "40%", minWidth: "30%", height: 50, display: 'flex', marginTop: 20, justifyContent: 'center' }} />
+              <TextInput label="Ingrese el código" mode="outlined" placeholder="Código de recuperación" value={codigo} onChangeText={text => setCode(text)} maxLength={6} right={<TextInput.Affix text="/6" />} style={styles.textInputRecupero} />
+              <TextInput label="Nueva contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={styles.textInputRecupero} />
+              <Button title="Cambiar contraseña" onPress={async () => await handleUpdate(codigo, clave)} style={styles.buttonRecupero} />
+              <Button title="Reenviar email" onPress={handleReenviar} style={styles.buttonRecuperoReenviar} />
+
             </View>
           )}
         </View>
@@ -153,15 +155,13 @@ function Recupero() {
           <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
             <View style={styles.modalView}>
               {errores.map((error, index) => (
-                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', height: 25, marginBottom: 20, justifyContent: 'center' }}>
+                <View key={index} style={styles.viewModalText}>
                   <Feather name="x-octagon" size={22} color="#900" />
-                  <Text style={{ fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 18, color: 'black', marginTop: 4, marginLeft: 10 }}>{error}</Text>
+                  <Text style={styles.textModalError}>{error}</Text>
                 </View>
               ))}
-              <View style={{ width: '100%', alignItems: 'center' }}>
-                <View style={{ width: '80%', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 60, display: 'flex', marginTop: 20, justifyContent: 'center' }}>
-                  <Button title="Cerrar" onPress={() => setModalVisible(false)} />
-                </View>
+              <View style={styles.viewModalButton}>
+                <Button title="Cerrar" onPress={() => setModalVisible(false)} />
               </View>
             </View>
           </Modal>

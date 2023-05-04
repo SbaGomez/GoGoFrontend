@@ -77,32 +77,31 @@ function Login() {
 
   return (
     <Stack fill center spacing={4}>
-      <Surface elevation={6} category="medium" style={{ justifyContent: "center", alignItems: "center", width: 600, height: 600 }}>
+      <Surface elevation={6} category="medium" style={styles.surfaceGeneral}>
 
         <Image source={logoImage} style={styles.logo} />
 
-        <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" value={email} onChangeText={text => setEmail(text)} right={<TextInput.Affix text="/50" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-        <TextInput label="Contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={{ width: '80%', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 50, display: 'flex', justifyContent: 'center' }} />
+        <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" value={email} onChangeText={text => setEmail(text)} maxLength={30} right={<TextInput.Affix text="/30" />} style={styles.textInputLogin} />
+        <TextInput label="Contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={styles.textInputLogin} />
 
-        <Button title="Ingresar" onPress={async () => await handleLogin(email, clave)} style={{ backgroundColor: '#24CAE8', width: '80%', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, marginBottom: 15, display: 'flex', justifyContent: 'center' }} />
-        <Button title="Registrarme" onPress={() => navigation.navigate("Registro")} style={{ width: '80%', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 50, display: 'flex', justifyContent: 'center' }} />
+        <Button title="Ingresar" onPress={async () => await handleLogin(email, clave)} style={styles.buttonLogin} />
+        <Button title="Registrarme" onPress={() => navigation.navigate("Registro")} style={styles.buttonLoginRegistrarme} />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '60%' }}>
-          <Text category="h4" onPress={() => navigation.navigate("Recupero")} style={{ fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', marginTop: 20, flex: 1, textAlign: 'right', color: '#696969' }}>Olvidaste tu contraseña ?</Text></View>
+        <View style={styles.viewOlvideClave}>
+          <Text onPress={() => navigation.navigate("Recupero")} style={styles.textOlvideClave}>Olvidaste tu contraseña ?</Text>
+        </View>
 
         <View style={styles.centeredView}>
           <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
             <View style={styles.modalView}>
               {errores.map((error, index) => (
-                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', height: 25, marginBottom: 20, justifyContent: 'center' }}>
+                <View key={index} style={styles.viewModalText}>
                   <Feather name="x-octagon" size={22} color="#900" />
-                  <Text style={{ fontFamily: fontLoaded ? 'BebasNeue' : 'Arial', fontSize: 18, color: 'black', marginTop: 4, marginLeft: 10 }}>{error}</Text>
+                  <Text style={styles.textModalError}>{error}</Text>
                 </View>
               ))}
-              <View style={{ width: '100%', alignItems: 'center' }}>
-                <View style={{ width: '80%', textAlign: 'center', maxWidth: "60%", minWidth: "30%", height: 60, display: 'flex', marginTop: 20, justifyContent: 'center' }}>
-                  <Button title="Cerrar" onPress={() => setModalVisible(false)} />
-                </View>
+              <View style={styles.viewModalButton}>
+                <Button title="Cerrar" onPress={() => setModalVisible(false)} />
               </View>
             </View>
           </Modal>
