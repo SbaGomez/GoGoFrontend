@@ -21,6 +21,7 @@ const Tab = createBottomTabNavigator();
 
 function MainStack() {
   const navigation = useNavigation();
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="TabNav" component={TabNavigator} options={{ headerShown: false }} />

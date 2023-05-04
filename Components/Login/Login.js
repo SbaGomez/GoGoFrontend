@@ -29,6 +29,9 @@ function Login() {
     loadFontAsync();
   }, []);
 
+  const textOlvideClave = fontLoaded ? { fontFamily: 'BebasNeue', fontSize: 18, marginTop: 20, flex: 1, textAlign: 'right', color: '#696969' } : {};
+  const textModalError = fontLoaded ? { fontFamily: 'BebasNeue', fontSize: 18, color: 'black', marginTop: 4, marginLeft: 10 } : {};
+
   // Funcion para las validaciones
   const validarLogin = () => {
     let erroresTemp = [];
@@ -88,7 +91,7 @@ function Login() {
         <Button title="Registrarme" onPress={() => navigation.navigate("Registro")} style={styles.buttonLoginRegistrarme} />
 
         <View style={styles.viewOlvideClave}>
-          <Text onPress={() => navigation.navigate("Recupero")} style={styles.textOlvideClave}>Olvidaste tu contraseña ?</Text>
+          <Text onPress={() => navigation.navigate("Recupero")} style={textOlvideClave}>Olvidaste tu contraseña ?</Text>
         </View>
 
         <View style={styles.centeredView}>
@@ -97,7 +100,7 @@ function Login() {
               {errores.map((error, index) => (
                 <View key={index} style={styles.viewModalText}>
                   <Feather name="x-octagon" size={22} color="#900" />
-                  <Text style={styles.textModalError}>{error}</Text>
+                  <Text style={textModalError}>{error}</Text>
                 </View>
               ))}
               <View style={styles.viewModalButton}>
