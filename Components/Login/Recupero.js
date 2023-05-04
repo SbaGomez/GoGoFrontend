@@ -83,7 +83,7 @@ function Recupero() {
       const tipoEmail = 1;
       try {
         const response = await axios.post('http://localhost:8282/recupero/validarMail', {
-          email, tipoEmail
+          email,tipoEmail
         });
         setMostrarCodigo(true);
         console.log(response.data);
@@ -146,7 +146,7 @@ function Recupero() {
               <TextInput label="Nueva contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={styles.textInputRecupero} />
               <Button title="Cambiar contraseña" onPress={async () => await handleUpdate(codigo, clave)} style={styles.buttonRecupero} />
               <Button title="Reenviar email" onPress={handleReenviar} style={styles.buttonRecuperoReenviar} />
-
+            
             </View>
           )}
         </View>
@@ -161,7 +161,7 @@ function Recupero() {
                 </View>
               ))}
               <View style={styles.viewModalButton}>
-                <Button title="Cerrar" onPress={() => setModalVisible(false)} />
+                  <Button title="Cerrar" onPress={() => setModalVisible(false)} />
               </View>
             </View>
           </Modal>
