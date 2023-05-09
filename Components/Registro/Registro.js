@@ -165,17 +165,12 @@ function Registro() {
     const erroresFormulario = await validarFormulario();
     console.log(erroresFormulario);
     if (erroresFormulario.length == 0) {
-      const data = {
-        email, nombre, apellido, edad, dni, clave, sexo
-      };
-
       try {
         setTipoEmail(0);
         setMostrarCodigo(true);
-        const response = await axios.post(
-          "http://localhost:8282/user/addUser",
-          data, tipoEmail
-        );
+        const response = await axios.post("http://localhost:8282/user/addUser", {
+            email, nombre, apellido, edad, dni, clave, sexo, tipoEmail
+          });
         // Aquí puedes hacer algo después de que se ha registrado el usuario
         console.log(response.data);
         // Reiniciamos los estados
