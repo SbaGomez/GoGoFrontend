@@ -76,14 +76,47 @@ const styles = StyleSheet.create({
     },
 
     // LOGIN
+    container: {
+        width: '100%',
+        alignItems: 'center',
+        alignContent: 'center'
+    },
+    textInputContainer: {
+        width: '88%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center'
+    },
+    textInputPasswordLogin: {
+        width: '50%',
+        marginBottom: 15,
+        height: 40,
+        color: '#000',
+        justifyContent: 'center'
+    },
+    iconEyeOff: {
+        marginLeft: 10,
+        height: 40,
+        lineHeight: 30,
+        fontSize: 24,
+        color: '#FF0000'
+    },
+    iconEyeOn: {
+        marginLeft: 10,
+        height: 40,
+        lineHeight: 30,
+        fontSize: 24,
+        color: '#24CAE8'
+    },
     textInputLogin: {
         width: '60%',
         maxWidth: "50%",
         minWidth: "30%",
-        height: 50,
+        height: 40,
         marginBottom: 15,
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     buttonLogin: {
         backgroundColor: '#24CAE8',

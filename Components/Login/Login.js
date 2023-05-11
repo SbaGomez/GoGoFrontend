@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Text } from "@react-native-material/core";
 import logoImage from '../../assets/GOGO.png';
-import { View, Modal, Image } from 'react-native';
+import { View, Modal, Image, TouchableWithoutFeedback } from 'react-native';
 import axios from "axios";
 import { TextInput } from 'react-native-paper';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
@@ -16,6 +16,11 @@ function Login() {
   const [email, setEmail] = useState('');
   const [clave, setClave] = useState('');
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(prevState => !prevState);
+  }
 
   // Font propia
   const loadFontAsync = async () => {
@@ -61,7 +66,7 @@ function Login() {
     const errores = validarLogin();
     if (errores.length === 0) {
       try {
-        const response = await axios.post('http://localhost:8282/auth/login', {
+        const response = await axios.post('http://192.168.1.100:8282/auth/login', {
           email: email,
           clave: clave
         });
@@ -85,7 +90,27 @@ function Login() {
         <Image source={logoImage} style={styles.logo} />
 
         <TextInput label="Email" mode="outlined" placeholder="@uade.edu.ar" value={email} onChangeText={text => setEmail(text)} maxLength={30} right={<TextInput.Affix text="/30" />} style={styles.textInputLogin} />
-        <TextInput label="Contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={styles.textInputLogin} />
+        <View style={styles.container}>
+          <View style={styles.textInputContainer}>
+            <TextInput
+              label="Contraseña"
+              mode="outlined"
+              placeholder="Contraseña"
+              value={clave}
+              onChangeText={text => setClave(text)}
+              maxLength={15}
+              right={<TextInput.Affix style={styles.rightText} text="/15" />}
+              secureTextEntry={!showPassword}
+              style={styles.textInputPasswordLogin}
+            />
+            <TouchableWithoutFeedback onPress={toggleShowPassword}>
+              <MaterialCommunityIcons
+                name={showPassword ? 'eye-off' : 'eye'}
+                style={showPassword ? styles.iconEyeOff : styles.iconEyeOn}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
 
         <Button title="Ingresar" onPress={async () => await handleLogin(email, clave)} style={styles.buttonLogin} />
         <Button title="Registrarme" onPress={() => navigation.navigate("Registro")} style={styles.buttonLoginRegistrarme} />

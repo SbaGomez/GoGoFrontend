@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Divider, Text } from "@react-native-material/core";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { View, Modal, ScrollView, Switch } from 'react-native';
+import { View, Modal, ScrollView, Switch, TouchableWithoutFeedback } from 'react-native';
 import axios from "axios";
-import { FontAwesome, FontAwesome5, Feather } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import styles from '../Utils/Styles';
 
@@ -15,6 +15,11 @@ function Registro() {
   const [mostrarCodigo, setMostrarCodigo] = useState(false);
   const [errores, setErrores] = useState([]);
   const [tipoEmail, setTipoEmail] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(prevState => !prevState);
+  }
 
   // Font propia
   const loadFontAsync = async () => {
@@ -169,8 +174,8 @@ function Registro() {
         setTipoEmail(0);
         setMostrarCodigo(true);
         const response = await axios.post("http://localhost:8282/user/addUser", {
-            email, nombre, apellido, edad, dni, clave, sexo, tipoEmail
-          });
+          email, nombre, apellido, edad, dni, clave, sexo, tipoEmail
+        });
         // Aquí puedes hacer algo después de que se ha registrado el usuario
         console.log(response.data);
         // Reiniciamos los estados
@@ -222,7 +227,27 @@ function Registro() {
                   <TextInput name="apellido" label="Apellido" mode="outlined" maxLength={15} value={apellido} onChangeText={setApellido} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistro} />
                   <TextInput name="edad" label="Edad" mode="outlined" maxLength={3} value={edad} onChangeText={setEdad} right={<TextInput.Affix text="/3" />} style={styles.textInputRegistro} />
                   <TextInput name="dni" label="DNI" mode="outlined" maxLength={8} value={dni} onChangeText={setDni} right={<TextInput.Affix text="/8" />} style={styles.textInputRegistro} />
-                  <TextInput name="clave" label="Contraseña" mode="outlined" value={clave} onChangeText={setClave} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={styles.textInputRegistro} />
+                  <View style={styles.container}>
+                    <View style={styles.textInputContainer}>
+                      <TextInput
+                        label="Contraseña"
+                        mode="outlined"
+                        placeholder="Contraseña"
+                        value={clave}
+                        onChangeText={text => setClave(text)}
+                        maxLength={15}
+                        right={<TextInput.Affix text="/15" />}
+                        secureTextEntry={!showPassword}
+                        style={styles.textInputPasswordLogin}
+                      />
+                      <TouchableWithoutFeedback onPress={toggleShowPassword}>
+                        <MaterialCommunityIcons
+                          name={showPassword ? 'eye-off' : 'eye'}
+                          style={showPassword ? styles.iconEyeOff : styles.iconEyeOn}
+                        />
+                      </TouchableWithoutFeedback>
+                    </View>
+                  </View>
 
                   <View style={styles.viewGeneroRegistro}>
 

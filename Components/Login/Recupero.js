@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Text } from "@react-native-material/core";
-import { View, Modal } from 'react-native';
+import { View, Modal, TouchableWithoutFeedback } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
 
@@ -18,6 +18,11 @@ function Recupero() {
   const [clave, setClave] = useState('');
   const [codigo, setCode] = useState('');
   const [tipoEmail, setTipoEmail] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(prevState => !prevState);
+  }
 
   // Font propia
   const loadFontAsync = async () => {
@@ -144,7 +149,27 @@ function Recupero() {
               </Text>
 
               <TextInput label="Ingrese el código" mode="outlined" placeholder="Código de recuperación" value={codigo} onChangeText={text => setCode(text)} maxLength={6} right={<TextInput.Affix text="/6" />} style={styles.textInputRecupero} />
-              <TextInput label="Nueva contraseña" mode="outlined" placeholder="Contraseña" value={clave} onChangeText={text => setClave(text)} maxLength={15} secureTextEntry right={<TextInput.Affix text="/15" />} style={styles.textInputRecupero} />
+              <View style={styles.container}>
+                <View style={styles.textInputContainer}>
+                  <TextInput
+                    label="Contraseña"
+                    mode="outlined"
+                    placeholder="Contraseña"
+                    value={clave}
+                    onChangeText={text => setClave(text)}
+                    maxLength={15}
+                    right={<TextInput.Affix text="/15" />}
+                    secureTextEntry={!showPassword}
+                    style={styles.textInputPasswordLogin}
+                  />
+                  <TouchableWithoutFeedback onPress={toggleShowPassword}>
+                    <MaterialCommunityIcons
+                      name={showPassword ? 'eye-off' : 'eye'}
+                      style={showPassword ? styles.iconEyeOff : styles.iconEyeOn}
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              </View>
               <Button title="Cambiar contraseña" onPress={async () => await handleUpdate(codigo, clave)} style={styles.buttonRecupero} />
               <Button title="Reenviar email" onPress={handleReenviar} style={styles.buttonRecuperoReenviar} />
 
