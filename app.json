@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Frontend",
-    "slug": "Frontend",
+    "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,14 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ragnarokarg.Frontend"
+      "package": "com.sbagomez.frontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "c4a581c0-cad0-41bc-af88-112929e43529"
+        "projectId": "191bf3cc-3f8d-45c2-9d2d-64527084c352"
       }
     }
   }

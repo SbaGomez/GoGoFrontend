@@ -12,6 +12,9 @@ web-build/
 
 Build Steps GOGO.md
 
+GoGo2.js
+babel.config.js
+
 # macOS
 .DS_Store
 
