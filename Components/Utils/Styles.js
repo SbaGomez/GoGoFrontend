@@ -326,9 +326,27 @@ const styles = StyleSheet.create({
     surfaceGeneral: {
         justifyContent: "center",
         alignItems: "center",
+        marginTop: 20,
         width: 600,
         height: 600
-    }
+    },
+
+    //Surface Home
+    surfaceTitle: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 20,
+        width: 600,
+        height: 150
+    },
+
+    surfaceViajes: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 20,
+        width: 600,
+        height: 300
+    },
 });
 
 export default styles;

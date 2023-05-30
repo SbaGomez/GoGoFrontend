@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Text } from "@react-native-material/core";
 import logoImage from '../../assets/GOGO.png';
 import { View, Modal, Image, TouchableWithoutFeedback } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import { TextInput } from 'react-native-paper';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -21,6 +22,8 @@ function Login() {
   const toggleShowPassword = () => {
     setShowPassword(prevState => !prevState);
   }
+
+  AsyncStorage.removeItem("token");
 
   // Font propia
   const loadFontAsync = async () => {
@@ -71,7 +74,7 @@ function Login() {
           clave: clave
         });
         const token = response.data;
-        console.log(token);
+        AsyncStorage.setItem("token", token);
         navigation.navigate('Home', { email: email });
       } catch (error) {
         if (error.response && error.response.data === "Email o contraseña incorrectos") {

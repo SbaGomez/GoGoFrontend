@@ -5,6 +5,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Feather, Entypo } from '@expo/vector-icons';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //screens
 import LoginScreen from "./Login/Login";
@@ -54,6 +55,7 @@ function MainStack() {
 function TabNavigator() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
+
   return (
     <Tab.Navigator initialRoutName="Login" screenOptions={{ tabBarActiveBackgroundColor: '#680AEF', tabBarInactiveBackgroundColor: '#680AEF' }}>
       <Tab.Screen name="Login" component={LoginScreen}
@@ -98,6 +100,17 @@ function TabNavigator() {
               <FontAwesome name="arrow-left" size={30} color="#474545" />
             </TouchableOpacity>
           )
+        }}
+      />
+      <Tab.Screen name="Home" component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarShowLabel: false,
+          tabBarLabelStyle: { color: '#ccc' },
+          tabBarIcon: ({ color, size }) => (<Feather name="user-plus" size={26} color="white" />),
+          headerShown: true,
+          headerBackTitleVisible: false,
+          headerBackVisible: true,
         }}
       />
     </Tab.Navigator>
