@@ -7,18 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function Home() {
-  const navigation = useNavigation();
-  const route = useRoute();
   const [fontLoaded, setFontLoaded] = useState(false);
-
-  const token = async () => { await AsyncStorage.getItem("token"); }
-  token()
-  console.log()
-
-  if(!token)
-  {
-    navigation.navigate('Login');
-  }
 
   // Font propia
   const loadFontAsync = async () => {
@@ -34,12 +23,6 @@ function Home() {
 
   return (
     <Stack flex={1} center spacing={4} direction="column">
-      <Surface elevation={4} category="medium" style={styles.surfaceTitle}>
-        <Text style={styles.titulo}>
-          Bienvenido, {route.params.email} !
-        </Text>
-      </Surface>
-
       <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
       </Surface>
       <Surface elevation={4} category="medium" style={styles.surfaceViajes}>

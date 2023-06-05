@@ -162,7 +162,6 @@ function Registro() {
     }
   }, [errores]);
 
-
   // el submit para hacer el registro del usuario
   const handleSubmit = async (event) => {
     event.preventDefault();

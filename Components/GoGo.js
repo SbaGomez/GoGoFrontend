@@ -5,10 +5,10 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Feather, Entypo } from '@expo/vector-icons';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //screens
 import LoginScreen from "./Login/Login";
+import PerfilScreen from "./Perfil/Perfil";
 import RegistroScreen from "./Registro/Registro";
 import ConfiguracionScreen from "./Configuracion";
 import AlertasScreen from "./Alertas";
@@ -48,6 +48,7 @@ function MainStack() {
       }} />
       <Stack.Screen name="Alertas" component={AlertasScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Perfil" component={PerfilScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -70,7 +71,7 @@ function TabNavigator() {
           )
         }}
       />
-      <Tab.Screen name="Config" component={ConfiguracionScreen}
+      {/* <Tab.Screen name="Config" component={ConfiguracionScreen}
         options={{
           tabBarLabel: 'Configuracion',
           tabBarShowLabel: false,
@@ -85,7 +86,7 @@ function TabNavigator() {
             </TouchableOpacity>
           )
         }}
-      />
+      /> */}
       <Tab.Screen name="Registro" component={RegistroScreen}
         options={{
           tabBarLabel: 'Registro',
@@ -96,7 +97,7 @@ function TabNavigator() {
           headerBackTitleVisible: false,
           headerBackVisible: true,
           headerLeft: () => (
-            <TouchableOpacity onPress={goBack} style={{ marginTop: 25, marginLeft: 15, height: 64,  lineHeight: 64 }}>
+            <TouchableOpacity onPress={goBack} style={{ marginTop: 25, marginLeft: 15, height: 64, lineHeight: 64 }}>
               <FontAwesome name="arrow-left" size={30} color="#474545" />
             </TouchableOpacity>
           )
@@ -107,7 +108,18 @@ function TabNavigator() {
           tabBarLabel: 'Home',
           tabBarShowLabel: false,
           tabBarLabelStyle: { color: '#ccc' },
-          tabBarIcon: ({ color, size }) => (<Feather name="user-plus" size={26} color="white" />),
+          tabBarIcon: ({ color, size }) => (<Feather name="home" size={26} color="white" />),
+          headerShown: true,
+          headerBackTitleVisible: false,
+          headerBackVisible: true,
+        }}
+      />
+      <Tab.Screen name="Perfil" component={PerfilScreen}
+        options={{
+          tabBarLabel: 'Perfil',
+          tabBarShowLabel: false,
+          tabBarLabelStyle: { color: '#ccc' },
+          tabBarIcon: ({ color, size }) => (<Feather name="user" size={26} color="white" />),
           headerShown: true,
           headerBackTitleVisible: false,
           headerBackVisible: true,
