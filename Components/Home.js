@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Text } from "@react-native-material/core";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { ScrollView } from 'react-native';
 import * as Font from 'expo-font';
 import styles from './Utils/Styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function Home() {
@@ -22,16 +21,14 @@ function Home() {
   }, []);
 
   return (
-    <Stack flex={1} center spacing={4} direction="column">
-      <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
-      </Surface>
-      <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
-      </Surface>
-      <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
-      </Surface>
-      <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
-      </Surface>
-    </Stack>
+
+    <ScrollView>
+      <Stack flex={1} center spacing={4} direction="column">
+        <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
+          <Text style={styles.titulo}>HOME COMMING SOON</Text>
+        </Surface>
+      </Stack>
+    </ScrollView>
   );
 }
 
