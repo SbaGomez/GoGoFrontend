@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Surface, Stack, Text, Button } from "@react-native-material/core";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, ScrollView, Image } from 'react-native';
-import logoImage from '../../assets/FotoPerfil.png';
+import Masculino from '../../assets/FotoPerfilMas.png';
+import Femenino from '../../assets/FotoPerfilFem.png';
 import { TextInput } from "react-native-paper";
 import axios from "axios";
 import * as Font from 'expo-font';
@@ -89,7 +90,7 @@ function Perfil() {
             <ScrollView>
                 <Stack fill center spacing={4}>
                     <Surface elevation={4} category="medium" style={styles.surfaceTitle}>
-                        <Text style={styles.titulo}>Loading ...</Text>
+                        <Text style={styles.titulo}>Loading Perfil...</Text>
                     </Surface>
                 </Stack>
             </ScrollView>
@@ -100,7 +101,7 @@ function Perfil() {
         <ScrollView>
             <Stack fill center spacing={4}>
                 <Surface elevation={4} category="medium" style={styles.surfacePerfilInfo}>
-                    <Image source={logoImage} style={styles.FotoPerfil} />
+                    <Image source={user.user.sexo === 'F' ? Femenino : Masculino} style={styles.FotoPerfil} />
                     <Text style={styles.textPerfil}>
                         {user.user.nombre} {user.user.apellido}
                     </Text>
@@ -124,7 +125,7 @@ function Perfil() {
 
                     <View style={styles.divisor} />
 
-                    <Button title="Guardar" style={styles.buttonGuardarPerfil} />
+                    <Button title="Cambiar Foto" style={styles.buttonCambiarFoto} />
                     {user.user.auto === null && (
                         <Button title="Registrar Auto" onPress={handleMostrarRegAuto} style={styles.buttonRegistrarAuto} />
                     )}

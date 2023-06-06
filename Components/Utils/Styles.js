@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     textInfoPerfil: {
         textAlign: 'left',
         fontSize: 20,
-        marginLeft: -50
+        marginBottom: 5
     },
 
     divisor: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
 
-    buttonGuardarPerfil: {
+    buttonCambiarFoto: {
         backgroundColor: '#24CAE8',
         width: '70%',
         textAlign: 'center',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         height: 50,
         display: 'flex',
         justifyContent: 'center',
-        marginTop: 30
+        marginTop: 15
     },
 
     buttonRegistrarAuto: {

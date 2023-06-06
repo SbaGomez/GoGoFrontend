@@ -21,7 +21,6 @@ function Home() {
   }, []);
 
   return (
-
     <ScrollView>
       <Stack flex={1} center spacing={4} direction="column">
         <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
