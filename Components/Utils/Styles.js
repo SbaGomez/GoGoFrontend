@@ -75,6 +75,116 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
 
+    // PERFIL
+    FotoPerfil: {
+        width: '50%',
+        height: 150,
+        maxWidth: 150,
+        maxHeight: 200,
+        marginBottom: 30,
+        marginTop: 50
+    },
+
+    surfacePerfilInfo: {
+        alignItems: "center",
+        marginTop: 20,
+        width: 600,
+        height: 660
+    },
+
+    textPerfil: {
+        width: '60%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        fontSize: 35,
+        maxWidth: "58%",
+        color: "black"
+    },
+
+    textDniInfoPerfil: {
+        width: '60%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        marginTop: 20,
+        marginBottom: 20,
+        fontSize: 20,
+        maxWidth: "58%"
+    },
+
+    textDniInfo: {
+        width: '100%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        fontSize: 20,
+        maxWidth: "58%",
+        color: '#7c7a7a'
+    },
+
+    textInfoPerfil: {
+        textAlign: 'left',
+        fontSize: 20,
+        marginLeft: -50
+    },
+
+    divisor: {
+        width: '60%',
+        borderBottomWidth: 2,
+        borderBottomColor: '#680aef',
+        marginVertical: 10,
+        marginBottom: 20
+    },
+
+    buttonGuardarPerfil: {
+        backgroundColor: '#24CAE8',
+        width: '70%',
+        textAlign: 'center',
+        maxWidth: "50%",
+        minWidth: "30%",
+        height: 50,
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 30
+    },
+
+    buttonRegistrarAuto: {
+        width: '70%',
+        textAlign: 'center',
+        maxWidth: "50%",
+        minWidth: "30%",
+        height: 50,
+        marginTop: 15,
+        display: 'flex',
+        justifyContent: 'center'
+    },
+
+    surfaceRegAuto: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 20,
+        marginBottom: 65,
+        width: 600,
+        height: 500
+    },
+
+    textTituloRegAuto: {
+        width: '80%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        fontSize: 30,
+        marginBottom: 20
+    },
+
+    buttonRegAuto: {
+        width: '80%',
+        textAlign: 'center',
+        maxWidth: "40%",
+        minWidth: "30%",
+        height: 50,
+        display: 'flex',
+        marginTop: 20,
+        justifyContent: 'center'
+    },
+
     // LOGIN
     container: {
         width: '100%',
@@ -346,7 +456,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 600,
         height: 300
-    },
+    }
+
 });
 
 export default styles;
