@@ -85,7 +85,14 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
 
-    surfacePerfilInfo: {
+    surfacePerfilInfoSinAuto: {
+        alignItems: "center",
+        marginTop: 20,
+        width: 600,
+        height: 600
+    },
+
+    surfacePerfilInfoConAuto: {
         alignItems: "center",
         marginTop: 20,
         width: 600,
