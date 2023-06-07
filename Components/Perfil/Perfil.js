@@ -100,13 +100,13 @@ function Perfil() {
         }
     };
 
-    const handleRegAuto = (event) => {
+    const handleRegAuto = async (event) => {
         event.preventDefault();
         const id = user.user.id;
         try {
             setMostrarRegAuto(false);
             setMostrarAuto(true);
-            const response = axios.post("http://localhost:8282/auto/addAuto", {
+            const response = await axios.post("http://localhost:8282/auto/addAuto", {
                 patente, marca, modelo, color, id
             });
             // Aquí puedes hacer algo después de que se ha registrado el usuario
@@ -120,11 +120,11 @@ function Perfil() {
         }
     };
 
-    const handleDeleteAuto = (event) => {
+    const handleDeleteAuto = async (event) => {
         event.preventDefault();
         const id = auto.auto.id
         try {
-            const response = axios.post(`http://localhost:8282/auto/${id}/delete`);
+            const response = await axios.post(`http://localhost:8282/auto/${id}/delete`);
             // Aquí puedes hacer algo después de que se ha registrado el usuario
             console.log(response.data);
             user.user.auto = null;
