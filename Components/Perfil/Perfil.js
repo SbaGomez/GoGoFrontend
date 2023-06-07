@@ -15,8 +15,10 @@ function Perfil() {
     const route = useRoute();
     const [fontLoaded, setFontLoaded] = useState(false);
     const [user, setUser] = useState(null);
+    const [auto, setAuto] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [mostrarRegAuto, setMostrarRegAuto] = useState(false);
+    const [mostrarAuto, setMostrarAuto] = useState(false);
 
 
     // variables registro auto
@@ -36,11 +38,11 @@ function Perfil() {
     useEffect(() => {
         const getUserByEmail = async () => {
             const email = route.params.email; // Replace with the email you have
-            console.log(email);
+            //console.log(email);
             try {
-                const response = await axios.get(`http://192.168.1.100:8282/user/email/${email}`);
+                const response = await axios.get(`http://192.168.151.58:8282/user/email/${email}`);
                 setUser(response.data);
-                console.log(response.data);
+                //console.log(response.data);
                 setIsLoading(false);
             } catch (error) {
                 if (error.response) {
@@ -60,6 +62,34 @@ function Perfil() {
         loadFontAsync();
     }, []);
 
+    useEffect(() => {
+
+        const getAutoById = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8282/auto/${user.user.auto.id}`);
+                setAuto(response.data);
+                //console.log(response.data);
+                setMostrarAuto(true);
+            } catch (error) {
+                if (error.response) {
+                    // Request was made and server responded with a status code
+                    console.log("Error:" + error.response.data);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log("Error, No response received from the server");
+                } else {
+                    // Something happened in setting up the request that triggered an error
+                    console.log("Error, An unexpected error occurred");
+                }
+            }
+        };
+
+        if (user != null) {
+            getAutoById();
+        }
+
+    }, [user]);
+
     const handleMostrarRegAuto = () => {
         if (user.user.auto == null) {
             setMostrarRegAuto(true);
@@ -68,22 +98,36 @@ function Perfil() {
 
     const handleRegAuto = async (event) => {
         event.preventDefault();
-    
-          try {
+        const id = user.user.id;
+        try {
             setMostrarRegAuto(false);
-            const response = await axios.post("http://192.168.1.100:8282/auto/addAuto", {
-              patente,marca,modelo,color
+            const response = await axios.post("http://192.168.151.58:8282/auto/addAuto", {
+                patente, marca, modelo, color, id
             });
             // Aquí puedes hacer algo después de que se ha registrado el usuario
             console.log(response.data);
             // Reiniciamos los estados
             setPatente(""); setMarca(""); setModelo(""); setColor("");
-          } catch (error) {
+        } catch (error) {
             // Aquí puedes manejar el error
             console.error(error);
             console.log("error regauto perfil 01");
-          }
-      };
+        }
+    };
+
+    const handleDeleteAuto = async (event) => {
+        event.preventDefault();
+        const id = auto.auto.id
+        try {
+            const response = await axios.post(`http://192.168.151.58:8282/auto/${id}/delete`);
+            // Aquí puedes hacer algo después de que se ha registrado el usuario
+            console.log(response.data);
+        } catch (error) {
+            // Aquí puedes manejar el error
+            console.error(error);
+            console.log("error deleteauto perfil 02");
+        }
+    };
 
     if (isLoading) {
         return (
@@ -142,6 +186,29 @@ function Perfil() {
                         </View>
                     </Surface>
                 )}
+
+                {mostrarAuto && (
+                    <Surface elevation={4} category="medium" style={styles.surfaceAuto}>
+                        <View style={styles.viewRegistroVerificar}>
+                            <Text style={styles.textTituloAuto}>Datos de tu vehiculo</Text>
+                            <Text style={styles.textInfoPerfil}>
+                                Patente: {auto.auto.patente}
+                            </Text>
+                            <Text style={styles.textInfoPerfil}>
+                                Marca: {auto.auto.marca}
+                            </Text>
+                            <Text style={styles.textInfoPerfil}>
+                                Modelo: {auto.auto.modelo}
+                            </Text>
+                            <Text style={styles.textInfoPerfil}>
+                                Color: {auto.auto.color}
+                            </Text>
+
+                            <Button title="Borrar Auto" onPress={handleDeleteAuto} style={styles.buttonDeleteAuto} />
+                        </View>
+                    </Surface>
+                )}
+
             </Stack>
         </ScrollView>
     );

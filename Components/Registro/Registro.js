@@ -172,7 +172,7 @@ function Registro() {
       try {
         setTipoEmail(0);
         setMostrarCodigo(true);
-        const response = await axios.post("http://localhost:8282/user/addUser", {
+        const response = await axios.post("http://192.168.151.58:8282/user/addUser", {
           email, nombre, apellido, edad, dni, clave, sexo, tipoEmail
         });
         // Aquí puedes hacer algo después de que se ha registrado el usuario
@@ -197,7 +197,7 @@ function Registro() {
     if (erroresFormulario.length !== 0) return;
 
     try {
-      const response = await axios.post('http://localhost:8282/user/verificarCodigo', {
+      const response = await axios.post('http://192.168.151.58:8282/user/verificarCodigo', {
         codigo
       });
       console.log(response.data);

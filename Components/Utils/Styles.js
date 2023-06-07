@@ -166,6 +166,24 @@ const styles = StyleSheet.create({
         height: 500
     },
 
+    surfaceAuto: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 20,
+        marginBottom: 65,
+        paddingBottom: 20,
+        width: 600,
+        height: 270
+    },
+
+    textTituloAuto: {
+        width: '80%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        marginBottom: 10,
+        fontSize: 25
+    },
+
     textTituloRegAuto: {
         width: '80%',
         textAlign: 'center',
@@ -182,6 +200,17 @@ const styles = StyleSheet.create({
         height: 50,
         display: 'flex',
         marginTop: 20,
+        justifyContent: 'center'
+    },
+
+    buttonDeleteAuto: {
+        width: '60%',
+        textAlign: 'center',
+        maxWidth: "40%",
+        minWidth: "30%",
+        height: 50,
+        display: 'flex',
+        marginTop: 10,
         justifyContent: 'center'
     },
 
