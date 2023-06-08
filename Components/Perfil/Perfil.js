@@ -60,11 +60,18 @@ function Perfil() {
                 }
             }
         };
-
         getUserByEmail();
         loadFontAsync();
 
     }, []);
+
+    useEffect(() => {
+        if (auto == null) {
+            setMostrar(true)
+        } else {
+            setMostrar(false)
+        }
+    }, [user, auto]);
 
     useEffect(() => {
         const getAutoById = async () => {
