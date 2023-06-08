@@ -199,15 +199,16 @@ function Perfil() {
         }
     };
 
+    //Lista de Modelos por Marca
     const modelosPorMarca = {
-        'Ford': ['Focus', 'Mondeo', 'Ranger Limited'],
-        'Mercedes Benz': ['A45', 'A200', 'C63'],
-        // Agrega más marcas y modelos según tus necesidades
+        'Ford': ['Focus', 'Mondeo', 'Ranger Limited', 'Mustang', 'Explorer', 'Escape', 'Edge', 'Fiesta', 'Fusion', 'Expedition', 'F-150', 'Bronco', 'EcoSport', 'Transit', 'GT'],
+        'Mercedes Benz': ['A-Class', 'C-Class', 'E-Class', 'S-Class', 'GLA-Class', 'GLC-Class', 'GLE-Class', 'GLS-Class', 'SL-Class', 'AMG GT', 'CLA-Class', 'CLS-Class', 'G-Class', 'Maybach S-Class', 'EQC', 'B-Class', 'GLB-Class', 'GLK-Class', 'GLE Coupe', 'SLC-Class', 'SLK-Class', 'V-Class', 'X-Class', 'EQA', 'EQB', 'EQS', 'AMG A-Class', 'AMG C-Class', 'AMG E-Class', 'AMG G-Class'],
+        'Volkswagen': ['Golf', 'Polo', 'Passat', 'Jetta', 'Tiguan', 'Touareg', 'Beetle', 'Arteon', 'Up!', 'Amarok', 'Scirocco', 'T-Roc', 'ID.3', 'ID.4', 'Atlas', 'Gol Trend', 'Gol', 'T-Cross', 'Vento'],
     };
 
+    //Funcion Marca a Seleccionar
     const handleSeleccionarMarca = (marcaSeleccionada) => {
         setMarca(marcaSeleccionada);
-
         const modelosObtenidos = modelosPorMarca[marcaSeleccionada] || [];
         setModelosDisponibles(modelosObtenidos);
         setModelo('');
@@ -254,7 +255,7 @@ function Perfil() {
                     <Surface elevation={4} category="medium" style={styles.surfaceRegAuto}>
                         <View onSubmit={handleRegAuto} style={styles.viewRegistroVerificar}>
                             <Text style={styles.textTituloRegAuto}>Ingrese datos del vehiculo</Text>
-                            <TextInput label="Patente" mode="outlined" placeholder="Patente del Vehiculo" value={patente} onChangeText={text => setPatente(text)} maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputRegistroCodigo} />
+                            <TextInput label="Patente" mode="outlined" placeholder="Patente del Vehiculo" value={patente} onChangeText={text => setPatente(text.toUpperCase())} maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputPatenteAuto} />
                             <View style={styles.PickerMarcaAuto}>
                                 <Picker selectedValue={marca} onValueChange={handleSeleccionarMarca} style={{ flex: 1 }}>
                                     <Picker.Item label="Seleccione una marca" value="" />
@@ -274,7 +275,7 @@ function Perfil() {
                                     ))}
                                 </Picker>
                             </View>
-                            <TextInput label="Color" mode="outlined" placeholder="Color del Vehiculo" value={color} onChangeText={text => setColor(text)} maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputRegistroCodigo} />
+                            <TextInput label="Color" mode="outlined" placeholder="Color del Vehiculo" value={color} onChangeText={text => setColor(text)} maxLength={15} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistroCodigo} />
                             <Button title="Agregar Auto" onPress={handleRegAuto} style={styles.buttonRegAuto} />
                         </View>
                     </Surface>

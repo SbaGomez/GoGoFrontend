@@ -159,6 +159,16 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
 
+    textInputPatenteAuto: {
+        width: '80%',
+        maxWidth: "60%",
+        minWidth: "30%",
+        height: 50,
+        marginBottom: 15,
+        display: 'flex',
+        justifyContent: 'center'
+    },
+
     buttonRegistrarAuto: {
         width: '70%',
         textAlign: 'center',
