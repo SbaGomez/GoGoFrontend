@@ -39,12 +39,14 @@ function Perfil() {
     useEffect(() => {
         const getUserByEmail = async () => {
             const email = route.params.email; // Replace with the email you have
-            //console.log(email);
+            console.log("Email que recibe del login: " + email);
             try {
                 const response = await axios.get(`http://localhost:8282/user/email/${email}`);
                 setUser(response.data);
-                //console.log(response.data);
+                
+                console.log(response.data);
                 setIsLoading(false);
+
             } catch (error) {
                 if (error.response) {
                     // Request was made and server responded with a status code
@@ -61,15 +63,15 @@ function Perfil() {
 
         getUserByEmail();
         loadFontAsync();
+
     }, []);
 
     useEffect(() => {
-
         const getAutoById = async () => {
             try {
                 const response = await axios.get(`http://localhost:8282/auto/${user.user.auto.id}`);
                 setAuto(response.data);
-                //console.log(response.data);
+                console.log(response.data);
                 setMostrarAuto(true);
             } catch (error) {
                 if (error.response) {
@@ -85,30 +87,22 @@ function Perfil() {
             }
         };
 
-        if (user != null) {
+        if(user != null)
+        {
             getAutoById();
         }
 
     }, [user]);
-
-    const handleMostrarRegAuto = () => {
-        if (user.user.auto == null) {
-            setMostrarRegAuto(true);
-        }
-        else{
-            setMostrarRegAuto(false);
-        }
-    };
 
     const handleRegAuto = async (event) => {
         event.preventDefault();
         const id = user.user.id;
         try {
             setMostrarRegAuto(false);
-            setMostrarAuto(true);
             const response = await axios.post("http://localhost:8282/auto/addAuto", {
                 patente, marca, modelo, color, id
             });
+            setMostrarAuto(true);
             // Aquí puedes hacer algo después de que se ha registrado el usuario
             console.log(response.data);
             // Reiniciamos los estados
@@ -133,6 +127,15 @@ function Perfil() {
             // Aquí puedes manejar el error
             console.error(error);
             console.log("error deleteauto perfil 02");
+        }
+    };
+
+    const handleMostrarRegAuto = () => {
+        if (user.user.auto == null) {
+            setMostrarRegAuto(true);
+        }
+        else {
+            setMostrarRegAuto(false);
         }
     };
 
