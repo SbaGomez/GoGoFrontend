@@ -167,7 +167,6 @@ function Perfil() {
 
     const handleDeleteAuto = async (event) => {
         event.preventDefault();
-        setIsLoading(true)
         try {
             const responseUser = await axios.get(`http://192.168.1.100:8282/user/email/${route.params.email}`);
             setUser(responseUser.data);
@@ -188,8 +187,6 @@ function Perfil() {
             console.error(error);
             console.log("error deleteauto perfil 02");
         }
-        setIsLoading(false)
-        setMostrar(true)
     };
 
     const handleMostrarRegAuto = () => {
@@ -203,8 +200,8 @@ function Perfil() {
     };
 
     const modelosPorMarca = {
-        'Ford': ['Focus', 'Mondeo', 'Ranger'],
-        'Marca 2': ['Modelo 4', 'Modelo 5', 'Modelo 6'],
+        'Ford': ['Focus', 'Mondeo', 'Ranger Limited'],
+        'Mercedes Benz': ['A45', 'A200', 'C63'],
         // Agrega más marcas y modelos según tus necesidades
     };
 
@@ -259,26 +256,18 @@ function Perfil() {
                             <Text style={styles.textTituloRegAuto}>Ingrese datos del vehiculo</Text>
                             <TextInput label="Patente" mode="outlined" placeholder="Patente del Vehiculo" value={patente} onChangeText={text => setPatente(text)} maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputRegistroCodigo} />
                             <View style={styles.PickerMarcaAuto}>
-                                <Picker
-                                    selectedValue={marca}
-                                    onValueChange={handleSeleccionarMarca}
-                                    style={{ flex: 1 }}
-                                >
+                                <Picker selectedValue={marca} onValueChange={handleSeleccionarMarca} style={{ flex: 1 }}>
                                     <Picker.Item label="Seleccione una marca" value="" />
                                     <Picker.Item label="Ford" value="Ford" />
                                     <Picker.Item label="Volkswagen" value="Volkswagen" />
                                     <Picker.Item label="Fiat" value="Fiat" />
                                     <Picker.Item label="Subaru" value="Subaru" />
-                                    <Picker.Item label="Mercedes" value="Mercedes" />
+                                    <Picker.Item label="Mercedes Benz" value="Mercedes Benz" />
+                                    <Picker.Item label="BMW" value="BMW" />
                                 </Picker>
                             </View>
                             <View style={styles.PickerModeloAuto}>
-                                <Picker
-                                    selectedValue={modelo}
-                                    onValueChange={text => setModelo(text)}
-                                    style={{ flex: 1 }}
-                                    enabled={marca !== ''}
-                                >
+                                <Picker selectedValue={modelo} onValueChange={text => setModelo(text)} style={{ flex: 1 }} enabled={marca !== ''}>
                                     <Picker.Item label="Seleccione un modelo" value="" />
                                     {modelosDisponibles.map((modeloDisponible, index) => (
                                         <Picker.Item key={index} label={modeloDisponible} value={modeloDisponible} />
