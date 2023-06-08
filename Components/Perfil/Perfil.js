@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Text, Button } from "@react-native-material/core";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { View, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, Modal } from 'react-native';
 import Masculino from '../../assets/FotoPerfilMas.png';
 import Femenino from '../../assets/FotoPerfilFem.png';
 import { TextInput } from "react-native-paper";
+import { FontAwesome, Feather } from '@expo/vector-icons';
 import axios from "axios";
 import * as Font from 'expo-font';
 import styles from '../Utils/Styles';
@@ -20,6 +21,8 @@ function Perfil() {
     const [mostrarRegAuto, setMostrarRegAuto] = useState(false);
     const [mostrarAuto, setMostrarAuto] = useState(false);
     const [mostrar, setMostrar] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [errores, setErrores] = useState([]);
 
 
     // variables registro auto
@@ -36,14 +39,46 @@ function Perfil() {
         setFontLoaded(true);
     }
 
+    // Funcion para las validaciones
+    const validarFormulario = async () => {
+        let erroresTemp = [];
+
+        if (!patente) {
+            erroresTemp.push('Por favor, ingrese una patente.');
+        } else if (patente.length < 6 || patente.length > 7) {
+            erroresTemp.push('La patente debe tener entre 6 y 7 caracteres.');
+        }
+
+        if (!marca) {
+            erroresTemp.push('Por favor, ingrese una marca.');
+        }
+
+        if (!modelo) {
+            erroresTemp.push('Por favor, ingrese un modelo.');
+        }
+
+        if (!color) {
+            erroresTemp.push('Por favor, ingrese un color.');
+        }
+
+        setErrores(erroresTemp);
+
+        return erroresTemp;
+    }
+
+    // Funcion para saber cuando abrir el modal
+    useEffect(() => {
+        if (errores.length > 0) {
+            setModalVisible(true);
+        }
+    }, [errores]);
+
     useEffect(() => {
         const getUserByEmail = async () => {
             const email = route.params.email; // Replace with the email you have
-            console.log("Email que recibe del login: " + email);
             try {
-                const response = await axios.get(`http://localhost:8282/user/email/${email}`);
+                const response = await axios.get(`http://192.168.1.100:8282/user/email/${email}`);
                 setUser(response.data);
-                
                 console.log(response.data);
                 setIsLoading(false);
 
@@ -53,10 +88,10 @@ function Perfil() {
                     console.log("Error:" + error.response.data);
                 } else if (error.request) {
                     // The request was made but no response was received
-                    console.log("Error, No response received from the server");
+                    console.log("Error User, No response received from the server");
                 } else {
                     // Something happened in setting up the request that triggered an error
-                    console.log("Error, An unexpected error occurred");
+                    console.log("Error User, An unexpected error occurred");
                 }
             }
         };
@@ -76,7 +111,7 @@ function Perfil() {
     useEffect(() => {
         const getAutoById = async () => {
             try {
-                const response = await axios.get(`http://localhost:8282/auto/${user.user.auto.id}`);
+                const response = await axios.get(`http://192.168.1.100:8282/auto/${user.user.auto.id}`);
                 setAuto(response.data);
                 console.log(response.data);
                 setMostrarAuto(true);
@@ -86,60 +121,57 @@ function Perfil() {
                     console.log("Error:" + error.response.data);
                 } else if (error.request) {
                     // The request was made but no response was received
-                    console.log("Error, No response received from the server");
+                    console.log("Error Auto, No response received from the server");
                 } else {
                     // Something happened in setting up the request that triggered an error
-                    console.log("Error, An unexpected error occurred");
+                    console.log("Error Auto, An unexpected error occurred");
                 }
             }
         };
 
-        if(user != null)
-        {
+        if (user != null) {
             getAutoById();
         }
 
     }, [user]);
 
     const handleRegAuto = async (event) => {
-        setIsLoading(true)
         event.preventDefault();
+        const erroresFormulario = await validarFormulario();
+        console.log(erroresFormulario);
         const id = user.user.id;
-        try {
-            setMostrarRegAuto(false);
-            const response = await axios.post("http://localhost:8282/auto/addAuto", {
-                patente, marca, modelo, color, id
-            });
-            console.log("auto")
-            console.log(response.data)
-            setAuto(response.data)
-            setIsLoading(false)
-            setMostrarAuto(true)
-            // Reiniciamos los estados
-            setPatente(""); setMarca(""); setModelo(""); setColor("");
-        } catch (error) {
-            // Aquí puedes manejar el error
-            console.error(error);
-            console.log("error regauto perfil 01");
+        if (erroresFormulario.length == 0) {
+            try {
+                setMostrarRegAuto(false);
+                const response = await axios.post("http://192.168.1.100:8282/auto/addAuto", {
+                    patente, marca, modelo, color, id
+                });
+                console.log(response.data)
+                setAuto(response.data)
+                setIsLoading(false)
+                setMostrarAuto(true)
+                // Reiniciamos los estados
+                setPatente(""); setMarca(""); setModelo(""); setColor("");
+            } catch (error) {
+                // Aquí puedes manejar el error
+                console.error(error);
+                console.log("error regauto perfil 01");
+            }
+        } else {
+            // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
+            console.log("error regauto perfil 02");
         }
     };
 
     const handleDeleteAuto = async (event) => {
         event.preventDefault();
         setIsLoading(true)
-        
-        const email = route.params.email; // Replace with the email you have
-        console.log("Email que recibe del login: " + email);
-
         try {
-            const responseUser = await axios.get(`http://localhost:8282/user/email/${email}`);
+            const responseUser = await axios.get(`http://192.168.1.100:8282/user/email/${route.params.email}`);
             setUser(responseUser.data);
             console.log(user)
-            console.log(responseUser)
             const id = responseUser.data.user.auto.id
-            console.log(id)
-
-            const response = await axios.post(`http://localhost:8282/auto/${id}/delete`);
+            const response = await axios.post(`http://192.168.1.100:8282/auto/${id}/delete`);
             // Aquí puedes hacer algo después de que se ha registrado el usuario
             console.log(response.data);
             setAuto(null)
@@ -154,6 +186,8 @@ function Perfil() {
             console.error(error);
             console.log("error deleteauto perfil 02");
         }
+        setIsLoading(false)
+        setMostrar(true)
     };
 
     const handleMostrarRegAuto = () => {
@@ -193,7 +227,7 @@ function Perfil() {
                     <View styles={styles.viewPerfilInfo}>
                         <Text style={styles.textInfoPerfil}>Email: {user.user.email}</Text>
                         <Text style={styles.textInfoPerfil}>Edad: {user.user.edad}</Text>
-                        <Text style={styles.textInfoPerfil}>Sexo: {user.user.sexo}</Text>
+                        <Text style={styles.textInfoPerfil}>Sexo: {user.user.sexo === 'F' ? <FontAwesome name="female" size={25} color="skyblue" /> : <FontAwesome name="male" size={25} color="skyblue" />}</Text>
                     </View>
 
                     <View style={styles.divisor} />
@@ -220,14 +254,30 @@ function Perfil() {
                     <Surface elevation={4} category="medium" style={styles.surfaceAuto}>
                         <View style={styles.viewRegistroVerificar}>
                             <Text style={styles.textTituloAuto}>Datos de tu vehiculo</Text>
-                            <Text style={styles.textInfoPerfil}>Patente: {auto.patente}</Text>
-                            <Text style={styles.textInfoPerfil}>Marca: {auto.marca}</Text>
-                            <Text style={styles.textInfoPerfil}>Modelo: {auto.modelo}</Text>
-                            <Text style={styles.textInfoPerfil}>Color: {auto.color}</Text>
+                            <Text style={styles.textInfoAutoPerfil}>Patente: {auto.patente}</Text>
+                            <Text style={styles.textInfoAutoPerfil}>Marca: {auto.marca}</Text>
+                            <Text style={styles.textInfoAutoPerfil}>Modelo: {auto.modelo}</Text>
+                            <Text style={styles.textInfoAutoPerfil}>Color: {auto.color}</Text>
                             <Button title="Borrar Auto" onPress={handleDeleteAuto} style={styles.buttonDeleteAuto} />
                         </View>
                     </Surface>
                 )}
+
+                <View style={styles.centeredView}>
+                    <Modal visible={modalVisible} transparent={true} onRequestClose={() => setModalVisible(false)} animationType="slide">
+                        <View style={styles.modalView}>
+                            {errores.map((error, index) => (
+                                <View key={index} style={styles.viewModalText}>
+                                    <Feather name="x-octagon" size={22} color="#900" />
+                                    <Text style={styles.textModalError}>{error}</Text>
+                                </View>
+                            ))}
+                            <View style={styles.viewModalButton}>
+                                <Button title="Cerrar" onPress={() => setModalVisible(false)} />
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
 
             </Stack>
         </ScrollView>

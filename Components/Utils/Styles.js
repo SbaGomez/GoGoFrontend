@@ -133,6 +133,12 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
 
+    textInfoAutoPerfil: {
+        textAlign: 'left',
+        fontSize: 20,
+        marginBottom: 5
+    },
+
     divisor: {
         width: '60%',
         borderBottomWidth: 2,
@@ -168,7 +174,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: 20,
-        marginBottom: 65,
         width: 600,
         height: 500
     },
@@ -177,7 +182,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: 20,
-        marginBottom: 65,
         paddingBottom: 20,
         width: 600,
         height: 270
@@ -211,11 +215,12 @@ const styles = StyleSheet.create({
     },
 
     buttonDeleteAuto: {
-        width: '60%',
+        backgroundColor: "#e84f30",
+        width: '40%',
         textAlign: 'center',
-        maxWidth: "40%",
-        minWidth: "30%",
-        height: 50,
+        maxWidth: "30%",
+        minWidth: "20%",
+        height: 40,
         display: 'flex',
         marginTop: 10,
         justifyContent: 'center'
