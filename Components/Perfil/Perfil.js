@@ -19,7 +19,7 @@ function Perfil() {
     const [isLoading, setIsLoading] = useState(true);
     const [mostrarRegAuto, setMostrarRegAuto] = useState(false);
     const [mostrarAuto, setMostrarAuto] = useState(false);
-    const [mostrar, setMostrar] = useState(false);
+    const [mostrar, setMostrar] = useState(true);
 
 
     // variables registro auto
@@ -95,6 +95,7 @@ function Perfil() {
     }, [user]);
 
     const handleRegAuto = async (event) => {
+        setIsLoading(true)
         event.preventDefault();
         const id = user.user.id;
         try {
@@ -102,9 +103,11 @@ function Perfil() {
             const response = await axios.post("http://localhost:8282/auto/addAuto", {
                 patente, marca, modelo, color, id
             });
-            setMostrarAuto(true);
-            // Aquí puedes hacer algo después de que se ha registrado el usuario
-            console.log(response.data);
+            console.log("auto")
+            console.log(response.data)
+            setAuto(response.data)
+            setIsLoading(false)
+            setMostrarAuto(true)
             // Reiniciamos los estados
             setPatente(""); setMarca(""); setModelo(""); setColor("");
         } catch (error) {
@@ -116,13 +119,29 @@ function Perfil() {
 
     const handleDeleteAuto = async (event) => {
         event.preventDefault();
-        const id = auto.auto.id
+        setIsLoading(true)
+        
+        const email = route.params.email; // Replace with the email you have
+        console.log("Email que recibe del login: " + email);
+
         try {
+            const responseUser = await axios.get(`http://localhost:8282/user/email/${email}`);
+            setUser(responseUser.data);
+            console.log(user)
+            console.log(responseUser)
+            const id = responseUser.data.user.auto.id
+            console.log(id)
+
             const response = await axios.post(`http://localhost:8282/auto/${id}/delete`);
             // Aquí puedes hacer algo después de que se ha registrado el usuario
             console.log(response.data);
+            setAuto(null)
             user.user.auto = null;
+            console.log(user)
+
+            setIsLoading(false)
             setMostrarAuto(false);
+            setMostrar(true)
         } catch (error) {
             // Aquí puedes manejar el error
             console.error(error);
@@ -131,7 +150,8 @@ function Perfil() {
     };
 
     const handleMostrarRegAuto = () => {
-        if (user.user.auto == null) {
+        if (mostrar) {
+            setMostrar(false)
             setMostrarRegAuto(true);
         }
         else {
@@ -154,7 +174,7 @@ function Perfil() {
     return (
         <ScrollView>
             <Stack fill center spacing={4}>
-                <Surface elevation={4} category="medium" style={user.user.auto === null ? styles.surfacePerfilInfoConAuto : styles.surfacePerfilInfoSinAuto}>
+                <Surface elevation={4} category="medium" style={mostrar ? styles.surfacePerfilInfoConAuto : styles.surfacePerfilInfoSinAuto}>
                     <Image source={user.user.sexo === 'F' ? Femenino : Masculino} style={styles.FotoPerfil} />
                     <Text style={styles.textPerfil}>
                         {user.user.nombre} {user.user.apellido}
@@ -172,7 +192,7 @@ function Perfil() {
                     <View style={styles.divisor} />
 
                     <Button title="Cambiar Foto" style={styles.buttonCambiarFoto} />
-                    {user.user.auto === null && (
+                    {mostrar && (
                         <Button title="Registrar Auto" onPress={handleMostrarRegAuto} style={styles.buttonRegistrarAuto} />
                     )}
                 </Surface>
@@ -193,10 +213,10 @@ function Perfil() {
                     <Surface elevation={4} category="medium" style={styles.surfaceAuto}>
                         <View style={styles.viewRegistroVerificar}>
                             <Text style={styles.textTituloAuto}>Datos de tu vehiculo</Text>
-                            <Text style={styles.textInfoPerfil}>Patente: {auto.auto.patente}</Text>
-                            <Text style={styles.textInfoPerfil}>Marca: {auto.auto.marca}</Text>
-                            <Text style={styles.textInfoPerfil}>Modelo: {auto.auto.modelo}</Text>
-                            <Text style={styles.textInfoPerfil}>Color: {auto.auto.color}</Text>
+                            <Text style={styles.textInfoPerfil}>Patente: {auto.patente}</Text>
+                            <Text style={styles.textInfoPerfil}>Marca: {auto.marca}</Text>
+                            <Text style={styles.textInfoPerfil}>Modelo: {auto.modelo}</Text>
+                            <Text style={styles.textInfoPerfil}>Color: {auto.color}</Text>
                             <Button title="Borrar Auto" onPress={handleDeleteAuto} style={styles.buttonDeleteAuto} />
                         </View>
                     </Surface>
