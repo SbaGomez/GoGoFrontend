@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     // LOGO
@@ -175,7 +175,91 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20,
         width: 600,
-        height: 500
+        height: 500,
+        ...Platform.select({
+            android: {
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 20,
+                width: 600,
+                height: 600
+            },
+            ios: {
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 20,
+                width: 600,
+                height: 670
+            },
+        }),
+    },
+
+    PickerMarcaAuto: {
+        width: '60%',
+        maxWidth: "60%",
+        minWidth: "30%",
+        height: 50,
+        marginBottom: 15,
+        display: 'flex',
+        justifyContent: 'center',
+        ...Platform.select({
+            android: {
+                width: '60%',
+                maxWidth: "60%",
+                minWidth: "30%",
+                height: 50,
+                marginBottom: 15,
+                display: 'flex',
+                justifyContent: 'center',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: 'gray',
+                backgroundColor: 'white',
+            },
+            ios: {
+                width: '80%',
+                maxWidth: "70%",
+                minWidth: "70%",
+                height: 120,
+                display: 'flex',
+                justifyContent: 'center'
+            },
+        }),
+    },
+
+    PickerModeloAuto: {
+        width: '60%',
+        maxWidth: "60%",
+        minWidth: "30%",
+        height: 50,
+        marginBottom: 15,
+        display: 'flex',
+        justifyContent: 'center',
+        ...Platform.select({
+            android: {
+                width: '60%',
+                maxWidth: "60%",
+                minWidth: "30%",
+                height: 50,
+                marginBottom: 15,
+                display: 'flex',
+                justifyContent: 'center',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: 'gray',
+                backgroundColor: 'white',
+            },
+            ios: {
+                width: '80%',
+                maxWidth: "70%",
+                minWidth: "70%",
+                height: 150,
+                marginTop: 35,
+                marginBottom: 25,
+                display: 'flex',
+                justifyContent: 'center'
+            },
+        }),
     },
 
     surfaceAuto: {

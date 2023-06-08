@@ -9,6 +9,7 @@ import { FontAwesome, Feather } from '@expo/vector-icons';
 import axios from "axios";
 import * as Font from 'expo-font';
 import styles from '../Utils/Styles';
+import { Picker } from '@react-native-picker/picker';
 
 
 function Perfil() {
@@ -23,6 +24,7 @@ function Perfil() {
     const [mostrar, setMostrar] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [errores, setErrores] = useState([]);
+    const [modelosDisponibles, setModelosDisponibles] = useState([]);
 
 
     // variables registro auto
@@ -200,6 +202,20 @@ function Perfil() {
         }
     };
 
+    const modelosPorMarca = {
+        'Ford': ['Focus', 'Mondeo', 'Ranger'],
+        'Marca 2': ['Modelo 4', 'Modelo 5', 'Modelo 6'],
+        // Agrega más marcas y modelos según tus necesidades
+    };
+
+    const handleSeleccionarMarca = (marcaSeleccionada) => {
+        setMarca(marcaSeleccionada);
+
+        const modelosObtenidos = modelosPorMarca[marcaSeleccionada] || [];
+        setModelosDisponibles(modelosObtenidos);
+        setModelo('');
+    };
+
     if (isLoading) {
         return (
             <ScrollView>
@@ -242,8 +258,33 @@ function Perfil() {
                         <View onSubmit={handleRegAuto} style={styles.viewRegistroVerificar}>
                             <Text style={styles.textTituloRegAuto}>Ingrese datos del vehiculo</Text>
                             <TextInput label="Patente" mode="outlined" placeholder="Patente del Vehiculo" value={patente} onChangeText={text => setPatente(text)} maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputRegistroCodigo} />
-                            <TextInput label="Marca" mode="outlined" placeholder="Marca del Vehiculo" value={marca} onChangeText={text => setMarca(text)} maxLength={15} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistroCodigo} />
-                            <TextInput label="Modelo" mode="outlined" placeholder="Modelo del Vehiculo" value={modelo} onChangeText={text => setModelo(text)} maxLength={15} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistroCodigo} />
+                            <View style={styles.PickerMarcaAuto}>
+                                <Picker
+                                    selectedValue={marca}
+                                    onValueChange={handleSeleccionarMarca}
+                                    style={{ flex: 1 }}
+                                >
+                                    <Picker.Item label="Seleccione una marca" value="" />
+                                    <Picker.Item label="Ford" value="Ford" />
+                                    <Picker.Item label="Volkswagen" value="Volkswagen" />
+                                    <Picker.Item label="Fiat" value="Fiat" />
+                                    <Picker.Item label="Subaru" value="Subaru" />
+                                    <Picker.Item label="Mercedes" value="Mercedes" />
+                                </Picker>
+                            </View>
+                            <View style={styles.PickerModeloAuto}>
+                                <Picker
+                                    selectedValue={modelo}
+                                    onValueChange={text => setModelo(text)}
+                                    style={{ flex: 1 }}
+                                    enabled={marca !== ''}
+                                >
+                                    <Picker.Item label="Seleccione un modelo" value="" />
+                                    {modelosDisponibles.map((modeloDisponible, index) => (
+                                        <Picker.Item key={index} label={modeloDisponible} value={modeloDisponible} />
+                                    ))}
+                                </Picker>
+                            </View>
                             <TextInput label="Color" mode="outlined" placeholder="Color del Vehiculo" value={color} onChangeText={text => setColor(text)} maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputRegistroCodigo} />
                             <Button title="Agregar Auto" onPress={handleRegAuto} style={styles.buttonRegAuto} />
                         </View>
