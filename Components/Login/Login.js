@@ -11,6 +11,7 @@ import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
 
 function Login() {
+  const [baseURL] = useState("http://192.168.1.5:8282")
   const navigation = useNavigation();
   const [errores, setErrores] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -69,7 +70,7 @@ function Login() {
     const errores = validarLogin();
     if (errores.length === 0) {
       try {
-        const response = await axios.post('http://192.168.1.100:8282/auth/login', {
+        const response = await axios.post(baseURL + '/auth/login', {
           email: email,
           clave: clave
         });

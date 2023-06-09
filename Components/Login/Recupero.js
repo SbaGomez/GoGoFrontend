@@ -9,6 +9,7 @@ import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
 
 function Recupero() {
+  const [baseURL] = useState("http://192.168.1.5:8282")
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -88,7 +89,7 @@ function Recupero() {
     if (errores.length === 0) {
       try {
         setTipoEmail(1);
-        const response = await axios.post('http://localhost:8282/recupero/validarMail', {
+        const response = await axios.post(baseURL + '/recupero/validarMail', {
           email, tipoEmail
         });
         setMostrarCodigo(true);
@@ -110,7 +111,7 @@ function Recupero() {
     if (errores.length !== 0) return;
 
     try {
-      const response = await axios.post('http://localhost:8282/recupero/updateClave', {
+      const response = await axios.post(baseURL + '/recupero/updateClave', {
         codigo, clave
       });
       navigation.navigate("SuccessRecupero");

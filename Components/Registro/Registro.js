@@ -9,6 +9,7 @@ import * as Font from 'expo-font';
 import styles from '../Utils/Styles';
 
 function Registro() {
+  const [baseURL] = useState("http://192.168.1.5:8282")
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,7 +61,7 @@ function Registro() {
 
   const validarEmail = async (email) => {
     try {
-      const response = await axios.post('http://localhost:8282/user/emailExists', { email: email });
+      const response = await axios.post(baseURL + '/user/emailExists', { email: email });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -70,7 +71,7 @@ function Registro() {
 
   const validarDni = async (dni) => {
     try {
-      const response = await axios.post('http://localhost:8282/user/dniExists', { dni: dni });
+      const response = await axios.post(baseURL + '/user/dniExists', { dni: dni });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -172,7 +173,7 @@ function Registro() {
       try {
         setTipoEmail(0);
         setMostrarCodigo(true);
-        const response = await axios.post("http://192.168.151.58:8282/user/addUser", {
+        const response = await axios.post(baseURL + "/user/addUser", {
           email, nombre, apellido, edad, dni, clave, sexo, tipoEmail
         });
         // Aquí puedes hacer algo después de que se ha registrado el usuario
@@ -197,7 +198,7 @@ function Registro() {
     if (erroresFormulario.length !== 0) return;
 
     try {
-      const response = await axios.post('http://192.168.151.58:8282/user/verificarCodigo', {
+      const response = await axios.post(baseURL + '/user/verificarCodigo', {
         codigo
       });
       console.log(response.data);
