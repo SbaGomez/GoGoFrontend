@@ -11,6 +11,7 @@ import * as Font from 'expo-font';
 import styles from '../Utils/Styles';
 import { Picker } from '@react-native-picker/picker';
 
+//insert into user (id,apellido,clave,dni,edad,email,nombre,sexo,auto_id) values(1, 'Gomez', '$2a$10$rBvRfl/7A0ZoAIaQ4ICY/eyGb9q9kpzP5rCYbnhQYdIdYyY2ciEDq', 39164065, 27, 'sgomez@uade.edu.ar', 'Sebastian', 'M', null);
 
 function Perfil() {
     const [baseURL] = useState("http://192.168.1.100:8282")
