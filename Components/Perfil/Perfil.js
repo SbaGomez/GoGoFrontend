@@ -13,6 +13,7 @@ import { Picker } from '@react-native-picker/picker';
 
 
 function Perfil() {
+    const [baseURL] = useState("http://192.168.1.5:8282")
     const navigation = useNavigation();
     const route = useRoute();
     const [fontLoaded, setFontLoaded] = useState(false);
@@ -25,6 +26,7 @@ function Perfil() {
     const [modalVisible, setModalVisible] = useState(false);
     const [errores, setErrores] = useState([]);
     const [modelosDisponibles, setModelosDisponibles] = useState([]);
+    const [mostrarCancelarAuto, setMostrarCancelarAuto] = useState(false);
 
 
     // variables registro auto
@@ -79,7 +81,7 @@ function Perfil() {
         const getUserByEmail = async () => {
             const email = route.params.email; // Replace with the email you have
             try {
-                const response = await axios.get(`http://192.168.1.100:8282/user/email/${email}`);
+                const response = await axios.get(baseURL + `/user/email/${email}`);
                 setUser(response.data);
                 console.log(response.data);
                 setIsLoading(false);
@@ -113,7 +115,7 @@ function Perfil() {
     useEffect(() => {
         const getAutoById = async () => {
             try {
-                const response = await axios.get(`http://192.168.1.100:8282/auto/${user.user.auto.id}`);
+                const response = await axios.get(baseURL + `/auto/${user.user.auto.id}`);
                 setAuto(response.data);
                 console.log(response.data);
                 setMostrarAuto(true);
@@ -145,7 +147,7 @@ function Perfil() {
         if (erroresFormulario.length == 0) {
             try {
                 setMostrarRegAuto(false);
-                const response = await axios.post("http://192.168.1.100:8282/auto/addAuto", {
+                const response = await axios.post(baseURL + "/auto/addAuto", {
                     patente, marca, modelo, color, id
                 });
                 console.log(response.data)
@@ -168,11 +170,11 @@ function Perfil() {
     const handleDeleteAuto = async (event) => {
         event.preventDefault();
         try {
-            const responseUser = await axios.get(`http://192.168.1.100:8282/user/email/${route.params.email}`);
+            const responseUser = await axios.get(baseURL + `/user/email/${route.params.email}`);
             setUser(responseUser.data);
             console.log(user)
             const id = responseUser.data.user.auto.id
-            const response = await axios.post(`http://192.168.1.100:8282/auto/${id}/delete`);
+            const response = await axios.post(baseURL + `/auto/${id}/delete`);
             // Aquí puedes hacer algo después de que se ha registrado el usuario
             console.log(response.data);
             setAuto(null)
@@ -198,6 +200,16 @@ function Perfil() {
             setMostrarRegAuto(false);
         }
     };
+
+    const handleCancelarAuto = () => {
+        setMostrarCancelarAuto(true)
+        if (!mostrarCancelarAuto) {
+            setMostrar(true)
+            setMostrarRegAuto(false);
+            setMostrarCancelarAuto(false)
+            setPatente(""); setMarca(""); setModelo(""); setColor("");
+        }
+    }
 
     //Lista de Modelos por Marca
     const modelosPorMarca = {
@@ -277,6 +289,7 @@ function Perfil() {
                             </View>
                             <TextInput label="Color" mode="outlined" placeholder="Color del Vehiculo" value={color} onChangeText={text => setColor(text)} maxLength={15} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistroCodigo} />
                             <Button title="Agregar Auto" onPress={handleRegAuto} style={styles.buttonRegAuto} />
+                            <Button title="Cancelar" onPress={handleCancelarAuto} style={styles.buttonCancelar} />
                         </View>
                     </Surface>
                 )}
