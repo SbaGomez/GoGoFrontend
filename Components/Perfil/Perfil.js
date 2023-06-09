@@ -169,7 +169,7 @@ function Perfil() {
 
     const handleDeleteAuto = async (event) => {
         event.preventDefault();
-        try {
+        try {            
             const responseUser = await axios.get(baseURL + `/user/email/${route.params.email}`);
             setUser(responseUser.data);
             console.log(user)
@@ -294,7 +294,7 @@ function Perfil() {
                     </Surface>
                 )}
 
-                {mostrarAuto && (
+                {mostrarAuto && auto !== null &&  (
                     <Surface elevation={4} category="medium" style={styles.surfaceAuto}>
                         <View style={styles.viewRegistroVerificar}>
                             <Text style={styles.textTituloAuto}>Datos de tu vehiculo</Text>
