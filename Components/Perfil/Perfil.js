@@ -13,7 +13,7 @@ import { Picker } from '@react-native-picker/picker';
 
 
 function Perfil() {
-    const [baseURL] = useState("http://192.168.1.5:8282")
+    const [baseURL] = useState("http://192.168.1.100:8282")
     const navigation = useNavigation();
     const route = useRoute();
     const [fontLoaded, setFontLoaded] = useState(false);

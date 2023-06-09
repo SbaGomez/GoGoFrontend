@@ -11,7 +11,7 @@ import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
 
 function Login() {
-  const [baseURL] = useState("http://192.168.1.5:8282")
+  const [baseURL] = useState("http://192.168.1.100:8282")
   const navigation = useNavigation();
   const [errores, setErrores] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -75,7 +75,8 @@ function Login() {
           clave: clave
         });
         const token = response.data;
-        AsyncStorage.setItem("token", token);
+        await AsyncStorage.setItem("token", token);
+        await AsyncStorage.setItem("email", email);
         navigation.navigate('Perfil', { email: email });
       } catch (error) {
         if (error.response && error.response.data === "Email o contraseña incorrectos") {
