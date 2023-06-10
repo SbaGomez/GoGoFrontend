@@ -121,6 +121,17 @@ function Home() {
     return '';
   };
 
+  const formatSelectedDateTime = () => {
+    if (selectedDate && selectedTime) {
+      const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+      const formattedTime = format(selectedTime, 'HH:mm:ss');
+  
+      return `${formattedDate}T${formattedTime}`;
+    }
+  
+    return '';
+  };
+
   return (
     <ScrollView>
       <Stack flex={1} center spacing={4} direction="column">
