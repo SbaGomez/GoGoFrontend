@@ -10,7 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function Home() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const navigation = useNavigation();
-  const route = useRoute();
   const [email, setEmail] = useState(null);
 
   // Font propia

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Divider, Text } from "@react-native-material/core";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Modal, ScrollView, Switch, TouchableWithoutFeedback } from 'react-native';
 import axios from "axios";
 import { FontAwesome, FontAwesome5, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,7 +10,7 @@ import * as Font from 'expo-font';
 import styles from '../Utils/Styles';
 
 function Registro() {
-  const [baseURL] = useState("http://192.168.1.5:8282")
+  const [baseURL, setBaseURL] = useState('');
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,6 +19,25 @@ function Registro() {
   const [tipoEmail, setTipoEmail] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
 
+  //Obtener baseURL
+  useEffect(() => {
+    async function obtenerBaseURL() {
+      try {
+        const baseURL = await AsyncStorage.getItem("baseURL");
+        if (baseURL !== null) {
+          // Aquí puedes utilizar el valor de baseURL
+          console.log(baseURL);
+          setBaseURL(baseURL);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    obtenerBaseURL();
+  }, []);
+
+  //Funcion para Ocultar/Mostrar Password
   const toggleShowPassword = () => {
     setShowPassword(prevState => !prevState);
   }

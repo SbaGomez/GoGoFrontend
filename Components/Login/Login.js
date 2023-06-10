@@ -11,7 +11,7 @@ import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
 
 function Login() {
-  const [baseURL] = useState("http://192.168.1.100:8282")
+  const [baseURL, setBaseURL] = useState('');
   const navigation = useNavigation();
   const [errores, setErrores] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,11 +20,28 @@ function Login() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+
+  //Obtener baseURL
+  useEffect(() => {
+    async function obtenerBaseURL() {
+      try {
+        const baseURL = await AsyncStorage.getItem("baseURL");
+        if (baseURL !== null) {
+          // Aquí puedes utilizar el valor de baseURL
+          setBaseURL(baseURL);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    obtenerBaseURL();
+  }, []);
+
+  //Funcion para Ocultar/Mostrar Password
   const toggleShowPassword = () => {
     setShowPassword(prevState => !prevState);
   }
-
-  AsyncStorage.removeItem("token");
 
   // Font propia
   const loadFontAsync = async () => {

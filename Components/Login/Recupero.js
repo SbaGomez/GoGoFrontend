@@ -3,13 +3,14 @@ import { Surface, Stack, Button, Text } from "@react-native-material/core";
 import { View, Modal, TouchableWithoutFeedback } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
 
 function Recupero() {
-  const [baseURL] = useState("http://192.168.1.5:8282")
+  const [baseURL, setBaseURL] = useState('');
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -75,6 +76,23 @@ function Recupero() {
     setErrores(erroresTemp);
     return erroresTemp;
   }
+
+   //Obtener baseURL
+   useEffect(() => {
+    async function obtenerBaseURL() {
+      try {
+        const baseURL = await AsyncStorage.getItem("baseURL");
+        if (baseURL !== null) {
+          // Aquí puedes utilizar el valor de baseURL
+          setBaseURL(baseURL);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    obtenerBaseURL();
+  }, []);
 
   // Funcion para saber cuando abrir el modal
   useEffect(() => {

@@ -10,11 +10,10 @@ import axios from "axios";
 import * as Font from 'expo-font';
 import styles from '../Utils/Styles';
 import { Picker } from '@react-native-picker/picker';
-
-//insert into user (id,apellido,clave,dni,edad,email,nombre,sexo,auto_id) values(1, 'Gomez', '$2a$10$rBvRfl/7A0ZoAIaQ4ICY/eyGb9q9kpzP5rCYbnhQYdIdYyY2ciEDq', 39164065, 27, 'sgomez@uade.edu.ar', 'Sebastian', 'M', null);
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Perfil() {
-    const [baseURL] = useState("http://192.168.1.100:8282")
+    const [baseURL, setBaseURL] = useState('');
     const navigation = useNavigation();
     const route = useRoute();
     const [fontLoaded, setFontLoaded] = useState(false);
@@ -29,6 +28,21 @@ function Perfil() {
     const [modelosDisponibles, setModelosDisponibles] = useState([]);
     const [mostrarCancelarAuto, setMostrarCancelarAuto] = useState(false);
 
+    //Obtener baseURL
+    useEffect(() => {
+        async function obtenerBaseURL() {
+            try {
+                const baseURL = await AsyncStorage.getItem("baseURL");
+                if (baseURL !== null) {
+                    console.log(baseURL);
+                    setBaseURL(baseURL);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        obtenerBaseURL();
+    }, []);
 
     // variables registro auto
     const [patente, setPatente] = useState("");
@@ -103,7 +117,7 @@ function Perfil() {
         getUserByEmail();
         loadFontAsync();
 
-    }, []);
+    }, [baseURL]);
 
     useEffect(() => {
         if (auto == null) {
@@ -170,7 +184,7 @@ function Perfil() {
 
     const handleDeleteAuto = async (event) => {
         event.preventDefault();
-        try {            
+        try {
             const responseUser = await axios.get(baseURL + `/user/email/${route.params.email}`);
             setUser(responseUser.data);
             console.log(user)
@@ -290,12 +304,12 @@ function Perfil() {
                             </View>
                             <TextInput label="Color" mode="outlined" placeholder="Color del Vehiculo" value={color} onChangeText={text => setColor(text)} maxLength={15} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistroCodigo} />
                             <Button title="Agregar Auto" onPress={handleRegAuto} style={styles.buttonRegAuto} />
-                            <Button title="Cancelar" onPress={handleCancelarAuto} style={styles.buttonCancelar} />
+                            <Button title="Cancelar" onPress={handleCancelarAuto} style={styles.buttonCancelarRegAuto} />
                         </View>
                     </Surface>
                 )}
 
-                {mostrarAuto && auto !== null &&  (
+                {mostrarAuto && auto !== null && (
                     <Surface elevation={4} category="medium" style={styles.surfaceAuto}>
                         <View style={styles.viewRegistroVerificar}>
                             <Text style={styles.textTituloAuto}>Datos de tu vehiculo</Text>
