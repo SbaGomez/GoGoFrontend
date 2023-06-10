@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20,
         width: 600,
-        height: 500,
+        height: 550,
         ...Platform.select({
             android: {
                 justifyContent: "center",
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
                 alignItems: "center",
                 marginTop: 20,
                 width: 600,
-                height: 670
+                height: 750
             },
         }),
     },
@@ -602,7 +602,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20,
         width: 600,
-        height: 300
+        height: 150
     }
 
 });

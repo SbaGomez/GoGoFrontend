@@ -11,7 +11,7 @@ import styles from '../Utils/Styles';
 import * as Font from 'expo-font';
 
 function Login() {
-  const [baseURL, setBaseURL] = useState('');
+  const [baseURL, setBaseURL] = useState(null);
   const navigation = useNavigation();
   const [errores, setErrores] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);

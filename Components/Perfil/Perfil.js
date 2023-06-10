@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Text, Button } from "@react-native-material/core";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { View, ScrollView, Image, Modal } from 'react-native';
 import Masculino from '../../assets/FotoPerfilMas.png';
 import Femenino from '../../assets/FotoPerfilFem.png';
@@ -13,8 +13,7 @@ import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Perfil() {
-    const [baseURL, setBaseURL] = useState('');
-    const navigation = useNavigation();
+    const [baseURL, setBaseURL] = useState(null);
     const route = useRoute();
     const [fontLoaded, setFontLoaded] = useState(false);
     const [user, setUser] = useState(null);
@@ -113,7 +112,10 @@ function Perfil() {
                 }
             }
         };
-        getUserByEmail();
+        if(baseURL != null)
+        {
+            getUserByEmail();
+        }
         loadFontAsync();
 
     }, [baseURL]);
