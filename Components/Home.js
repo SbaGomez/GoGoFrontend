@@ -21,6 +21,10 @@ function Home() {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const currentDate = new Date();
 
+
+  // variables Buscar Viajes
+  const [ubicacion, setUbicacion] = useState("");
+
   // Font propia
   const loadFontAsync = async () => {
     await Font.loadAsync({
@@ -64,6 +68,11 @@ function Home() {
   useEffect(() => {
     loadFontAsync();
   }, []);
+
+  //Funcion Ubicacion a Seleccionar
+  const handleSeleccionarUbicacion = (ubicacionSeleccionada) => {
+    setUbicacion(ubicacionSeleccionada);
+  };
 
   const handleCrearViaje = () => {
     if (mostrarCrearViaje) {
@@ -179,13 +188,14 @@ function Home() {
 
         {mostrarBuscarViajes && (
           <Surface elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
-            <Text style={styles.textTituloCrearViajes}>Buscar Viajes</Text>
-            <View style={styles.PickerMarcaAuto}>
-              <Picker style={{ flex: 1 }}>
-                <Picker.Item label="Seleccione una ubicacion" value="" />
+            <Text style={styles.textTituloBuscarViajes}>Buscar Viajes</Text>
+            <View style={styles.PickerUbicacion}>
+              <Picker selectedValue={ubicacion} onValueChange={handleSeleccionarUbicacion} style={{ flex: 1 }}>
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
                 <Picker.Item label="Pinamar" value="Pinamar" />
                 <Picker.Item label="Mar Azul" value="Mar Azul" />
+                <Picker.Item label="Seleccione una ubicacion" value="" />
+                <Picker.Item label="Carilo" value="Carilo" />
                 <Picker.Item label="Mar de las Pampas" value="Mar de las Pampas" />
                 <Picker.Item label="Ostende" value="Ostende" />
                 <Picker.Item label="Valeria" value="Valeria" />

@@ -680,6 +680,50 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
 
+    textTituloBuscarViajes: {
+        width: '100%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        fontSize: 45,
+        display: 'flex',
+        justifyContent: 'center'
+    },
+
+    PickerUbicacion: {
+        width: '60%',
+        maxWidth: "60%",
+        minWidth: "30%",
+        height: 50,
+        marginTop: 15,
+        marginBottom: 15,
+        display: 'flex',
+        justifyContent: 'center',
+        ...Platform.select({
+            android: {
+                width: '60%',
+                maxWidth: "60%",
+                minWidth: "30%",
+                height: 50,
+                marginBottom: 15,
+                display: 'flex',
+                justifyContent: 'center',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: 'gray',
+                backgroundColor: 'white',
+            },
+            ios: {
+                width: '80%',
+                maxWidth: "70%",
+                minWidth: "70%",
+                height: 200,
+                marginTop: -10,
+                display: 'flex',
+                justifyContent: 'center'
+            },
+        }),
+    },
+
 });
 
 export default styles;
