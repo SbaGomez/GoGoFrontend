@@ -14,25 +14,10 @@ function Home() {
   const [email, setEmail] = useState(null);
   const [mostrarCrearViaje, setMostrarCrearViaje] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-
-
-
+  const [selectedTime, setSelectedTime] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (date) => {
-    setSelectedDate(date);
-    hideDatePicker();
-  };
-
-
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const currentDate = new Date();
 
   // Font propia
   const loadFontAsync = async () => {
@@ -87,6 +72,55 @@ function Home() {
     }
   };
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const showTimePicker = () => {
+    setTimePickerVisibility(true);
+  };
+
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+  const handleConfirmDate = (date) => {
+    setSelectedDate(date);
+    hideDatePicker();
+  };
+
+  const handleConfirmTime = (time) => {
+    setSelectedTime(time);
+    hideTimePicker();
+  };
+
+  const formatSelectedDate = () => {
+    if (selectedDate) {
+      const day = selectedDate.getDate();
+      const month = selectedDate.getMonth() + 1;
+      const year = selectedDate.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    }
+
+    return '';
+  };
+
+  const formatSelectedTime = () => {
+    if (selectedTime) {
+      const hours = selectedTime.getHours();
+      const minutes = selectedTime.getMinutes();
+  
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+  
+    return '';
+  };
+
   return (
     <ScrollView>
       <Stack flex={1} center spacing={4} direction="column">
@@ -97,20 +131,31 @@ function Home() {
           <Surface elevation={4} category="medium" style={styles.surfaceRegAuto}>
             <View style={styles.viewRegistroVerificar}>
               <Text style={styles.textTituloRegAuto}>Crear Viaje</Text>
+
               <View>
-                <Button title="Show Date Picker" onPress={showDatePicker} />
+                <Button title="Seleccionar Fecha" onPress={showDatePicker} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
                   mode="date"
-                  onConfirm={handleConfirm}
+                  onConfirm={handleConfirmDate}
                   onCancel={hideDatePicker}
+                  minimumDate={currentDate}
                 />
+                <Text>{formatSelectedDate()}</Text>
               </View>
-              <Text>{selectedDate && selectedDate.toString()}</Text>
-              <TextInput label="Patente" mode="outlined" placeholder="Patente del Vehiculo" maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputPatenteAuto} />
-              <TextInput label="Color" mode="outlined" placeholder="Color del Vehiculo" maxLength={15} right={<TextInput.Affix text="/15" />} style={styles.textInputRegistroCodigo} />
+              <View>
+                <Button title="Seleccionar Horario" onPress={showTimePicker} />
+                <DateTimePickerModal
+                  isVisible={isTimePickerVisible}
+                  mode="time"
+                  onConfirm={handleConfirmTime}
+                  onCancel={hideTimePicker}
+                  is24Hour
+                />
+                <Text>{formatSelectedTime()}</Text>
+              </View>
+
               <Button title="Crear Viaje" style={styles.buttonRegAuto} />
-              <Button title="Cancelar" style={styles.buttonCancelarRegAuto} />
             </View>
           </Surface>
         )}
