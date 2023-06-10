@@ -6,6 +6,7 @@ import * as Font from 'expo-font';
 import styles from './Utils/Styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Picker } from '@react-native-picker/picker';
 
 
 function Home() {
@@ -13,6 +14,7 @@ function Home() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [email, setEmail] = useState(null);
   const [mostrarCrearViaje, setMostrarCrearViaje] = useState(false);
+  const [mostrarBuscarViajes, setMostrarBuscarViajes] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -70,7 +72,20 @@ function Home() {
       setSelectedTime(null);
     }
     else {
+
+      setMostrarBuscarViajes(false);
       setMostrarCrearViaje(true);
+    }
+  };
+
+  const handleBuscarViajes = () => {
+    if (mostrarBuscarViajes) {
+      setMostrarBuscarViajes(false);
+    }
+    else {
+
+      setMostrarCrearViaje(false);
+      setMostrarBuscarViajes(true);
     }
   };
 
@@ -139,25 +154,44 @@ function Home() {
       <Stack flex={1} center spacing={4} direction="column">
         <Surface elevation={4} category="medium" style={styles.surfaceHome}>
           <Button title="Crear Viaje" onPress={handleCrearViaje} style={styles.buttonCrearViajes} />
+          <Button title="Buscar Viajes" onPress={handleBuscarViajes} style={styles.buttonBuscarViajes} />
         </Surface>
         {mostrarCrearViaje && (
           <Surface elevation={4} category="medium" style={styles.surfaceCrearViajes}>
-              <Text style={styles.textTituloCrearViajes}>Crear Viaje</Text>
+            <Text style={styles.textTituloCrearViajes}>Crear Viaje</Text>
 
-              <Button title="Seleccionar Fecha" onPress={showDatePicker} style={styles.buttonSeleccionarFecha} />
-              <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirmDate} onCancel={hideDatePicker} minimumDate={currentDate}/>
-              {selectedDate && (
-                <TextInput label="Fecha Seleccionada" mode="outlined" value={`${formatSelectedDate()}`} editable={false} style={styles.textInputDateTime} />
-              )}
+            <Button title="Seleccionar Fecha" onPress={showDatePicker} style={styles.buttonSeleccionarFecha} />
+            <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirmDate} onCancel={hideDatePicker} minimumDate={currentDate} />
+            {selectedDate && (
+              <TextInput label="Fecha Seleccionada" mode="outlined" value={`${formatSelectedDate()}`} editable={false} style={styles.textInputDateTime} />
+            )}
 
-              <Button title="Seleccionar Horario" onPress={showTimePicker} style={styles.buttonSeleccionarFecha} />
-              <DateTimePickerModal isVisible={isTimePickerVisible} mode="time" onConfirm={handleConfirmTime} onCancel={hideTimePicker} is24Hour/>
+            <Button title="Seleccionar Horario" onPress={showTimePicker} style={styles.buttonSeleccionarFecha} />
+            <DateTimePickerModal isVisible={isTimePickerVisible} mode="time" onConfirm={handleConfirmTime} onCancel={hideTimePicker} is24Hour />
 
-              {selectedTime && (
-                <TextInput label="Horario Seleccionado" mode="outlined" value={`${formatSelectedTime()}`} editable={false} style={styles.textInputDateTime} />
-              )}
+            {selectedTime && (
+              <TextInput label="Horario Seleccionado" mode="outlined" value={`${formatSelectedTime()}`} editable={false} style={styles.textInputDateTime} />
+            )}
 
-              <Button title="Crear Viaje" style={styles.buttonRegAuto} />
+            <Button title="Crear Viaje" style={styles.buttonRegAuto} />
+          </Surface>
+        )}
+
+        {mostrarBuscarViajes && (
+          <Surface elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
+            <Text style={styles.textTituloCrearViajes}>Buscar Viajes</Text>
+            <View style={styles.PickerMarcaAuto}>
+              <Picker style={{ flex: 1 }}>
+                <Picker.Item label="Seleccione una ubicacion" value="" />
+                <Picker.Item label="Villa Gesell" value="Villa Gesell" />
+                <Picker.Item label="Pinamar" value="Pinamar" />
+                <Picker.Item label="Mar Azul" value="Mar Azul" />
+                <Picker.Item label="Mar de las Pampas" value="Mar de las Pampas" />
+                <Picker.Item label="Ostende" value="Ostende" />
+                <Picker.Item label="Valeria" value="Valeria" />
+              </Picker>
+            </View>
+            <Button title="Buscar Viajes" style={styles.buttonRegAuto} />
           </Surface>
         )}
       </Stack>
