@@ -308,6 +308,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
+    buttonCancelarRegAuto: {
+        backgroundColor: "#e84f30",
+        width: '80%',
+        textAlign: 'center',
+        maxWidth: "40%",
+        minWidth: "30%",
+        height: 50,
+        display: 'flex',
+        marginTop: 10,
+        justifyContent: 'center'
+    },
+
     buttonDeleteAuto: {
         backgroundColor: "#e84f30",
         width: '40%',
