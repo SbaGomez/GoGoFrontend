@@ -588,7 +588,6 @@ const styles = StyleSheet.create({
         height: 600
     },
 
-    //Surface Home
     surfaceTitle: {
         justifyContent: "center",
         alignItems: "center",
@@ -597,13 +596,69 @@ const styles = StyleSheet.create({
         height: 150
     },
 
-    surfaceViajes: {
+    //HOME
+    surfaceHome: {
         justifyContent: "center",
         alignItems: "center",
         marginTop: 20,
         width: 600,
         height: 150
-    }
+    },
+
+    surfaceCrearViajes: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+        marginTop: 20,
+        padding: 20,
+        width: 600
+    },
+
+    textTituloCrearViajes: {
+        width: '100%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        fontSize: 45,
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: 10
+    },
+
+    buttonCrearViajes: {
+        width: '80%',
+        textAlign: 'center',
+        maxWidth: "40%",
+        minWidth: "30%",
+        height: 50,
+        display: 'flex',
+        marginTop: 20,
+        justifyContent: 'center'
+    },
+
+    buttonSeleccionarFecha: {
+        backgroundColor: '#0082ed',
+        width: '80%',
+        textAlign: 'center',
+        maxWidth: "45%",
+        minWidth: "30%",
+        height: 35,
+        display: 'flex',
+        marginTop: 20,
+        justifyContent: 'center'
+    },
+
+    textInputDateTime: {
+        width: '80%',
+        maxWidth: "50%",
+        minWidth: "30%",
+        height: 50,
+        marginTop: 15,
+        marginBottom: 10,
+        display: 'flex',
+        justifyContent: 'center',
+        textAlign: 'center',
+        fontSize: 17
+    },
 
 });
 

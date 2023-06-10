@@ -66,6 +66,8 @@ function Home() {
   const handleCrearViaje = () => {
     if (mostrarCrearViaje) {
       setMostrarCrearViaje(false);
+      setSelectedDate(null);
+      setSelectedTime(null);
     }
     else {
       setMostrarCrearViaje(true);
@@ -114,10 +116,10 @@ function Home() {
     if (selectedTime) {
       const hours = selectedTime.getHours();
       const minutes = selectedTime.getMinutes();
-  
+
       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     }
-  
+
     return '';
   };
 
@@ -125,49 +127,37 @@ function Home() {
     if (selectedDate && selectedTime) {
       const formattedDate = format(selectedDate, 'yyyy-MM-dd');
       const formattedTime = format(selectedTime, 'HH:mm:ss');
-  
+
       return `${formattedDate}T${formattedTime}`;
     }
-  
+
     return '';
   };
 
   return (
     <ScrollView>
       <Stack flex={1} center spacing={4} direction="column">
-        <Surface elevation={4} category="medium" style={styles.surfaceViajes}>
-          <Button title="Crear Viaje" onPress={handleCrearViaje} style={styles.buttonRegAuto} />
+        <Surface elevation={4} category="medium" style={styles.surfaceHome}>
+          <Button title="Crear Viaje" onPress={handleCrearViaje} style={styles.buttonCrearViajes} />
         </Surface>
         {mostrarCrearViaje && (
-          <Surface elevation={4} category="medium" style={styles.surfaceRegAuto}>
-            <View style={styles.viewRegistroVerificar}>
-              <Text style={styles.textTituloRegAuto}>Crear Viaje</Text>
+          <Surface elevation={4} category="medium" style={styles.surfaceCrearViajes}>
+              <Text style={styles.textTituloCrearViajes}>Crear Viaje</Text>
 
-              <View>
-                <Button title="Seleccionar Fecha" onPress={showDatePicker} />
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="date"
-                  onConfirm={handleConfirmDate}
-                  onCancel={hideDatePicker}
-                  minimumDate={currentDate}
-                />
-                <Text>{formatSelectedDate()}</Text>
-              </View>
-              <View>
-                <Button title="Seleccionar Horario" onPress={showTimePicker} />
-                <DateTimePickerModal
-                  isVisible={isTimePickerVisible}
-                  mode="time"
-                  onConfirm={handleConfirmTime}
-                  onCancel={hideTimePicker}
-                  is24Hour
-                />
-                <Text>{formatSelectedTime()}</Text>
-              </View>
+              <Button title="Seleccionar Fecha" onPress={showDatePicker} style={styles.buttonSeleccionarFecha} />
+              <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirmDate} onCancel={hideDatePicker} minimumDate={currentDate} locale="es"/>
+              {selectedDate && (
+                <TextInput label="Fecha Seleccionada" mode="outlined" value={`${formatSelectedDate()}`} editable={false} style={styles.textInputDateTime} />
+              )}
+
+              <Button title="Seleccionar Horario" onPress={showTimePicker} style={styles.buttonSeleccionarFecha} />
+              <DateTimePickerModal isVisible={isTimePickerVisible} mode="time" onConfirm={handleConfirmTime} onCancel={hideTimePicker} is24Hour locale="es"/>
+
+              {selectedTime && (
+                <TextInput label="Horario Seleccionado" mode="outlined" value={`${formatSelectedTime()}`} editable={false} style={styles.textInputDateTime} />
+              )}
 
               <Button title="Crear Viaje" style={styles.buttonRegAuto} />
-            </View>
           </Surface>
         )}
       </Stack>
