@@ -34,7 +34,6 @@ function Perfil() {
             try {
                 const baseURL = await AsyncStorage.getItem("baseURL");
                 if (baseURL !== null) {
-                    console.log(baseURL);
                     setBaseURL(baseURL);
                 }
             } catch (error) {

@@ -26,7 +26,6 @@ function Registro() {
         const baseURL = await AsyncStorage.getItem("baseURL");
         if (baseURL !== null) {
           // Aquí puedes utilizar el valor de baseURL
-          console.log(baseURL);
           setBaseURL(baseURL);
         }
       } catch (error) {
