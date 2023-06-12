@@ -285,7 +285,7 @@ function Perfil() {
                             <Text style={styles.textTituloRegAuto}>Ingrese datos del vehiculo</Text>
                             <TextInput label="Patente" mode="outlined" placeholder="Patente del Vehiculo" value={patente} onChangeText={text => setPatente(text.toUpperCase())} maxLength={7} right={<TextInput.Affix text="/7" />} style={styles.textInputPatenteAuto} />
                             <View style={styles.PickerMarcaAuto}>
-                                <Picker selectedValue={marca} onValueChange={handleSeleccionarMarca} style={{ flex: 1 }}>
+                                <Picker selectedValue={marca} onValueChange={handleSeleccionarMarca} style={styles.PickerInput}>
                                     <Picker.Item label="Seleccione una marca" value="" />
                                     <Picker.Item label="Ford" value="Ford" />
                                     <Picker.Item label="Volkswagen" value="Volkswagen" />
@@ -296,7 +296,7 @@ function Perfil() {
                                 </Picker>
                             </View>
                             <View style={styles.PickerModeloAuto}>
-                                <Picker selectedValue={modelo} onValueChange={text => setModelo(text)} style={{ flex: 1 }} enabled={marca !== ''}>
+                                <Picker selectedValue={modelo} onValueChange={text => setModelo(text)} style={styles.PickerInput} enabled={marca !== ''}>
                                     <Picker.Item label="Seleccione un modelo" value="" />
                                     {modelosDisponibles.map((modeloDisponible, index) => (
                                         <Picker.Item key={index} label={modeloDisponible} value={modeloDisponible} />

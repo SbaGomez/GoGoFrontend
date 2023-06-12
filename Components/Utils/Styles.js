@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         width: '60%',
         maxWidth: "60%",
         minWidth: "30%",
-        height: 50,
+        height: 40,
         marginBottom: 15,
         display: 'flex',
         justifyContent: 'center',
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
                 width: '60%',
                 maxWidth: "60%",
                 minWidth: "30%",
-                height: 50,
+                height: 40,
                 marginBottom: 15,
                 display: 'flex',
                 justifyContent: 'center',
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         width: '60%',
         maxWidth: "60%",
         minWidth: "30%",
-        height: 50,
+        height: 40,
         marginBottom: 15,
         display: 'flex',
         justifyContent: 'center',
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
                 width: '60%',
                 maxWidth: "60%",
                 minWidth: "30%",
-                height: 50,
+                height: 40,
                 marginBottom: 15,
                 display: 'flex',
                 justifyContent: 'center',
@@ -693,9 +693,9 @@ const styles = StyleSheet.create({
         width: '60%',
         maxWidth: "60%",
         minWidth: "30%",
-        height: 50,
+        height: 40,
         marginTop: 15,
-        marginBottom: 15,
+        marginBottom: 10,
         display: 'flex',
         justifyContent: 'center',
         ...Platform.select({
@@ -703,7 +703,7 @@ const styles = StyleSheet.create({
                 width: '60%',
                 maxWidth: "60%",
                 minWidth: "30%",
-                height: 50,
+                height: 40,
                 marginBottom: 15,
                 display: 'flex',
                 justifyContent: 'center',
@@ -723,6 +723,12 @@ const styles = StyleSheet.create({
             },
         }),
     },
+
+    PickerInput: {
+        height: 40,
+        paddingLeft: 10,
+        flex: 1
+    }
 
 });
 

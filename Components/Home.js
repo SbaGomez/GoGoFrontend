@@ -21,8 +21,7 @@ function Home() {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const currentDate = new Date();
 
-
-  // variables Buscar Viajes
+  //Variables Buscar Viajes
   const [ubicacion, setUbicacion] = useState("");
 
   // Font propia
@@ -190,7 +189,7 @@ function Home() {
           <Surface elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
             <Text style={styles.textTituloBuscarViajes}>Buscar Viajes</Text>
             <View style={styles.PickerUbicacion}>
-              <Picker selectedValue={ubicacion} onValueChange={handleSeleccionarUbicacion} style={{ flex: 1 }}>
+              <Picker selectedValue={ubicacion} onValueChange={handleSeleccionarUbicacion} style={styles.PickerInput}>
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
                 <Picker.Item label="Pinamar" value="Pinamar" />
                 <Picker.Item label="Mar Azul" value="Mar Azul" />
