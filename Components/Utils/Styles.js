@@ -821,7 +821,7 @@ const styles = StyleSheet.create({
 
       textSubTitulo: {
         marginTop: 20,
-        fontSize: 18,
+        fontSize: 22,
         fontFamily: 'BebasNeue',
       }
 
