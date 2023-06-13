@@ -214,12 +214,14 @@ function Home() {
             </View>
 
             <View style={styles.viewSwitchUbicacion}>
-              <View style={styles.viewSwitchIda}><Text>Ida</Text></View>
+              <View style={styles.viewSwitchIda}><Text style={styles.textFont20}>Ida</Text></View>
               <Switch trackColor={{ false: '#767577', true: '#81b0ff' }} thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'} ios_backgroundColor="#3e3e3e" onValueChange={toggleSwitch} value={isEnabled} />
-              <View style={styles.viewSwitchVuelta}><Text>Vuelta</Text></View>
+              <View style={styles.viewSwitchVuelta}><Text style={styles.textFont20}>Vuelta</Text></View>
             </View>
 
-            <View style={styles.PickerTurno}>
+            <Text style={styles.textSubTitulo}>Ubicacion inicio</Text>
+
+            <View style={styles.ViewUbicacion}>
               <Picker selectedValue={isEnabled ? "UADE" : inicio} onValueChange={handleSeleccionarInicio} enabled={!isEnabled} style={styles.PickerInput} >
                 {!isEnabled ? null : <Picker.Item label="UADE" value="UADE" />}
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
@@ -233,7 +235,9 @@ function Home() {
               </Picker>
             </View>
 
-            <View style={styles.PickerTurno}>
+            <Text style={styles.textSubTitulo}>Ubicacion Destino</Text>
+
+            <View style={styles.ViewUbicacion}>
               <Picker selectedValue={!isEnabled ? "UADE" : destino} onValueChange={handleSeleccionarDestino} enabled={isEnabled} style={styles.PickerInput}>
                 {isEnabled ? null : <Picker.Item label="UADE" value="UADE" />}
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
