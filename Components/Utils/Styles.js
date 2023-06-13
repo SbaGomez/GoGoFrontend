@@ -689,6 +689,40 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
+    PickerTurno: {
+        width: '60%',
+        maxWidth: "50%",
+        minWidth: "30%",
+        height: 40,
+        marginTop: 20,
+        display: 'flex',
+        justifyContent: 'center',
+        ...Platform.select({
+            android: {
+                width: '60%',
+                maxWidth: "60%",
+                minWidth: "30%",
+                height: 40,
+                marginBottom: 15,
+                display: 'flex',
+                justifyContent: 'center',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: 'gray',
+                backgroundColor: 'white',
+            },
+            ios: {
+                width: '80%',
+                maxWidth: "70%",
+                minWidth: "70%",
+                height: 200,
+                marginTop: -10,
+                display: 'flex',
+                justifyContent: 'center'
+            },
+        }),
+    },
+
     PickerUbicacion: {
         width: '60%',
         maxWidth: "60%",
@@ -728,7 +762,26 @@ const styles = StyleSheet.create({
         height: 40,
         paddingLeft: 10,
         flex: 1
-    }
+    },
+
+    viewSwitchUbicacion: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+      },
+      
+      viewSwitchIda: {
+        marginRight: 25,
+        fontSize: 20,
+        fontFamily: 'BebasNeue',
+      },
+      
+      viewSwitchVuelta: {
+        marginLeft: 25,
+        fontSize: 20,
+        fontFamily: 'BebasNeue',
+      },
 
 });
 

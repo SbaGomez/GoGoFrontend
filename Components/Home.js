@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Text } from "@react-native-material/core";
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Switch } from 'react-native';
 import { TextInput } from "react-native-paper";
 import * as Font from 'expo-font';
 import styles from './Utils/Styles';
@@ -23,6 +23,13 @@ function Home() {
 
   //Variables Buscar Viajes
   const [ubicacion, setUbicacion] = useState("");
+  const [turno, setTurno] = useState("");
+  const [inicio, setInicio] = useState("");
+  const [destino, setDestino] = useState("");
+
+  //Variables Switch
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   // Font propia
   const loadFontAsync = async () => {
@@ -67,6 +74,22 @@ function Home() {
   useEffect(() => {
     loadFontAsync();
   }, []);
+
+
+  //Funcion Destino a Seleccionar
+  const handleSeleccionarInicio = (inicioSeleccionado) => {
+    setInicio(inicioSeleccionado);
+  };
+
+  //Funcion Inicio a Seleccionar
+  const handleSeleccionarDestino = (destinoSeleccionado) => {
+    setDestino(destinoSeleccionado);
+  };
+
+  //Funcion Turno a Seleccionar
+  const handleSeleccionarTurno = (turnoSeleccionado) => {
+    setTurno(turnoSeleccionado);
+  };
 
   //Funcion Ubicacion a Seleccionar
   const handleSeleccionarUbicacion = (ubicacionSeleccionada) => {
@@ -180,6 +203,49 @@ function Home() {
             {selectedTime && (
               <TextInput label="Horario Seleccionado" mode="outlined" value={`${formatSelectedTime()}`} editable={false} style={styles.textInputDateTime} />
             )}
+
+            <View style={styles.PickerTurno}>
+              <Picker selectedValue={turno} onValueChange={handleSeleccionarTurno} style={styles.PickerInput}>
+                <Picker.Item label="Seleccione un turno" value="" />
+                <Picker.Item label="Mañana" value="Mañana" />
+                <Picker.Item label="Tarde" value="Tarde" />
+                <Picker.Item label="Noche" value="Noche" />
+              </Picker>
+            </View>
+
+            <View style={styles.viewSwitchUbicacion}>
+              <View style={styles.viewSwitchIda}><Text>Ida</Text></View>
+              <Switch trackColor={{ false: '#767577', true: '#81b0ff' }} thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'} ios_backgroundColor="#3e3e3e" onValueChange={toggleSwitch} value={isEnabled} />
+              <View style={styles.viewSwitchVuelta}><Text>Vuelta</Text></View>
+            </View>
+
+            <View style={styles.PickerTurno}>
+              <Picker selectedValue={isEnabled ? "UADE" : inicio} onValueChange={handleSeleccionarInicio} enabled={!isEnabled} style={styles.PickerInput} >
+                {!isEnabled ? null : <Picker.Item label="UADE" value="UADE" />}
+                <Picker.Item label="Villa Gesell" value="Villa Gesell" />
+                <Picker.Item label="Pinamar" value="Pinamar" />
+                <Picker.Item label="Mar Azul" value="Mar Azul" />
+                <Picker.Item label="Seleccione ubicacion de Inicio" value="" />
+                <Picker.Item label="Carilo" value="Carilo" />
+                <Picker.Item label="Mar de las Pampas" value="Mar de las Pampas" />
+                <Picker.Item label="Ostende" value="Ostende" />
+                <Picker.Item label="Valeria" value="Valeria" />
+              </Picker>
+            </View>
+
+            <View style={styles.PickerTurno}>
+              <Picker selectedValue={!isEnabled ? "UADE" : destino} onValueChange={handleSeleccionarDestino} enabled={isEnabled} style={styles.PickerInput}>
+                {isEnabled ? null : <Picker.Item label="UADE" value="UADE" />}
+                <Picker.Item label="Villa Gesell" value="Villa Gesell" />
+                <Picker.Item label="Pinamar" value="Pinamar" />
+                <Picker.Item label="Mar Azul" value="Mar Azul" />
+                <Picker.Item label="Seleccione ubicacion de destino" value="" />
+                <Picker.Item label="Carilo" value="Carilo" />
+                <Picker.Item label="Mar de las Pampas" value="Mar de las Pampas" />
+                <Picker.Item label="Ostende" value="Ostende" />
+                <Picker.Item label="Valeria" value="Valeria" />
+              </Picker>
+            </View>
 
             <Button title="Crear Viaje" style={styles.buttonRegAuto} />
           </Surface>

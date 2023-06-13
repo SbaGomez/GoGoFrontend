@@ -112,8 +112,7 @@ function Perfil() {
                 }
             }
         };
-        if(baseURL != null)
-        {
+        if (baseURL != null) {
             getUserByEmail();
         }
         loadFontAsync();
