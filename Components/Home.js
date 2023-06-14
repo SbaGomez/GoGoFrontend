@@ -33,6 +33,9 @@ function Home() {
   const [inicio, setInicio] = useState('UADE');
   const [destino, setDestino] = useState('UADE');
 
+  //point
+  const [point, setPoint] = useState(true);
+
   //Variables Switch
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -100,6 +103,27 @@ function Home() {
     formatSelectedDateTime();
   }, [selectedDate, selectedTime]);
 
+  useEffect(() => {
+    async function enableOrFalse() {
+      try {
+        if(isEnabled){
+          setDestino("UADE");
+          //console.log("DESTINO: " + destino)
+          setPoint(true);
+        }
+        else{
+          setInicio("UADE");
+          //console.log("INICIO: " + inicio)
+          setPoint(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    enableOrFalse();
+  }, [point]);
+
   // Funcion para las validaciones
   const validarFormulario = async () => {
     let erroresTemp = [];
@@ -130,6 +154,7 @@ function Home() {
 
     setErrores(erroresTemp);
 
+    setPoint(false);
     return erroresTemp;
   }
 
@@ -142,13 +167,13 @@ function Home() {
 
   const handleCrearViaje = async (event) => {
     event.preventDefault();
-    console.log("Horario: " + horarioSalida);
-    console.log("Destino: " + destino);
-    console.log("Inicio: " + inicio);
+    /*console.log("Horario: " + horarioSalida);
     console.log("Turno: " + turno);
+    console.log("Inicio: " + inicio);
+    console.log("Destino: " + destino);*/
 
     const erroresFormulario = await validarFormulario();
-    console.log(erroresFormulario);
+    console.log("Errores: " + erroresFormulario);
     if (erroresFormulario.length == 0) {
       try {
         const id = user.id;
@@ -166,7 +191,7 @@ function Home() {
     }
     else {
       // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
-      console.log("error crearviaje 02");
+      //console.log("error crearviaje 02");
     }
   };
 
@@ -208,7 +233,8 @@ function Home() {
       setMostrarBuscarViajes(false);
     }
     else {
-      handleBotonCrearViaje();
+      setMostrarCrearViaje(false);
+      setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
       setMostrarBuscarViajes(true);
     }
   };
@@ -287,6 +313,7 @@ function Home() {
               <TextInput label="Horario Seleccionado" mode="outlined" value={`${formatSelectedTime()}`} editable={false} style={styles.textInputDateTime} />
             )}
 
+            <Text style={styles.textSubTitulo}>Seleccionar turno</Text>
             <View style={styles.PickerTurno}>
               <Picker selectedValue={turno} onValueChange={handleSeleccionarTurno} style={styles.PickerInput}>
                 <Picker.Item label="Seleccione un turno" value="" />
@@ -303,7 +330,6 @@ function Home() {
             </View>
 
             <Text style={styles.textSubTitulo}>Ubicacion inicio</Text>
-
             <View style={styles.ViewUbicacion}>
               <Picker selectedValue={isEnabled ? "UADE" : inicio} onValueChange={handleSeleccionarInicio} enabled={!isEnabled} style={styles.PickerInput} >
                 {!isEnabled ? null : <Picker.Item label="UADE" value="UADE" />}
@@ -319,7 +345,6 @@ function Home() {
             </View>
 
             <Text style={styles.textSubTitulo}>Ubicacion Destino</Text>
-
             <View style={styles.ViewUbicacion}>
               <Picker selectedValue={!isEnabled ? "UADE" : destino} onValueChange={handleSeleccionarDestino} enabled={isEnabled} style={styles.PickerInput}>
                 {isEnabled ? null : <Picker.Item label="UADE" value="UADE" />}
