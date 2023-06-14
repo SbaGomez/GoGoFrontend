@@ -96,6 +96,7 @@ function Perfil() {
             try {
                 const response = await axios.get(baseURL + `/user/email/${email}`);
                 setUser(response.data);
+                await AsyncStorage.setItem("baseUser", JSON.stringify(response.data.user));
                 console.log(response.data);
                 setIsLoading(false);
 
