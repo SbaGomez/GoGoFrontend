@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class App extends Component {
   componentDidMount() {
     async function setBaseURL() {
-      const baseURL = "http://192.168.1.100:8282";
+      const baseURL = "http://192.168.151.58:8282";
       await AsyncStorage.setItem("baseURL", baseURL);
     }
     setBaseURL();
