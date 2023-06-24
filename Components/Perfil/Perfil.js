@@ -26,6 +26,25 @@ function Perfil() {
     const [errores, setErrores] = useState([]);
     const [modelosDisponibles, setModelosDisponibles] = useState([]);
     const [mostrarCancelarAuto, setMostrarCancelarAuto] = useState(false);
+    const [isLogged, setIsLogged] = useState(false);
+
+    //Obtener isLogged
+    useEffect(() => {
+        async function obtenerStateLogged() {
+            try {
+                const baseIsLogged = await AsyncStorage.getItem("isLogged");
+                if (baseIsLogged !== null) {
+                    const parsedIsLogged = JSON.parse(baseIsLogged); // Parsear el valor obtenido de AsyncStorage a booleano
+                    setIsLogged(parsedIsLogged);
+                    console.log("isLogged Perfil: " + isLogged);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        obtenerStateLogged();
+    }, [baseURL]);
 
     //Obtener baseURL
     useEffect(() => {
