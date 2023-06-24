@@ -280,6 +280,8 @@ function Home() {
       setMostrarBuscarViajes(false);
       setMostrarCrearViaje(true);
       setViajes(null);
+      setCantidadMostrada(5);
+      setCantidadAgregada(5);
     }
   };
 
@@ -293,6 +295,8 @@ function Home() {
       setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
       setMostrarBuscarViajes(true);
       setViajes(null);
+      setCantidadMostrada(5);
+      setCantidadAgregada(5);
     }
   };
 
@@ -345,6 +349,18 @@ function Home() {
 
     return '';
   };
+
+  //Variables para boton Mostrar Mas Viajes
+  const [cantidadMostrada, setCantidadMostrada] = useState(5);
+  const [cantidadAgregada, setCantidadAgregada] = useState(5);
+  let viajesMostrados = [];
+  let quedanViajesPorMostrar = false;
+
+  if (viajes) {
+    viajesMostrados = viajes.slice(0, cantidadMostrada);
+    quedanViajesPorMostrar = cantidadMostrada < viajes.length;
+  }
+
 
   return (
     <ScrollView>
@@ -464,7 +480,7 @@ function Home() {
         )}
 
 
-        {viajes && viajes.map((item) => (
+        {viajes && viajesMostrados.map((item) => (
           <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViajes}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
@@ -481,6 +497,8 @@ function Home() {
             </View>
           </Surface>
         ))}
+
+        {quedanViajesPorMostrar && <Button title="Mostrar más" onPress={() => setCantidadMostrada(cantidadMostrada + cantidadAgregada)} style={{ width: 150, marginTop: 15, marginBottom: 20, backgroundColor: '#ffae00' }}/>}
 
       </Stack>
 
@@ -499,7 +517,7 @@ function Home() {
           </View>
         </Modal>
       </View>
-    </ScrollView>
+    </ScrollView >
   );
 }
 
