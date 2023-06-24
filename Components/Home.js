@@ -27,8 +27,8 @@ function Home() {
   const [user, setUser] = useState(null);
 
   //Variables Viajes
-  const [ubicacionInicioBuscarViaje, setUbicacionInicioBuscarViaje] = useState("");
-  const [ubicacionDestinoBuscarViaje, setUbicacionDestinoBuscarViaje] = useState("");
+  const [ubicacionInicioBuscarViaje, setUbicacionInicioBuscarViaje] = useState("UADE");
+  const [ubicacionDestinoBuscarViaje, setUbicacionDestinoBuscarViaje] = useState("UADE");
   const [horarioSalida, setHorarioSalida] = useState("");
   const [turno, setTurno] = useState("");
   const [inicio, setInicio] = useState('UADE');
@@ -40,7 +40,9 @@ function Home() {
 
   //Variables Switch
   const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabledBuscar, setIsEnabledBuscar] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const toggleSwitchBuscar = () => setIsEnabledBuscar(previousState => !previousState);
 
   // Font propia
   const loadFontAsync = async () => {
@@ -108,13 +110,15 @@ function Home() {
   useEffect(() => {
     async function enableOrFalse() {
       try {
-        if (isEnabled) {
+        if (isEnabled || isEnabledBuscar) {
           setDestino("UADE");
+          setUbicacionDestinoBuscarViaje("UADE");
           //console.log("DESTINO: " + destino)
           setPoint(true);
         }
         else {
           setInicio("UADE");
+          setUbicacionInicioBuscarViaje("UADE");
           //console.log("INICIO: " + inicio)
           setPoint(true);
         }
@@ -227,7 +231,7 @@ function Home() {
         setViajes(response.data);
         console.log(response.data)
         // Reiniciamos los estados
-        setMostrarBuscarViajes(false); setUbicacionInicioBuscarViaje(""); setUbicacionDestinoBuscarViaje("");
+        setMostrarBuscarViajes(false); setUbicacionInicioBuscarViaje("UADE"); setUbicacionDestinoBuscarViaje("UADE");
       } catch (error) {
         // Aquí puedes manejar el error
         if (error.response && error.response.data === "No se encontraron viajes") {
@@ -420,14 +424,20 @@ function Home() {
           <Surface onSubmit={handleBuscarViajes} elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
             <Text style={styles.textTituloBuscarViajes}>Buscar Viajes</Text>
 
+            <View style={styles.viewSwitchUbicacion}>
+              <View style={styles.viewSwitchIda}><Text style={styles.textFont20}>Ida</Text></View>
+              <Switch trackColor={{ false: '#767577', true: '#81b0ff' }} thumbColor={isEnabledBuscar ? '#f5dd4b' : '#f4f3f4'} ios_backgroundColor="#3e3e3e" onValueChange={toggleSwitchBuscar} value={isEnabledBuscar} />
+              <View style={styles.viewSwitchVuelta}><Text style={styles.textFont20}>Vuelta</Text></View>
+            </View>
+
             <Text style={styles.textSubTitulo}>Ubicacion inicio</Text>
             <View style={styles.PickerUbicacion}>
-              <Picker selectedValue={ubicacionInicioBuscarViaje} onValueChange={handleSeleccionarUbicacionInicioBusqueda} style={styles.PickerInput}>
+              <Picker selectedValue={isEnabledBuscar ? "UADE" : ubicacionInicioBuscarViaje} onValueChange={handleSeleccionarUbicacionInicioBusqueda} style={styles.PickerInput}>
+                {!isEnabledBuscar ? null : <Picker.Item label="UADE" value="UADE" />}
+                <Picker.Item label="Seleccione una ubicacion" value="" />
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
                 <Picker.Item label="Pinamar" value="Pinamar" />
-                <Picker.Item label="UADE" value="UADE" />
                 <Picker.Item label="Mar Azul" value="Mar Azul" />
-                <Picker.Item label="Seleccione una ubicacion" value="" />
                 <Picker.Item label="Carilo" value="Carilo" />
                 <Picker.Item label="Mar de las Pampas" value="Mar de las Pampas" />
                 <Picker.Item label="Ostende" value="Ostende" />
@@ -437,12 +447,12 @@ function Home() {
 
             <Text style={styles.textSubTitulo}>Ubicacion Destino</Text>
             <View style={styles.PickerUbicacion}>
-              <Picker selectedValue={ubicacionDestinoBuscarViaje} onValueChange={handleSeleccionarUbicacionDestinoBusqueda} style={styles.PickerInput}>
+              <Picker selectedValue={!isEnabledBuscar ? "UADE" : ubicacionDestinoBuscarViaje} onValueChange={handleSeleccionarUbicacionDestinoBusqueda} style={styles.PickerInput}>
+                {isEnabledBuscar ? null : <Picker.Item label="UADE" value="UADE" />}
+                <Picker.Item label="Seleccione una ubicacion" value="" />
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
                 <Picker.Item label="Pinamar" value="Pinamar" />
-                <Picker.Item label="UADE" value="UADE" />
                 <Picker.Item label="Mar Azul" value="Mar Azul" />
-                <Picker.Item label="Seleccione una ubicacion" value="" />
                 <Picker.Item label="Carilo" value="Carilo" />
                 <Picker.Item label="Mar de las Pampas" value="Mar de las Pampas" />
                 <Picker.Item label="Ostende" value="Ostende" />
@@ -456,20 +466,20 @@ function Home() {
 
         {viajes && viajes.map((item) => (
           <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViajes}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <View style={{ flex: 1 }}>
-            <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text> 
-            <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text> 
-            <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text> 
-            <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text> 
-            <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text> 
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
+                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
+                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
+                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
+                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} />
+                <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} />
+              </View>
             </View>
-            <View style={{ alignItems: 'center' }}>
-            <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} />
-            <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} />
-            </View>
-          </View>
-        </Surface>
+          </Surface>
         ))}
 
       </Stack>
