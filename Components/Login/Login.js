@@ -20,7 +20,6 @@ function Login() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-
   //Obtener baseURL
   useEffect(() => {
     async function obtenerBaseURL() {
@@ -91,7 +90,10 @@ function Login() {
           email: email,
           clave: clave
         });
+        const isLogged = true;
         const token = response.data;
+        //console.log(token)
+        await AsyncStorage.setItem("isLogged", JSON.stringify(isLogged));
         await AsyncStorage.setItem("token", token);
         await AsyncStorage.setItem("email", email);
         navigation.navigate('Perfil', { email: email });
