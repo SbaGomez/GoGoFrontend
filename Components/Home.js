@@ -498,7 +498,7 @@ function Home() {
           </Surface>
         ))}
 
-        {quedanViajesPorMostrar && <Button title="Mostrar más" onPress={() => setCantidadMostrada(cantidadMostrada + cantidadAgregada)} style={{ width: 150, marginTop: 15, marginBottom: 20, backgroundColor: '#ffae00' }}/>}
+        {quedanViajesPorMostrar && <Button title="Mostrar más" onPress={() => setCantidadMostrada(cantidadMostrada + cantidadAgregada)} style={{ width: 150, marginTop: 15, marginBottom: 20, backgroundColor: '#198c4e' }}/>}
 
       </Stack>
 
