@@ -448,7 +448,7 @@ function Home() {
 
             <Text style={styles.textSubTitulo}>Ubicacion inicio</Text>
             <View style={styles.PickerUbicacion}>
-              <Picker selectedValue={isEnabledBuscar ? "UADE" : ubicacionInicioBuscarViaje} onValueChange={handleSeleccionarUbicacionInicioBusqueda} style={styles.PickerInput}>
+              <Picker selectedValue={isEnabledBuscar ? "UADE" : ubicacionInicioBuscarViaje} onValueChange={handleSeleccionarUbicacionInicioBusqueda} enabled={!isEnabledBuscar} style={styles.PickerInput}>
                 {!isEnabledBuscar ? null : <Picker.Item label="UADE" value="UADE" />}
                 <Picker.Item label="Seleccione una ubicacion" value="" />
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
@@ -463,7 +463,7 @@ function Home() {
 
             <Text style={styles.textSubTitulo}>Ubicacion Destino</Text>
             <View style={styles.PickerUbicacion}>
-              <Picker selectedValue={!isEnabledBuscar ? "UADE" : ubicacionDestinoBuscarViaje} onValueChange={handleSeleccionarUbicacionDestinoBusqueda} style={styles.PickerInput}>
+              <Picker selectedValue={!isEnabledBuscar ? "UADE" : ubicacionDestinoBuscarViaje} onValueChange={handleSeleccionarUbicacionDestinoBusqueda} enabled={isEnabledBuscar} style={styles.PickerInput}>
                 {isEnabledBuscar ? null : <Picker.Item label="UADE" value="UADE" />}
                 <Picker.Item label="Seleccione una ubicacion" value="" />
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
