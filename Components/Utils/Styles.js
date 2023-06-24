@@ -793,6 +793,12 @@ const styles = StyleSheet.create({
         }),
     },
 
+    textBuscarViajesHome: {
+        textAlign: 'left',
+        fontSize: 17,
+        marginBottom: 5
+    },
+
     PickerInput: {
         height: 40,
         paddingLeft: 10,
@@ -804,26 +810,26 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 20,
-      },
-      
-      viewSwitchIda: {
-        marginRight: 25,
-      },
-      
-      viewSwitchVuelta: {
-        marginLeft: 25,
-      },
+    },
 
-      textFont20: {
+    viewSwitchIda: {
+        marginRight: 25,
+    },
+
+    viewSwitchVuelta: {
+        marginLeft: 25,
+    },
+
+    textFont20: {
         fontSize: 20,
         fontFamily: 'BebasNeue',
-      },
+    },
 
-      textSubTitulo: {
+    textSubTitulo: {
         marginTop: 20,
         fontSize: 22,
         fontFamily: 'BebasNeue',
-      }
+    }
 
 });
 
