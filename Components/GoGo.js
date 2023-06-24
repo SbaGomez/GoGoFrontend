@@ -71,22 +71,6 @@ function TabNavigator() {
           )
         }}
       />
-      {/* <Tab.Screen name="Config" component={ConfiguracionScreen}
-        options={{
-          tabBarLabel: 'Configuracion',
-          tabBarShowLabel: false,
-          tabBarLabelStyle: { color: '#ccc' },
-          tabBarIcon: ({ color, size }) => (<AntDesign name="setting" size={26} color="white" />),
-          headerShown: true,
-          headerBackTitleVisible: false,
-          headerBackVisible: true,
-          headerLeft: () => (
-            <TouchableOpacity onPress={goBack} style={{ marginTop: 25, marginLeft: 15, height: 100, height: 64, lineHeight: 64 }}>
-              <FontAwesome name="arrow-left" size={30} color="#474545" />
-            </TouchableOpacity>
-          )
-        }}
-      /> */}
       <Tab.Screen name="Registro" component={RegistroScreen}
         options={{
           tabBarLabel: 'Registro',
