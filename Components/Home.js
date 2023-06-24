@@ -154,6 +154,10 @@ function Home() {
       erroresTemp.push('Por favor, seleccione un horario.');
     }
 
+    if (user.auto === null) {
+      erroresTemp.push('Para crear un viaje necesitas declarar un vehiculo.');
+    }
+
     setErrores(erroresTemp);
 
     setPoint(false);
@@ -451,18 +455,18 @@ function Home() {
 
 
         {viajes && viajes.map((item) => (
-          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViajes}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={{ flex: 1 }}>
-            <Text style={styles.textBuscarViajesHome}>Fecha: {new Date(item.horarioSalida).toLocaleDateString()}</Text>
-            <Text style={styles.textBuscarViajesHome}>Hora: {new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-            <Text style={styles.textBuscarViajesHome}>Turno: {item.turno}</Text>
-            <Text style={styles.textBuscarViajesHome}>Inicio: {item.ubicacionInicio}</Text>
-            <Text style={styles.textBuscarViajesHome}>Destino: {item.ubicacionDestino}</Text>
+            <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text> 
+            <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text> 
+            <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text> 
+            <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text> 
+            <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text> 
             </View>
             <View style={{ alignItems: 'center' }}>
-            <Button title="Ver viaje" style={{ width: 150, marginLeft: 100, alignSelf: 'flex-end' }} />
-            <Button title="Sumarse" style={{ width: 150, marginLeft: 100, marginTop: 15, alignSelf: 'flex-end', backgroundColor: '#2DCCE9' }} />
+            <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} />
+            <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} />
             </View>
           </View>
         </Surface>
