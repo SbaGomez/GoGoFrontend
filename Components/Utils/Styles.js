@@ -793,10 +793,57 @@ const styles = StyleSheet.create({
         }),
     },
 
+    surfaceViewViajes: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+        marginTop: 20,
+        padding: 20,
+        width: 400
+    },
+
     textBuscarViajesHome: {
         textAlign: 'left',
+        fontSize: 18,
+        marginBottom: 5,
+        color: '#7c7a7a'
+    },
+
+    textInicioBuscarViajesHome: {
+        textAlign: 'left',
+        fontSize: 18,
+        marginBottom: 5,
+        color: 'black',
+        textDecorationLine: 'underline'
+    },
+
+    textDestinoBuscarViajesHome: {
+        textAlign: 'left',
+        fontSize: 18,
+        marginBottom: 5,
+        color: 'black',
+        textDecorationLine: 'underline'
+    },
+
+    textFechaBuscarViajesHome: {
+        textAlign: 'left',
         fontSize: 17,
-        marginBottom: 5
+        marginBottom: 5,
+        color: '#229155'
+    },
+
+    textHoraBuscarViajesHome: {
+        textAlign: 'left',
+        fontSize: 17,
+        marginBottom: 5,
+        color: '#22568e'
+    },
+
+    textTurnoBuscarViajesHome: {
+        textAlign: 'left',
+        fontSize: 17,
+        marginBottom: 5,
+        color: '#4f4e4e'
     },
 
     PickerInput: {
