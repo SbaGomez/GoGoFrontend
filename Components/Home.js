@@ -27,11 +27,13 @@ function Home() {
   const [user, setUser] = useState(null);
 
   //Variables Viajes
-  const [ubicacionBuscarViaje, setUbicacionBuscarViaje] = useState("");
+  const [ubicacionInicioBuscarViaje, setUbicacionInicioBuscarViaje] = useState("");
+  const [ubicacionDestinoBuscarViaje, setUbicacionDestinoBuscarViaje] = useState("");
   const [horarioSalida, setHorarioSalida] = useState("");
   const [turno, setTurno] = useState("");
   const [inicio, setInicio] = useState('UADE');
   const [destino, setDestino] = useState('UADE');
+  const [viajes, setViajes] = useState(null);
 
   //point
   const [point, setPoint] = useState(true);
@@ -106,12 +108,12 @@ function Home() {
   useEffect(() => {
     async function enableOrFalse() {
       try {
-        if(isEnabled){
+        if (isEnabled) {
           setDestino("UADE");
           //console.log("DESTINO: " + destino)
           setPoint(true);
         }
-        else{
+        else {
           setInicio("UADE");
           //console.log("INICIO: " + inicio)
           setPoint(true);
@@ -158,6 +160,22 @@ function Home() {
     return erroresTemp;
   }
 
+  const validarFormularioBuscar = async () => {
+    let erroresTemp = [];
+
+    if (!ubicacionInicioBuscarViaje) {
+      erroresTemp.push('Por favor, seleccione ubicacion de inicio.');
+    }
+
+    if (!ubicacionDestinoBuscarViaje) {
+      erroresTemp.push('Por favor, seleccione ubicacion de destino.');
+    }
+    setErrores(erroresTemp);
+
+    setPoint(false);
+    return erroresTemp;
+  }
+
   // Funcion para saber cuando abrir el modal
   useEffect(() => {
     if (errores.length > 0) {
@@ -173,7 +191,7 @@ function Home() {
     console.log("Destino: " + destino);*/
 
     const erroresFormulario = await validarFormulario();
-    console.log("Errores: " + erroresFormulario);
+    //console.log("Errores: " + erroresFormulario);
     if (erroresFormulario.length == 0) {
       try {
         const id = user.id;
@@ -182,7 +200,7 @@ function Home() {
         });
         console.log("ViajeCreado: " + "ID: " + response.data.id + " Horario: " + response.data.horarioSalida + " Turno: " + response.data.turno + " Inicio: " + response.data.inicio + " Destino: " + response.data.destino)
         // Reiniciamos los estados
-        setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
+        setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null); setSelectedTime(null);
       } catch (error) {
         // Aquí puedes manejar el error
         console.error(error);
@@ -191,7 +209,32 @@ function Home() {
     }
     else {
       // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
-      //console.log("error crearviaje 02");
+      console.log("error crearviaje 02");
+    }
+  };
+
+  const handleBuscarViajes = async (event) => {
+    event.preventDefault();
+    const erroresFormulario = await validarFormularioBuscar();
+    //console.log("Errores: " + erroresFormulario);
+    if (erroresFormulario.length == 0) {
+      try {
+        const response = await axios.get(baseURL + `/viaje/buscarUbicacion/${ubicacionInicioBuscarViaje}/${ubicacionDestinoBuscarViaje}`);
+        setViajes(response.data);
+        console.log(response.data)
+        // Reiniciamos los estados
+        setMostrarBuscarViajes(false); setUbicacionInicioBuscarViaje(""); setUbicacionDestinoBuscarViaje("");
+      } catch (error) {
+        // Aquí puedes manejar el error
+        if (error.response && error.response.data === "No se encontraron viajes") {
+          setErrores(["No se encontraron viajes."]);
+          setModalVisible(true);
+        }
+      }
+    }
+    else {
+      // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
+      console.log("error buscarviajes 02");
     }
   };
 
@@ -211,8 +254,12 @@ function Home() {
   };
 
   //Funcion Ubicacion a Seleccionar Busqueda
-  const handleSeleccionarUbicacionBusqueda = (ubicacionSeleccionada) => {
-    setUbicacionBuscarViaje(ubicacionSeleccionada);
+  const handleSeleccionarUbicacionInicioBusqueda = (ubicacionInicioSeleccionada) => {
+    setUbicacionInicioBuscarViaje(ubicacionInicioSeleccionada);
+  };
+
+  const handleSeleccionarUbicacionDestinoBusqueda = (ubicacionDestinoSeleccionada) => {
+    setUbicacionDestinoBuscarViaje(ubicacionDestinoSeleccionada);
   };
 
   //Funcion Boton Mostrar Crear Viajes
@@ -224,11 +271,12 @@ function Home() {
     else {
       setMostrarBuscarViajes(false);
       setMostrarCrearViaje(true);
+      setViajes(null);
     }
   };
 
   //Funcion Boton Mostrar Buscar Viajes
-  const handleBuscarViajes = () => {
+  const handleBotonBuscarViajes = () => {
     if (mostrarBuscarViajes) {
       setMostrarBuscarViajes(false);
     }
@@ -236,6 +284,7 @@ function Home() {
       setMostrarCrearViaje(false);
       setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
       setMostrarBuscarViajes(true);
+      setViajes(null);
     }
   };
 
@@ -294,7 +343,7 @@ function Home() {
       <Stack flex={1} center spacing={4} direction="column">
         <Surface elevation={4} category="medium" style={styles.surfaceHome}>
           <Button title="Crear Viaje" onPress={handleBotonCrearViaje} style={styles.buttonCrearViajes} />
-          <Button title="Buscar Viajes" onPress={handleBuscarViajes} style={styles.buttonBuscarViajes} />
+          <Button title="Buscar Viajes" onPress={handleBotonBuscarViajes} style={styles.buttonBuscarViajes} />
         </Surface>
         {mostrarCrearViaje && (
           <Surface onSubmit={handleCrearViaje} elevation={4} category="medium" style={styles.surfaceCrearViajes}>
@@ -364,12 +413,15 @@ function Home() {
         )}
 
         {mostrarBuscarViajes && (
-          <Surface elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
+          <Surface onSubmit={handleBuscarViajes} elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
             <Text style={styles.textTituloBuscarViajes}>Buscar Viajes</Text>
+
+            <Text style={styles.textSubTitulo}>Ubicacion inicio</Text>
             <View style={styles.PickerUbicacion}>
-              <Picker selectedValue={ubicacionBuscarViaje} onValueChange={handleSeleccionarUbicacionBusqueda} style={styles.PickerInput}>
+              <Picker selectedValue={ubicacionInicioBuscarViaje} onValueChange={handleSeleccionarUbicacionInicioBusqueda} style={styles.PickerInput}>
                 <Picker.Item label="Villa Gesell" value="Villa Gesell" />
                 <Picker.Item label="Pinamar" value="Pinamar" />
+                <Picker.Item label="UADE" value="UADE" />
                 <Picker.Item label="Mar Azul" value="Mar Azul" />
                 <Picker.Item label="Seleccione una ubicacion" value="" />
                 <Picker.Item label="Carilo" value="Carilo" />
@@ -378,9 +430,43 @@ function Home() {
                 <Picker.Item label="Valeria" value="Valeria" />
               </Picker>
             </View>
-            <Button title="Buscar Viajes" style={styles.buttonRegAuto} />
+
+            <Text style={styles.textSubTitulo}>Ubicacion Destino</Text>
+            <View style={styles.PickerUbicacion}>
+              <Picker selectedValue={ubicacionDestinoBuscarViaje} onValueChange={handleSeleccionarUbicacionDestinoBusqueda} style={styles.PickerInput}>
+                <Picker.Item label="Villa Gesell" value="Villa Gesell" />
+                <Picker.Item label="Pinamar" value="Pinamar" />
+                <Picker.Item label="UADE" value="UADE" />
+                <Picker.Item label="Mar Azul" value="Mar Azul" />
+                <Picker.Item label="Seleccione una ubicacion" value="" />
+                <Picker.Item label="Carilo" value="Carilo" />
+                <Picker.Item label="Mar de las Pampas" value="Mar de las Pampas" />
+                <Picker.Item label="Ostende" value="Ostende" />
+                <Picker.Item label="Valeria" value="Valeria" />
+              </Picker>
+            </View>
+            <Button title="Buscar Viajes" onPress={handleBuscarViajes} style={styles.buttonRegAuto} />
           </Surface>
         )}
+
+
+        {viajes && viajes.map((item) => (
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceBuscarViajes}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={{ flex: 1 }}>
+            <Text style={styles.textBuscarViajesHome}>Fecha: {new Date(item.horarioSalida).toLocaleDateString()}</Text>
+            <Text style={styles.textBuscarViajesHome}>Hora: {new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+            <Text style={styles.textBuscarViajesHome}>Turno: {item.turno}</Text>
+            <Text style={styles.textBuscarViajesHome}>Inicio: {item.ubicacionInicio}</Text>
+            <Text style={styles.textBuscarViajesHome}>Destino: {item.ubicacionDestino}</Text>
+            </View>
+            <View style={{ alignItems: 'center' }}>
+            <Button title="Ver viaje" style={{ width: 150, marginLeft: 100, alignSelf: 'flex-end' }} />
+            <Button title="Sumarse" style={{ width: 150, marginLeft: 100, marginTop: 15, alignSelf: 'flex-end', backgroundColor: '#2DCCE9' }} />
+            </View>
+          </View>
+        </Surface>
+        ))}
 
       </Stack>
 
