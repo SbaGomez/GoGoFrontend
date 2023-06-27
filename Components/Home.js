@@ -34,6 +34,8 @@ function Home() {
   const [inicio, setInicio] = useState('UADE');
   const [destino, setDestino] = useState('UADE');
   const [viajes, setViajes] = useState(null);
+  const [misViajes, setMisViajes] = useState(null);
+  const [verViaje, setVerViaje] = useState(null);
 
   //point
   const [point, setPoint] = useState(true);
@@ -202,9 +204,11 @@ function Home() {
     //console.log("Errores: " + erroresFormulario);
     if (erroresFormulario.length == 0) {
       try {
-        const id = user.id;
+        const user_id = user.id;
+        const auto_id = user.auto;
+        console.log(user_id + auto_id)
         const response = await axios.post(baseURL + "/viaje/addViaje", {
-          id, horarioSalida, turno, inicio, destino
+          user_id, auto_id , horarioSalida, turno, inicio, destino
         });
         console.log("ViajeCreado: " + "ID: " + response.data.id + " Horario: " + response.data.horarioSalida + " Turno: " + response.data.turno + " Inicio: " + response.data.inicio + " Destino: " + response.data.destino)
         // Reiniciamos los estados
@@ -246,6 +250,43 @@ function Home() {
     }
   };
 
+  const handleVerViaje = async (viajeId) => {
+    if (misViajes) {
+      setMisViajes(false);
+    }
+    try {
+      const response = await axios.get(baseURL + `/viaje/${viajeId}`);
+      setVerViaje(response.data);
+      console.log(response.data)
+    } catch (error) {
+      // Aquí puedes manejar el error
+      console.log(error);
+    }
+  }
+
+  const handleBotonBuscarMisViajes = async (event) => {
+    event.preventDefault();
+    const id = user.id;
+    if (verViaje) {
+      setVerViaje(null);
+    }
+    if (mostrarCrearViaje || mostrarBuscarViajes) {
+      setMostrarBuscarViajes(false);
+      setMostrarCrearViaje(false);
+    }
+    if (viajes) {
+      setViajes(null);
+    }
+    try {
+      const response = await axios.get(baseURL + `/viaje/buscarMisViajes/${id}`);
+      setMisViajes(response.data);
+      console.log(response.data)
+    } catch (error) {
+      // Aquí puedes manejar el error
+      console.log(error);
+    }
+  };
+
   //Funcion Inicio a Seleccionar
   const handleSeleccionarInicio = (inicioSeleccionado) => {
     setInicio(inicioSeleccionado);
@@ -272,6 +313,12 @@ function Home() {
 
   //Funcion Boton Mostrar Crear Viajes
   const handleBotonCrearViaje = () => {
+    if (misViajes) {
+      setMisViajes(false);
+    }
+    if (verViaje) {
+      setVerViaje(null);
+    }
     if (mostrarCrearViaje) {
       setMostrarCrearViaje(false);
       setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
@@ -287,6 +334,12 @@ function Home() {
 
   //Funcion Boton Mostrar Buscar Viajes
   const handleBotonBuscarViajes = () => {
+    if (misViajes) {
+      setMisViajes(false);
+    }
+    if (verViaje) {
+      setVerViaje(null);
+    }
     if (mostrarBuscarViajes) {
       setMostrarBuscarViajes(false);
     }
@@ -350,6 +403,21 @@ function Home() {
     return '';
   };
 
+  const handlerCerrarVerViaje = () => {
+    setVerViaje(null);
+  }
+
+  //Variables para boton Mostrar Mas MisViajes
+  const [cantidadMostradaMisViajes, setCantidadMostradaMisViajes] = useState(5);
+  const [cantidadAgregadaMisViajes, setCantidadAgregadaMisViajes] = useState(5);
+  let misViajesMostrados = [];
+  let quedanMisViajesPorMostrar = false;
+
+  if (misViajes) {
+    misViajesMostrados = misViajes.slice(0, cantidadMostradaMisViajes);
+    quedanMisViajesPorMostrar = cantidadMostradaMisViajes < misViajes.length;
+  }
+
   //Variables para boton Mostrar Mas Viajes
   const [cantidadMostrada, setCantidadMostrada] = useState(5);
   const [cantidadAgregada, setCantidadAgregada] = useState(5);
@@ -368,6 +436,7 @@ function Home() {
         <Surface elevation={4} category="medium" style={styles.surfaceHome}>
           <Button title="Crear Viaje" onPress={handleBotonCrearViaje} style={styles.buttonCrearViajes} />
           <Button title="Buscar Viajes" onPress={handleBotonBuscarViajes} style={styles.buttonBuscarViajes} />
+          <Button title="Mis Viajes" onPress={handleBotonBuscarMisViajes} style={styles.buttonBuscarMisViajes} />
         </Surface>
         {mostrarCrearViaje && (
           <Surface onSubmit={handleCrearViaje} elevation={4} category="medium" style={styles.surfaceCrearViajes}>
@@ -498,7 +567,51 @@ function Home() {
           </Surface>
         ))}
 
-        {quedanViajesPorMostrar && <Button title="Mostrar más" onPress={() => setCantidadMostrada(cantidadMostrada + cantidadAgregada)} style={{ width: 150, marginTop: 15, marginBottom: 20, backgroundColor: '#198c4e' }}/>}
+        {quedanViajesPorMostrar && <Button title="Mostrar más" onPress={() => setCantidadMostrada(cantidadMostrada + cantidadAgregada)} style={{ width: 150, marginTop: 15, marginBottom: 20, backgroundColor: '#198c4e' }} />}
+
+        {misViajes &&
+          <Surface elevation={4} category="medium" style={styles.surfaceTituloMisViajes}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={styles.textTituloBuscarMisViajes}>Mis Viajes</Text>
+            </View>
+          </Surface>
+        }
+
+        {misViajes && misViajesMostrados.map((item) => (
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViajes}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
+                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
+                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
+                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
+                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViaje(item.id)} />
+              </View>
+            </View>
+          </Surface>
+        ))}
+
+        {verViaje &&
+          <Surface elevation={4} category="medium" style={styles.surfaceViewViaje}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{user.nombre + " " + user.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.viaje.horarioSalida).toLocaleDateString()}</Text></Text>
+                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.viaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
+                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.viaje.turno}</Text></Text>
+                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.viaje.ubicacionInicio}</Text></Text>
+                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViaje.viaje.ubicacionDestino}</Text></Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViaje} />
+              </View>
+            </View>
+            <Text style={styles.textSubTitulo}>Pasajeros</Text>
+          </Surface>
+        }
 
       </Stack>
 

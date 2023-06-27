@@ -602,7 +602,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20,
         width: 600,
-        height: 170,
+        height: 260,
+        padding: 20
+    },
+
+    surfaceTituloMisViajes: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 20,
+        width: 400,
+        height: 100,
         padding: 20
     },
 
@@ -658,6 +667,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
+    buttonBuscarMisViajes: {
+        backgroundColor: '#edad0b',
+        width: '80%',
+        maxWidth: "40%",
+        minWidth: "30%",
+        height: 50,
+        marginTop: 15,
+        display: 'flex',
+        textAlign: 'center',
+        justifyContent: 'center'
+    },
+
     buttonSeleccionarFecha: {
         backgroundColor: '#0082ed',
         width: '80%',
@@ -682,6 +703,16 @@ const styles = StyleSheet.create({
     },
 
     textTituloBuscarViajes: {
+        width: '100%',
+        textAlign: 'center',
+        fontFamily: 'BebasNeue',
+        marginTop: 30,
+        fontSize: 45,
+        display: 'flex',
+        justifyContent: 'center'
+    },
+
+    textTituloBuscarMisViajes: {
         width: '100%',
         textAlign: 'center',
         fontFamily: 'BebasNeue',
@@ -800,6 +831,15 @@ const styles = StyleSheet.create({
         marginTop: 20,
         padding: 20,
         width: 400
+    },
+
+    surfaceViewViaje: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+        marginTop: 20,
+        padding: 20,
+        width: 450
     },
 
     textBuscarViajesHome: {
