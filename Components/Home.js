@@ -110,6 +110,7 @@ function Home() {
     formatSelectedDateTime();
   }, [selectedDate, selectedTime]);
 
+  //Actualizacion del campo ubicacion
   useEffect(() => {
     async function enableOrFalse() {
       try {
@@ -194,8 +195,10 @@ function Home() {
     }
   }, [errores]);
 
+  // Funcion para crear Viaje
   const handleCrearViaje = async (event) => {
     event.preventDefault();
+
     /*console.log("Horario: " + horarioSalida);
     console.log("Turno: " + turno);
     console.log("Inicio: " + inicio);
@@ -207,7 +210,6 @@ function Home() {
       try {
         const userId = user.id;
         const autoId = user.auto.id;
-        
         const response = await axios.post(baseURL + "/viaje/addViaje", {
           userId, autoId, horarioSalida, turno, inicio, destino
         });
@@ -215,17 +217,16 @@ function Home() {
         // Reiniciamos los estados
         setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null); setSelectedTime(null);
       } catch (error) {
-        // Aquí puedes manejar el error
         console.error(error);
         console.log("error crearviaje 01");
       }
     }
     else {
-      // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
       console.log("error crearviaje 02");
     }
   };
 
+  // Funcion para buscar viajes x ubicacion
   const handleBuscarViajes = async (event) => {
     event.preventDefault();
     const erroresFormulario = await validarFormularioBuscar();
@@ -234,7 +235,7 @@ function Home() {
       try {
         const response = await axios.get(baseURL + `/viaje/buscarUbicacion/${ubicacionInicioBuscarViaje}/${ubicacionDestinoBuscarViaje}`);
         setViajes(response.data);
-        console.log(response.data)
+        console.log(response.data);
         // Reiniciamos los estados
         setMostrarBuscarViajes(false); setUbicacionInicioBuscarViaje("UADE"); setUbicacionDestinoBuscarViaje("UADE");
       } catch (error) {
@@ -251,6 +252,34 @@ function Home() {
     }
   };
 
+  // Funcion para buscar mis viajes
+  const handleBotonBuscarMisViajes = async (event) => {
+    event.preventDefault();
+    if (verViajeSumarse) {
+      setVerViajeSumarse(false);
+    }
+    if (verViaje) {
+      setVerViaje(null);
+    }
+    if (mostrarCrearViaje || mostrarBuscarViajes) {
+      setMostrarBuscarViajes(false);
+      setMostrarCrearViaje(false);
+    }
+    if (viajes) {
+      setViajes(null);
+    }
+    try {
+      const id = user.id;
+      const response = await axios.get(baseURL + `/viaje/buscarMisViajes/${id}`);
+      setMisViajes(response.data);
+      console.log(response.data)
+    } catch (error) {
+      // Aquí puedes manejar el error
+      console.log(error);
+    }
+  };
+
+  // Funcion para ver el viaje x id
   const handleVerViaje = async (viajeId) => {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
@@ -262,6 +291,24 @@ function Home() {
       setUsersList([]);
       const response = await axios.get(baseURL + `/viaje/${viajeId}`);
       setVerViaje(response.data);
+      console.log(response.data);
+    } catch (error) {
+      // Aquí puedes manejar el error
+      console.log(error);
+      console.log("error verviaje 01");
+    }
+  }
+
+
+  // Funcion para ver el viaje x id
+  const handleVerViajeSumarse = async (viajeId) => {
+    if (viajes) {
+      setViajes(false);
+    }
+    try {
+      setUsersList([]);
+      const response = await axios.get(baseURL + `/viaje/${viajeId}`);
+      setVerViajeSumarse(response.data);
       console.log(response.data)
     } catch (error) {
       // Aquí puedes manejar el error
@@ -269,6 +316,7 @@ function Home() {
     }
   }
 
+  // Funcion para Sumarse al Viaje
   const handleSumarse = async (viajeId, userId) => {
     try {
       const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/joinViaje`);
@@ -286,6 +334,7 @@ function Home() {
     }
   }
 
+  // Funcion para eliminar un pasajero de tu viaje
   const handleBorrarPasajero = async (viajeId, userId) => {
     try {
       const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/leaveViaje`);
@@ -297,21 +346,7 @@ function Home() {
     }
   }
 
-  const handleVerViajeSumarse = async (viajeId) => {
-    if (viajes) {
-      setViajes(false);
-    }
-    try {
-      const response = await axios.get(baseURL + `/viaje/${viajeId}`);
-      setVerViajeSumarse(response.data);
-      console.log(response.data)
-    } catch (error) {
-      // Aquí puedes manejar el error
-      console.log(error);
-    }
-  }
-
-  // Suponiendo que verViajeSumarse.users es un array de IDs
+  // Funcion para enlistar los pasajeros
   const [usersList, setUsersList] = useState([]);
   const [ids, setIds] = useState([]);
 
@@ -343,32 +378,6 @@ function Home() {
     });
   }, [ids]);
 
-  const handleBotonBuscarMisViajes = async (event) => {
-    event.preventDefault();
-    const id = user.id;
-    if (verViajeSumarse) {
-      setVerViajeSumarse(false);
-    }
-    if (verViaje) {
-      setVerViaje(null);
-    }
-    if (mostrarCrearViaje || mostrarBuscarViajes) {
-      setMostrarBuscarViajes(false);
-      setMostrarCrearViaje(false);
-    }
-    if (viajes) {
-      setViajes(null);
-    }
-    try {
-      const response = await axios.get(baseURL + `/viaje/buscarMisViajes/${id}`);
-      setMisViajes(response.data);
-      console.log(response.data)
-    } catch (error) {
-      // Aquí puedes manejar el error
-      console.log(error);
-    }
-  };
-
   //Funcion Inicio a Seleccionar
   const handleSeleccionarInicio = (inicioSeleccionado) => {
     setInicio(inicioSeleccionado);
@@ -393,7 +402,7 @@ function Home() {
     setUbicacionDestinoBuscarViaje(ubicacionDestinoSeleccionada);
   };
 
-  //Funcion Boton Mostrar Crear Viajes
+  //Funcion Boton Mostrar View Crear Viajes
   const handleBotonCrearViaje = () => {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
@@ -417,7 +426,7 @@ function Home() {
     }
   };
 
-  //Funcion Boton Mostrar Buscar Viajes
+  //Funcion Boton Mostrar View Buscar Viajes
   const handleBotonBuscarViajes = () => {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
