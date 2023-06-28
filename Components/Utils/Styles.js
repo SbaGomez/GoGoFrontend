@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
         height: 150,
         maxWidth: 270,
         maxHeight: 150,
+        marginTop: 30,
         marginBottom: 30
     },
 
