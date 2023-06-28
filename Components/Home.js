@@ -117,13 +117,11 @@ function Home() {
         if (isEnabled || isEnabledBuscar) {
           setDestino("UADE");
           setUbicacionDestinoBuscarViaje("UADE");
-          //console.log("DESTINO: " + destino)
           setPoint(true);
         }
         else {
           setInicio("UADE");
           setUbicacionInicioBuscarViaje("UADE");
-          //console.log("INICIO: " + inicio)
           setPoint(true);
         }
       } catch (error) {
@@ -198,14 +196,7 @@ function Home() {
   // Funcion para crear Viaje
   const handleCrearViaje = async (event) => {
     event.preventDefault();
-
-    /*console.log("Horario: " + horarioSalida);
-    console.log("Turno: " + turno);
-    console.log("Inicio: " + inicio);
-    console.log("Destino: " + destino);*/
-
     const erroresFormulario = await validarFormulario();
-    //console.log("Errores: " + erroresFormulario);
     if (erroresFormulario.length == 0) {
       try {
         const userId = user.id;
@@ -217,7 +208,6 @@ function Home() {
         // Reiniciamos los estados
         setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null); setSelectedTime(null);
       } catch (error) {
-        console.error(error);
         console.log("error crearviaje 01");
       }
     }
@@ -230,16 +220,13 @@ function Home() {
   const handleBuscarViajes = async (event) => {
     event.preventDefault();
     const erroresFormulario = await validarFormularioBuscar();
-    //console.log("Errores: " + erroresFormulario);
     if (erroresFormulario.length == 0) {
       try {
         const response = await axios.get(baseURL + `/viaje/buscarUbicacion/${ubicacionInicioBuscarViaje}/${ubicacionDestinoBuscarViaje}`);
         setViajes(response.data);
-        console.log(response.data);
         // Reiniciamos los estados
         setMostrarBuscarViajes(false); setUbicacionInicioBuscarViaje("UADE"); setUbicacionDestinoBuscarViaje("UADE");
       } catch (error) {
-        // Aquí puedes manejar el error
         if (error.response && error.response.data === "No se encontraron viajes") {
           setErrores(["No se encontraron viajes."]);
           setModalVisible(true);
@@ -247,7 +234,6 @@ function Home() {
       }
     }
     else {
-      // Aquí puedes mostrar los errores al usuario o hacer algo en caso de que existan
       console.log("error buscarviajes 02");
     }
   };
@@ -272,10 +258,10 @@ function Home() {
       const id = user.id;
       const response = await axios.get(baseURL + `/viaje/buscarMisViajes/${id}`);
       setMisViajes(response.data);
-      console.log(response.data)
     } catch (error) {
       // Aquí puedes manejar el error
-      console.log(error);
+      setErrores(["No tenes viajes activos creados."]);
+      setModalVisible(true);
     }
   };
 
@@ -291,10 +277,7 @@ function Home() {
       setUsersList([]);
       const response = await axios.get(baseURL + `/viaje/${viajeId}`);
       setVerViaje(response.data);
-      console.log(response.data);
     } catch (error) {
-      // Aquí puedes manejar el error
-      console.log(error);
       console.log("error verviaje 01");
     }
   }
@@ -309,10 +292,8 @@ function Home() {
       setUsersList([]);
       const response = await axios.get(baseURL + `/viaje/${viajeId}`);
       setVerViajeSumarse(response.data);
-      console.log(response.data)
     } catch (error) {
-      // Aquí puedes manejar el error
-      console.log(error);
+      console.log("error verviajesumarse 01");
     }
   }
 
@@ -320,15 +301,14 @@ function Home() {
   const handleSumarse = async (viajeId, userId) => {
     try {
       const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/joinViaje`);
-      console.log(response.data)
       handleVerViajeSumarse(viajeId);
     } catch (error) {
       if (error.response && error.response.data === "El usuario ya está unido al viaje") {
-        setErrores(["El usuario ya está unido al viaje"]);
+        setErrores(["Ya estás unido al viaje"]);
         setModalVisible(true);
       }
       if (error.response && error.response.data === "El usuario no se puede unir a su propio viaje") {
-        setErrores(["El usuario no se puede unir a su propio viaje."]);
+        setErrores(["No podes unirte a tu propio viaje."]);
         setModalVisible(true);
       }
     }
@@ -338,7 +318,6 @@ function Home() {
   const handleBorrarPasajero = async (viajeId, userId) => {
     try {
       const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/leaveViaje`);
-      console.log(response.data)
       setVerViajeSumarse(false);
       setUsersList([]);
     } catch (error) {
@@ -361,12 +340,9 @@ function Home() {
 
   async function getUserById(id) {
     try {
-      console.log(id);
       const response = await axios.get(baseURL + `/user/${id}`);
       const user = response.data;
-      console.log(user)
       setUsersList((prevList) => [...prevList, user]); // Agregar el usuario a la lista
-      console.log(usersList);
     } catch (error) {
       console.error(error);
     }
