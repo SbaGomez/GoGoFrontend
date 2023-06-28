@@ -720,7 +720,9 @@ function Home() {
                 <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViaje} />
               </View>
             </View>
-            <Text style={styles.textSubTitulo}>Pasajeros</Text>
+            {usersList.length > 0 && (
+              <Text style={styles.textSubTitulo}>Pasajeros</Text>
+            )}
 
             {usersList.map((user, index) => (
               <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -757,7 +759,9 @@ function Home() {
                 <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} onPress={() => handleSumarse(verViajeSumarse.id, user.id)} />
               </View>
             </View>
-            <Text style={styles.textSubTitulo}>Pasajeros</Text>
+            {usersList.length > 0 && (
+              <Text style={styles.textSubTitulo}>Pasajeros</Text>
+            )}
 
             {usersList.map((user, index) => (
               <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
