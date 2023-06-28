@@ -36,6 +36,7 @@ function Home() {
   const [viajes, setViajes] = useState(null);
   const [misViajes, setMisViajes] = useState(null);
   const [verViaje, setVerViaje] = useState(null);
+  const [verViajeSumarse, setVerViajeSumarse] = useState(null);
 
   //point
   const [point, setPoint] = useState(true);
@@ -204,11 +205,11 @@ function Home() {
     //console.log("Errores: " + erroresFormulario);
     if (erroresFormulario.length == 0) {
       try {
-        const user_id = user.id;
-        const auto_id = user.auto;
+        const userId = user.id;
+        const autoId = user.auto;
         console.log(user_id + auto_id)
         const response = await axios.post(baseURL + "/viaje/addViaje", {
-          user_id, auto_id , horarioSalida, turno, inicio, destino
+          userId, autoId, horarioSalida, turno, inicio, destino
         });
         console.log("ViajeCreado: " + "ID: " + response.data.id + " Horario: " + response.data.horarioSalida + " Turno: " + response.data.turno + " Inicio: " + response.data.inicio + " Destino: " + response.data.destino)
         // Reiniciamos los estados
@@ -251,10 +252,14 @@ function Home() {
   };
 
   const handleVerViaje = async (viajeId) => {
+    if (verViajeSumarse) {
+      setVerViajeSumarse(false);
+    }
     if (misViajes) {
       setMisViajes(false);
     }
     try {
+      setUsersList([]);
       const response = await axios.get(baseURL + `/viaje/${viajeId}`);
       setVerViaje(response.data);
       console.log(response.data)
@@ -264,9 +269,86 @@ function Home() {
     }
   }
 
+  const handleSumarse = async (viajeId, userId) => {
+    try {
+      const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/joinViaje`);
+      console.log(response.data)
+      handleVerViajeSumarse(viajeId);
+    } catch (error) {
+      if (error.response && error.response.data === "El usuario ya está unido al viaje") {
+        setErrores(["El usuario ya está unido al viaje"]);
+        setModalVisible(true);
+      }
+      if (error.response && error.response.data === "El usuario no se puede unir a su propio viaje") {
+        setErrores(["El usuario no se puede unir a su propio viaje."]);
+        setModalVisible(true);
+      }
+    }
+  }
+
+  const handleBorrarPasajero = async (viajeId, userId) => {
+    try {
+      const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/leaveViaje`);
+      console.log(response.data)
+      setVerViajeSumarse(false);
+      setUsersList([]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleVerViajeSumarse = async (viajeId) => {
+    if (viajes) {
+      setViajes(false);
+    }
+    try {
+      const response = await axios.get(baseURL + `/viaje/${viajeId}`);
+      setVerViajeSumarse(response.data);
+      console.log(response.data)
+    } catch (error) {
+      // Aquí puedes manejar el error
+      console.log(error);
+    }
+  }
+
+  // Suponiendo que verViajeSumarse.users es un array de IDs
+  const [usersList, setUsersList] = useState([]);
+  const [ids, setIds] = useState([]);
+
+  useEffect(() => {
+    if (verViajeSumarse) {
+      setIds(verViajeSumarse.users || []); // Inicializar con una matriz vacía si verViajeSumarse.users es null o undefined
+    }
+    if (verViaje) {
+      setIds(verViaje.users || []);
+    }
+  }, [verViajeSumarse, verViaje]);
+
+  async function getUserById(id) {
+    try {
+      console.log(id);
+      const response = await axios.get(baseURL + `/user/${id}`);
+      const user = response.data;
+      console.log(user)
+      setUsersList((prevList) => [...prevList, user]); // Agregar el usuario a la lista
+      console.log(usersList);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    ids.forEach((id) => {
+      getUserById(id);
+    });
+  }, [ids]);
+
   const handleBotonBuscarMisViajes = async (event) => {
     event.preventDefault();
     const id = user.id;
+    if (verViajeSumarse) {
+      setVerViajeSumarse(false);
+    }
     if (verViaje) {
       setVerViaje(null);
     }
@@ -313,6 +395,9 @@ function Home() {
 
   //Funcion Boton Mostrar Crear Viajes
   const handleBotonCrearViaje = () => {
+    if (verViajeSumarse) {
+      setVerViajeSumarse(false);
+    }
     if (misViajes) {
       setMisViajes(false);
     }
@@ -334,11 +419,16 @@ function Home() {
 
   //Funcion Boton Mostrar Buscar Viajes
   const handleBotonBuscarViajes = () => {
+    if (verViajeSumarse) {
+      setVerViajeSumarse(false);
+      setUsersList([]);
+    }
     if (misViajes) {
       setMisViajes(false);
     }
     if (verViaje) {
       setVerViaje(null);
+      setUsersList([]);
     }
     if (mostrarBuscarViajes) {
       setMostrarBuscarViajes(false);
@@ -405,6 +495,13 @@ function Home() {
 
   const handlerCerrarVerViaje = () => {
     setVerViaje(null);
+    setUsersList([]);
+
+  }
+
+  const handlerCerrarVerViajeSumarse = () => {
+    setVerViajeSumarse(null);
+    setUsersList([]);
   }
 
   //Variables para boton Mostrar Mas MisViajes
@@ -548,11 +645,19 @@ function Home() {
           </Surface>
         )}
 
+        {viajes &&
+          <Surface elevation={4} category="medium" style={styles.surfaceTituloMisViajes}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={styles.textTituloBuscarMisViajes}>Viajes Encontrados</Text>
+            </View>
+          </Surface>
+        }
 
         {viajes && viajesMostrados.map((item) => (
-          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViajes}>
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
@@ -560,8 +665,8 @@ function Home() {
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
               <View style={{ alignItems: 'center' }}>
-                <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} />
-                <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} />
+                <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViajeSumarse(item.id)} />
+                <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} onPress={() => handleSumarse(item.id, user.id)} />
               </View>
             </View>
           </Surface>
@@ -578,9 +683,10 @@ function Home() {
         }
 
         {misViajes && misViajesMostrados.map((item) => (
-          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViajes}>
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
@@ -598,18 +704,70 @@ function Home() {
           <Surface elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{user.nombre + " " + user.apellido} </Text></Text>
-                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.viaje.horarioSalida).toLocaleDateString()}</Text></Text>
-                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.viaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
-                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.viaje.turno}</Text></Text>
-                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.viaje.ubicacionInicio}</Text></Text>
-                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViaje.viaje.ubicacionDestino}</Text></Text>
+                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.nombre + " " + verViaje.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleDateString()}</Text></Text>
+                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
+                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.turno}</Text></Text>
+                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.ubicacionInicio}</Text></Text>
+                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViaje.ubicacionDestino}</Text></Text>
+                <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
+                <Text style={styles.textFont20}>Patente: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.patente}</Text></Text>
+                <Text style={styles.textFont20}>Marca: <Text style={styles.textFechaBuscarViajesHome}>{verViaje.marca}</Text></Text>
+                <Text style={styles.textFont20}>Modelo: <Text style={styles.textHoraBuscarViajesHome}>{verViaje.modelo}</Text></Text>
+                <Text style={styles.textFont20}>Color: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.color}</Text></Text>
               </View>
               <View style={{ alignItems: 'center' }}>
                 <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViaje} />
               </View>
             </View>
             <Text style={styles.textSubTitulo}>Pasajeros</Text>
+
+            {usersList.map((user, index) => (
+              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
+                  <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                  <Button title="Borrar" style={{ width: 150, marginLeft: 40 }} onPress={() => handleBorrarPasajero(verViaje.id, user.user.id)} />
+                </View>
+              </View>
+            ))}
+          </Surface>
+        }
+
+        {verViajeSumarse &&
+          <Surface elevation={4} category="medium" style={styles.surfaceViewViaje}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.nombre + " " + verViajeSumarse.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleDateString()}</Text></Text>
+                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
+                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.turno}</Text></Text>
+                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.ubicacionInicio}</Text></Text>
+                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajeSumarse.ubicacionDestino}</Text></Text>
+                <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
+                <Text style={styles.textFont20}>Patente: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.patente}</Text></Text>
+                <Text style={styles.textFont20}>Marca: <Text style={styles.textFechaBuscarViajesHome}>{verViajeSumarse.marca}</Text></Text>
+                <Text style={styles.textFont20}>Modelo: <Text style={styles.textHoraBuscarViajesHome}>{verViajeSumarse.modelo}</Text></Text>
+                <Text style={styles.textFont20}>Color: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.color}</Text></Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViajeSumarse} />
+                <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} onPress={() => handleSumarse(verViajeSumarse.id, user.id)} />
+              </View>
+            </View>
+            <Text style={styles.textSubTitulo}>Pasajeros</Text>
+
+            {usersList.map((user, index) => (
+              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
+                  <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
+                </View>
+              </View>
+            ))}
+
           </Surface>
         }
 
