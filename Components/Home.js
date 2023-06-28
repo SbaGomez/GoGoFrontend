@@ -206,8 +206,8 @@ function Home() {
     if (erroresFormulario.length == 0) {
       try {
         const userId = user.id;
-        const autoId = user.auto;
-        console.log(user_id + auto_id)
+        const autoId = user.auto.id;
+        
         const response = await axios.post(baseURL + "/viaje/addViaje", {
           userId, autoId, horarioSalida, turno, inicio, destino
         });
