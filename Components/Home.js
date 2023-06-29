@@ -781,7 +781,7 @@ function Home() {
           <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
@@ -811,7 +811,7 @@ function Home() {
           <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
@@ -821,7 +821,7 @@ function Home() {
               </View>
               <View style={{ alignItems: 'center' }}>
                 <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViaje(item.id)} />
-                <Button title="Borrar Viaje" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638' }} onPress={() => handleBorrarPasajero(item.id, item.chofer)} />
+                <Button title="Borrar" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638' }} onPress={() => handleBorrarPasajero(item.id, item.chofer)} />
               </View>
             </View>
           </Surface>
@@ -830,7 +830,7 @@ function Home() {
         {misViajesPasajero &&
           <Surface elevation={4} category="medium" style={styles.surfaceTituloMisViajesPasajero}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Text style={styles.textTituloBuscarMisViajes}>Mis Viajes como Pasajero</Text>
+              <Text style={styles.textTituloBuscarMisViajes}>Viajes como Pasajero</Text>
             </View>
           </Surface>
         }
@@ -839,7 +839,7 @@ function Home() {
           <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
@@ -859,7 +859,7 @@ function Home() {
           <Surface elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.nombre + " " + verViaje.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.nombre + " " + verViaje.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.turno}</Text></Text>
@@ -900,7 +900,7 @@ function Home() {
           <Surface elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.nombre + " " + verViajeSumarse.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.nombre + " " + verViajeSumarse.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.turno}</Text></Text>
@@ -938,7 +938,7 @@ function Home() {
           <Surface elevation={4} category="medium" style={styles.surfaceViewViaje}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.nombre + " " + verViajePasajero.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.nombre + " " + verViajePasajero.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.turno}</Text></Text>
