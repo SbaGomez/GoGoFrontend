@@ -61,6 +61,16 @@ function Perfil() {
         obtenerBaseURL();
     }, []);
 
+    const validarPatente = async (patente) => {
+        try {
+            const response = await axios.post(baseURL + '/auto/patenteExists', { patente: patente });
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    };
+
     // variables registro auto
     const [patente, setPatente] = useState("");
     const [marca, setMarca] = useState("");
@@ -83,6 +93,11 @@ function Perfil() {
             erroresTemp.push('Por favor, ingrese una patente.');
         } else if (patente.length < 6 || patente.length > 7) {
             erroresTemp.push('La patente debe tener entre 6 y 7 caracteres.');
+        } else {
+            const patenteExiste = await validarPatente(patente);
+            if (!patenteExiste) {
+                erroresTemp.push('La patente ya esta registrada');
+            }
         }
 
         if (!marca) {
@@ -223,7 +238,7 @@ function Perfil() {
             if (error.response && error.response.data === "El Auto tiene un viaje en progreso") {
                 setErrores(["El Auto tiene un viaje en progreso."]);
                 setModalVisible(true);
-              }
+            }
         }
     };
 
