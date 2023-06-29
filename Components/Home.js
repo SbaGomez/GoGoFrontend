@@ -36,6 +36,7 @@ function Home() {
   const [destino, setDestino] = useState('UADE');
   const [viajes, setViajes] = useState(null);
   const [misViajes, setMisViajes] = useState(null);
+  const [misViajesPasajero, setMisViajesPasajero] = useState(null);
   const [verViaje, setVerViaje] = useState(null);
   const [verViajeSumarse, setVerViajeSumarse] = useState(null);
 
@@ -266,8 +267,39 @@ function Home() {
       const response = await axios.get(baseURL + `/viaje/buscarMisViajes/${id}`);
       setMisViajes(response.data);
     } catch (error) {
-      setErrores(["No tenes viajes activos creados."]);
-      setModalVisible(true);
+      if (error.response && error.response.data === "No se encontraron viajes") {
+        setErrores(["No tenes viajes activos creados."]);
+        setModalVisible(true);
+      }
+    }
+  };
+
+  // Funcion para buscar mis viajes como pasajero
+  const handleBuscarMisViajesPasajero = async (event) => {
+    event.preventDefault();
+    if (verViajeSumarse) {
+      setVerViajeSumarse(false);
+    }
+    if (verViaje) {
+      setVerViaje(null);
+    }
+    if (mostrarCrearViaje || mostrarBuscarViajes) {
+      setMostrarBuscarViajes(false);
+      setMostrarCrearViaje(false);
+    }
+    if (viajes) {
+      setViajes(null);
+    }
+    try {
+      const pasajeroId = user.id;
+      const responsePasajero = await axios.get(baseURL + `/viaje/buscarMisViajesPasajero/${pasajeroId}`);
+      setMisViajesPasajero(responsePasajero.data);
+
+    } catch (error) {
+      if (error.response && error.response.data === "No se encontraron viajes pasajero") {
+        setErrores(["No te uniste a ningun viaje"]);
+        setModalVisible(true);
+      }
     }
   };
 
@@ -278,6 +310,9 @@ function Home() {
     }
     if (misViajes) {
       setMisViajes(false);
+    }
+    if (misViajesPasajero) {
+      setMisViajesPasajero(false);
     }
     try {
       setUsersList([]);
@@ -326,7 +361,7 @@ function Home() {
   // Funcion para eliminar un pasajero de tu viaje
   const handleBorrarPasajero = async (viajeId, userId) => {
     try {
-      const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/leaveViaje`);
+      await axios.post(baseURL + `/viaje/${userId}/${viajeId}/leaveViaje`);
       setVerViajeSumarse(false);
       setUsersList([]);
     } catch (error) {
@@ -340,10 +375,18 @@ function Home() {
 
   useEffect(() => {
     if (verViajeSumarse) {
-      setIds(verViajeSumarse.users || []); // Inicializar con una matriz vacía si verViajeSumarse.users es null o undefined
+      if (typeof verViajeSumarse.users === 'string' && verViajeSumarse.users !== '') {
+        setIds(verViajeSumarse.users.split(',')); // Convertir la cadena de IDs en un array de IDs separados por comas
+      } else {
+        setIds([]);
+      }
     }
     if (verViaje) {
-      setIds(verViaje.users || []);
+      if (typeof verViaje.users === 'string' && verViaje.users !== '') {
+        setIds(verViaje.users.split(',')); // Convertir la cadena de IDs en un array de IDs separados por comas
+      } else {
+        setIds([]);
+      }
     }
   }, [verViajeSumarse, verViaje]);
 
@@ -351,16 +394,21 @@ function Home() {
     try {
       const response = await axios.get(baseURL + `/user/${id}`);
       const user = response.data;
-      setUsersList((prevList) => [...prevList, user]); // Agregar el usuario a la lista
+      return user;
     } catch (error) {
       console.error(error);
+      return null;
     }
   }
 
   useEffect(() => {
-    ids.forEach((id) => {
-      getUserById(id);
-    });
+    if (ids.length > 0) {
+      const fetchUsers = async () => {
+        const users = await Promise.all(ids.map((id) => getUserById(id)));
+        setUsersList((prevList) => [...prevList, ...users.filter((user) => user !== null)]);
+      };
+      fetchUsers();
+    }
   }, [ids]);
 
   //Funcion Inicio a Seleccionar
@@ -397,6 +445,9 @@ function Home() {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
     }
+    if (misViajesPasajero) {
+      setMisViajesPasajero(false);
+    }
     if (misViajes) {
       setMisViajes(false);
     }
@@ -424,6 +475,9 @@ function Home() {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
       setUsersList([]);
+    }
+    if (misViajesPasajero) {
+      setMisViajesPasajero(false);
     }
     if (misViajes) {
       setMisViajes(false);
@@ -506,6 +560,18 @@ function Home() {
     setUsersList([]);
   }
 
+
+  //Variables para boton Mostrar Mas MisViajesPasajero
+  const [cantidadMostradaMisViajesPasajero, setCantidadMostradaMisViajesPasajero] = useState(5);
+  const [cantidadAgregadaMisViajesPasajero, setCantidadAgregadaMisViajesPasajero] = useState(5);
+  let misViajesPasajeroMostrados = [];
+  let quedanMisViajesPasajeroPorMostrar = false;
+
+  if (misViajesPasajero) {
+    misViajesPasajeroMostrados = misViajesPasajero.slice(0, cantidadMostradaMisViajesPasajero);
+    quedanMisViajesPasajeroPorMostrar = cantidadMostradaMisViajesPasajero < misViajesPasajero.length;
+  }
+
   //Variables para boton Mostrar Mas MisViajes
   const [cantidadMostradaMisViajes, setCantidadMostradaMisViajes] = useState(5);
   const [cantidadAgregadaMisViajes, setCantidadAgregadaMisViajes] = useState(5);
@@ -528,7 +594,6 @@ function Home() {
     quedanViajesPorMostrar = cantidadMostrada < viajes.length;
   }
 
-
   return (
     <ScrollView>
       <Stack flex={1} center spacing={4} direction="column">
@@ -536,6 +601,7 @@ function Home() {
           <Button title="Crear Viaje" onPress={handleBotonCrearViaje} style={styles.buttonCrearViajes} />
           <Button title="Buscar Viajes" onPress={handleBotonBuscarViajes} style={styles.buttonBuscarViajes} />
           <Button title="Mis Viajes" onPress={handleBuscarMisViajes} style={styles.buttonBuscarMisViajes} />
+          <Button title="Viajes Aceptados" onPress={handleBuscarMisViajesPasajero} style={styles.buttonBuscarMisViajes} />
         </Surface>
         {mostrarCrearViaje && (
           <Surface onSubmit={handleCrearViaje} elevation={4} category="medium" style={styles.surfaceCrearViajes}>
@@ -713,7 +779,35 @@ function Home() {
               </View>
               <View style={{ alignItems: 'center' }}>
                 <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViaje(item.id)} />
-                <Button title="Borrar Viaje" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638'}} onPress={() => handleBorrarPasajero(item.id, user.user.id)} />
+                <Button title="Borrar Viaje" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638' }} onPress={() => handleBorrarPasajero(item.id, item.chofer)} />
+              </View>
+            </View>
+          </Surface>
+        ))}
+
+        {misViajesPasajero &&
+          <Surface elevation={4} category="medium" style={styles.surfaceTituloMisViajesPasajero}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={styles.textTituloBuscarMisViajes}>Mis Viajes como Pasajero</Text>
+            </View>
+          </Surface>
+        }
+
+        {misViajesPasajero && misViajesPasajeroMostrados.map((item) => (
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
+                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
+                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
+                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViaje(item.id)} />
+                <Button title="Abandonar" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638' }} onPress={() => handleBorrarPasajero(item.id, user.id)} />
               </View>
             </View>
           </Surface>
@@ -750,9 +844,11 @@ function Home() {
                   <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
                   <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                  <Button title="Borrar" style={{ width: 150, marginLeft: 40, backgroundColor: '#E95638'}} onPress={() => handleBorrarPasajero(verViaje.id, user.user.id)} />
-                </View>
+                <Button
+                  title="Borrar"
+                  style={{ width: 150, marginLeft: 40, backgroundColor: '#E95638' }}
+                  onPress={() => handleBorrarPasajero(verViaje.id, user.user.id)}
+                />
               </View>
             ))}
           </Surface>

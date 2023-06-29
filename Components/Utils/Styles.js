@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20,
         width: 600,
-        height: 260,
+        height: 330,
         padding: 20
     },
 
@@ -613,6 +613,15 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 400,
         height: 100,
+        padding: 20
+    },
+
+    surfaceTituloMisViajesPasajero: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 20,
+        width: 400,
+        height: 150,
         padding: 20
     },
 
