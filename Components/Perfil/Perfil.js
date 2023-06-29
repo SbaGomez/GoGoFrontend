@@ -220,9 +220,10 @@ function Perfil() {
             setMostrarAuto(false);
             setMostrar(true)
         } catch (error) {
-            // Aquí puedes manejar el error
-            console.error(error);
-            console.log("error deleteauto perfil 02");
+            if (error.response && error.response.data === "El Auto tiene un viaje en progreso") {
+                setErrores(["El Auto tiene un viaje en progreso."]);
+                setModalVisible(true);
+              }
         }
     };
 

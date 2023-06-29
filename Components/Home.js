@@ -30,6 +30,7 @@ function Home() {
   const [ubicacionInicioBuscarViaje, setUbicacionInicioBuscarViaje] = useState("UADE");
   const [ubicacionDestinoBuscarViaje, setUbicacionDestinoBuscarViaje] = useState("UADE");
   const [horarioSalida, setHorarioSalida] = useState("");
+  const [capacidad, setCapacidad] = useState("");
   const [turno, setTurno] = useState("");
   const [inicio, setInicio] = useState('UADE');
   const [destino, setDestino] = useState('UADE');
@@ -152,6 +153,10 @@ function Home() {
       erroresTemp.push('Por favor, seleccione un turno.');
     }
 
+    if (!capacidad) {
+      erroresTemp.push('Por favor, seleccione una capacidad de pasajeros.');
+    }
+
     if (!selectedDate) {
       erroresTemp.push('Por favor, seleccione una fecha.');
     }
@@ -160,9 +165,9 @@ function Home() {
       erroresTemp.push('Por favor, seleccione un horario.');
     }
 
-    if (user.auto === null) {
+    /* if (user.auto === null) {
       erroresTemp.push('Para crear un viaje necesitas declarar un vehiculo.');
-    }
+    } */
 
     setErrores(erroresTemp);
 
@@ -202,13 +207,15 @@ function Home() {
         const userId = user.id;
         const autoId = user.auto.id;
         const response = await axios.post(baseURL + "/viaje/addViaje", {
-          userId, autoId, horarioSalida, turno, inicio, destino
+          userId, autoId, horarioSalida, turno, inicio, destino, capacidad
         });
         console.log("ViajeCreado: " + "ID: " + response.data.id + " Horario: " + response.data.horarioSalida + " Turno: " + response.data.turno + " Inicio: " + response.data.inicio + " Destino: " + response.data.destino)
+        handleBuscarMisViajes(event);
         // Reiniciamos los estados
-        setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null); setSelectedTime(null);
+        setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null); setSelectedTime(null); setCapacidad("");
       } catch (error) {
-        console.log("error crearviaje 01");
+        setErrores(["Para crear un viaje necesitas declarar un vehiculo."]);
+        setModalVisible(true);
       }
     }
     else {
@@ -239,7 +246,7 @@ function Home() {
   };
 
   // Funcion para buscar mis viajes
-  const handleBotonBuscarMisViajes = async (event) => {
+  const handleBuscarMisViajes = async (event) => {
     event.preventDefault();
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
@@ -259,7 +266,6 @@ function Home() {
       const response = await axios.get(baseURL + `/viaje/buscarMisViajes/${id}`);
       setMisViajes(response.data);
     } catch (error) {
-      // Aquí puedes manejar el error
       setErrores(["No tenes viajes activos creados."]);
       setModalVisible(true);
     }
@@ -282,7 +288,6 @@ function Home() {
     }
   }
 
-
   // Funcion para ver el viaje x id
   const handleVerViajeSumarse = async (viajeId) => {
     if (viajes) {
@@ -300,7 +305,7 @@ function Home() {
   // Funcion para Sumarse al Viaje
   const handleSumarse = async (viajeId, userId) => {
     try {
-      const response = await axios.post(baseURL + `/viaje/${userId}/${viajeId}/joinViaje`);
+      await axios.post(baseURL + `/viaje/${userId}/${viajeId}/joinViaje`);
       handleVerViajeSumarse(viajeId);
     } catch (error) {
       if (error.response && error.response.data === "El usuario ya está unido al viaje") {
@@ -309,6 +314,10 @@ function Home() {
       }
       if (error.response && error.response.data === "El usuario no se puede unir a su propio viaje") {
         setErrores(["No podes unirte a tu propio viaje."]);
+        setModalVisible(true);
+      }
+      if (error.response && error.response.data === "El viaje ha alcanzado su capacidad máxima") {
+        setErrores(["El viaje ha alcanzado su capacidad máxima"]);
         setModalVisible(true);
       }
     }
@@ -369,6 +378,11 @@ function Home() {
     setTurno(turnoSeleccionado);
   };
 
+  //Funcion Capacidad a Seleccionar
+  const handleSeleccionarCapacidad = (capacidadSeleccionada) => {
+    setCapacidad(capacidadSeleccionada);
+  };
+
   //Funcion Ubicacion a Seleccionar Busqueda
   const handleSeleccionarUbicacionInicioBusqueda = (ubicacionInicioSeleccionada) => {
     setUbicacionInicioBuscarViaje(ubicacionInicioSeleccionada);
@@ -393,8 +407,11 @@ function Home() {
       setMostrarCrearViaje(false);
       setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
     }
-    else {
+    if (mostrarBuscarViajes) {
       setMostrarBuscarViajes(false);
+      setMostrarCrearViaje(true);
+    }
+    else {
       setMostrarCrearViaje(true);
       setViajes(null);
       setCantidadMostrada(5);
@@ -518,7 +535,7 @@ function Home() {
         <Surface elevation={4} category="medium" style={styles.surfaceHome}>
           <Button title="Crear Viaje" onPress={handleBotonCrearViaje} style={styles.buttonCrearViajes} />
           <Button title="Buscar Viajes" onPress={handleBotonBuscarViajes} style={styles.buttonBuscarViajes} />
-          <Button title="Mis Viajes" onPress={handleBotonBuscarMisViajes} style={styles.buttonBuscarMisViajes} />
+          <Button title="Mis Viajes" onPress={handleBuscarMisViajes} style={styles.buttonBuscarMisViajes} />
         </Surface>
         {mostrarCrearViaje && (
           <Surface onSubmit={handleCrearViaje} elevation={4} category="medium" style={styles.surfaceCrearViajes}>
@@ -536,6 +553,20 @@ function Home() {
             {selectedTime && (
               <TextInput label="Horario Seleccionado" mode="outlined" value={`${formatSelectedTime()}`} editable={false} style={styles.textInputDateTime} />
             )}
+
+            <Text style={styles.textSubTitulo}>Capacidad Pasajeros</Text>
+            <View style={styles.PickerTurno}>
+              <Picker selectedValue={capacidad} onValueChange={handleSeleccionarCapacidad} style={styles.PickerInput}>
+                <Picker.Item label="Seleccione la capacidad" value="" />
+                <Picker.Item label="1" value="1" />
+                <Picker.Item label="2" value="2" />
+                <Picker.Item label="3" value="3" />
+                <Picker.Item label="4" value="4" />
+                <Picker.Item label="5" value="5" />
+                <Picker.Item label="6" value="6" />
+                <Picker.Item label="7" value="7" />
+              </Picker>
+            </View>
 
             <Text style={styles.textSubTitulo}>Seleccionar turno</Text>
             <View style={styles.PickerTurno}>
@@ -646,6 +677,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -675,11 +707,13 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
               <View style={{ alignItems: 'center' }}>
                 <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViaje(item.id)} />
+                <Button title="Borrar Viaje" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638'}} onPress={() => handleBorrarPasajero(item.id, user.user.id)} />
               </View>
             </View>
           </Surface>
@@ -693,6 +727,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.turno}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViaje.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -711,12 +746,12 @@ function Home() {
 
             {usersList.map((user, index) => (
               <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, marginBottom: 10 }}>
                   <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
                   <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
                 </View>
                 <View style={{ alignItems: 'center' }}>
-                  <Button title="Borrar" style={{ width: 150, marginLeft: 40 }} onPress={() => handleBorrarPasajero(verViaje.id, user.user.id)} />
+                  <Button title="Borrar" style={{ width: 150, marginLeft: 40, backgroundColor: '#E95638'}} onPress={() => handleBorrarPasajero(verViaje.id, user.user.id)} />
                 </View>
               </View>
             ))}
@@ -731,6 +766,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.turno}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajeSumarse.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -750,7 +786,7 @@ function Home() {
 
             {usersList.map((user, index) => (
               <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, marginBottom: 10 }}>
                   <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
                   <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
                 </View>
