@@ -643,7 +643,7 @@ function Home() {
           <Button title="Crear Viaje" onPress={handleBotonCrearViaje} style={styles.buttonCrearViajes} />
           <Button title="Buscar Viajes" onPress={handleBotonBuscarViajes} style={styles.buttonBuscarViajes} />
           <Button title="Mis Viajes" onPress={handleBuscarMisViajes} style={styles.buttonBuscarMisViajes} />
-          <Button title="Viajes Aceptados" onPress={handleBuscarMisViajesPasajero} style={styles.buttonBuscarMisViajes} />
+          <Button title="Viajes Aceptados" onPress={handleBuscarMisViajesPasajero} style={styles.buttonBuscarMisViajesPasajero} />
         </Surface>
         {mostrarCrearViaje && (
           <Surface onSubmit={handleCrearViaje} elevation={4} category="medium" style={styles.surfaceCrearViajes}>

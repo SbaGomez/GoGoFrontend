@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
     },
 
     buttonBuscarViajes: {
-        backgroundColor: '#198c4e',
+        backgroundColor: '#2dcce9',
         width: '80%',
         maxWidth: "40%",
         minWidth: "30%",
@@ -679,6 +679,18 @@ const styles = StyleSheet.create({
 
     buttonBuscarMisViajes: {
         backgroundColor: '#edad0b',
+        width: '80%',
+        maxWidth: "40%",
+        minWidth: "30%",
+        height: 50,
+        marginTop: 15,
+        display: 'flex',
+        textAlign: 'center',
+        justifyContent: 'center'
+    },
+
+    buttonBuscarMisViajesPasajero: {
+        backgroundColor: '#198c4e',
         width: '80%',
         maxWidth: "40%",
         minWidth: "30%",

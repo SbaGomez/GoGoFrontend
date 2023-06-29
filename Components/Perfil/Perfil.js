@@ -95,7 +95,7 @@ function Perfil() {
             erroresTemp.push('La patente debe tener entre 6 y 7 caracteres.');
         } else {
             const patenteExiste = await validarPatente(patente);
-            if (!patenteExiste) {
+            if (patenteExiste) {
                 erroresTemp.push('La patente ya esta registrada');
             }
         }
