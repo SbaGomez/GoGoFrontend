@@ -39,6 +39,7 @@ function Home() {
   const [misViajesPasajero, setMisViajesPasajero] = useState(null);
   const [verViaje, setVerViaje] = useState(null);
   const [verViajeSumarse, setVerViajeSumarse] = useState(null);
+  const [verViajePasajero, setVerViajePasajero] = useState(null);
 
   //point
   const [point, setPoint] = useState(true);
@@ -252,6 +253,9 @@ function Home() {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
     }
+    if (verViajePasajero) {
+      setVerViajePasajero(false);
+    }
     if (verViaje) {
       setVerViaje(null);
     }
@@ -337,6 +341,26 @@ function Home() {
     }
   }
 
+  // Funcion para ver el viaje x id
+  const handleVerViajePasajero = async (viajeId) => {
+    if (viajes) {
+      setViajes(false);
+    }
+    if (misViajesPasajero) {
+      setMisViajesPasajero(false);
+    }
+    if (misViajes) {
+      setMisViajes(null);
+    }
+    try {
+      setUsersList([]);
+      const response = await axios.get(baseURL + `/viaje/${viajeId}`);
+      setVerViajePasajero(response.data);
+    } catch (error) {
+      console.log("error verviajesumarse 01");
+    }
+  }
+
   // Funcion para Sumarse al Viaje
   const handleSumarse = async (viajeId, userId) => {
     try {
@@ -374,6 +398,13 @@ function Home() {
   const [ids, setIds] = useState([]);
 
   useEffect(() => {
+    if (verViajePasajero) {
+      if (typeof verViajePasajero.users === 'string' && verViajePasajero.users !== '') {
+        setIds(verViajePasajero.users.split(',')); // Convertir la cadena de IDs en un array de IDs separados por comas
+      } else {
+        setIds([]);
+      }
+    }
     if (verViajeSumarse) {
       if (typeof verViajeSumarse.users === 'string' && verViajeSumarse.users !== '') {
         setIds(verViajeSumarse.users.split(',')); // Convertir la cadena de IDs en un array de IDs separados por comas
@@ -388,7 +419,7 @@ function Home() {
         setIds([]);
       }
     }
-  }, [verViajeSumarse, verViaje]);
+  }, [verViajeSumarse, verViaje, verViajePasajero]);
 
   async function getUserById(id) {
     try {
@@ -444,6 +475,11 @@ function Home() {
   const handleBotonCrearViaje = () => {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
+      setUsersList([]);
+    }
+    if (verViajePasajero) {
+      setVerViajePasajero(false);
+      setUsersList([]);
     }
     if (misViajesPasajero) {
       setMisViajesPasajero(false);
@@ -456,13 +492,10 @@ function Home() {
     }
     if (mostrarCrearViaje) {
       setMostrarCrearViaje(false);
-      setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
-    }
-    if (mostrarBuscarViajes) {
-      setMostrarBuscarViajes(false);
-      setMostrarCrearViaje(true);
+      setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null);
     }
     else {
+      setMostrarBuscarViajes(false);
       setMostrarCrearViaje(true);
       setViajes(null);
       setCantidadMostrada(5);
@@ -476,6 +509,10 @@ function Home() {
       setVerViajeSumarse(false);
       setUsersList([]);
     }
+    if (verViajePasajero) {
+      setVerViajePasajero(false);
+      setUsersList([]);
+    }
     if (misViajesPasajero) {
       setMisViajesPasajero(false);
     }
@@ -491,7 +528,7 @@ function Home() {
     }
     else {
       setMostrarCrearViaje(false);
-      setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null)
+      setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null), setSelectedTime(null);
       setMostrarBuscarViajes(true);
       setViajes(null);
       setCantidadMostrada(5);
@@ -557,6 +594,11 @@ function Home() {
 
   const handlerCerrarVerViajeSumarse = () => {
     setVerViajeSumarse(null);
+    setUsersList([]);
+  }
+
+  const handlerCerrarVerViajePasajero = () => {
+    setVerViajePasajero(null);
     setUsersList([]);
   }
 
@@ -806,7 +848,7 @@ function Home() {
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
               <View style={{ alignItems: 'center' }}>
-                <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViaje(item.id)} />
+                <Button title="Ver viaje" style={{ width: 150, marginLeft: 40 }} onPress={() => handleVerViajePasajero(item.id)} />
                 <Button title="Abandonar" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638' }} onPress={() => handleBorrarPasajero(item.id, user.id)} />
               </View>
             </View>
@@ -874,6 +916,43 @@ function Home() {
               <View style={{ alignItems: 'center' }}>
                 <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViajeSumarse} />
                 <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} onPress={() => handleSumarse(verViajeSumarse.id, user.id)} />
+              </View>
+            </View>
+            {usersList.length > 0 && (
+              <Text style={styles.textSubTitulo}>Pasajeros</Text>
+            )}
+
+            {usersList.map((user, index) => (
+              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ flex: 1, marginBottom: 10 }}>
+                  <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
+                  <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
+                </View>
+              </View>
+            ))}
+
+          </Surface>
+        }
+
+        {verViajePasajero &&
+          <Surface elevation={4} category="medium" style={styles.surfaceViewViaje}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.textFont20}>Conductor: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.nombre + " " + verViajePasajero.apellido} </Text></Text>
+                <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleDateString()}</Text></Text>
+                <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
+                <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.turno}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.ubicacionInicio}</Text></Text>
+                <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajePasajero.ubicacionDestino}</Text></Text>
+                <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
+                <Text style={styles.textFont20}>Patente: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.patente}</Text></Text>
+                <Text style={styles.textFont20}>Marca: <Text style={styles.textFechaBuscarViajesHome}>{verViajePasajero.marca}</Text></Text>
+                <Text style={styles.textFont20}>Modelo: <Text style={styles.textHoraBuscarViajesHome}>{verViajePasajero.modelo}</Text></Text>
+                <Text style={styles.textFont20}>Color: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.color}</Text></Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViajePasajero} />
               </View>
             </View>
             {usersList.length > 0 && (
