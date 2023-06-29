@@ -212,7 +212,7 @@ function Home() {
           userId, autoId, horarioSalida, turno, inicio, destino, capacidad
         });
         console.log("ViajeCreado: " + "ID: " + response.data.id + " Horario: " + response.data.horarioSalida + " Turno: " + response.data.turno + " Inicio: " + response.data.inicio + " Destino: " + response.data.destino)
-        handleBuscarMisViajes(event);
+        handleBuscarMisViajes();
         // Reiniciamos los estados
         setHorarioSalida(""); setDestino("UADE"); setInicio("UADE"); setTurno(""); setSelectedDate(null); setSelectedTime(null); setCapacidad("");
       } catch (error) {
@@ -248,8 +248,7 @@ function Home() {
   };
 
   // Funcion para buscar mis viajes
-  const handleBuscarMisViajes = async (event) => {
-    event.preventDefault();
+  const handleBuscarMisViajes = async () => {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
     }
@@ -279,10 +278,12 @@ function Home() {
   };
 
   // Funcion para buscar mis viajes como pasajero
-  const handleBuscarMisViajesPasajero = async (event) => {
-    event.preventDefault();
+  const handleBuscarMisViajesPasajero = async () => {
     if (verViajeSumarse) {
       setVerViajeSumarse(false);
+    }
+    if (verViajePasajero) {
+      setVerViajePasajero(false);
     }
     if (verViaje) {
       setVerViaje(null);
@@ -386,8 +387,18 @@ function Home() {
   const handleBorrarPasajero = async (viajeId, userId) => {
     try {
       await axios.post(baseURL + `/viaje/${userId}/${viajeId}/leaveViaje`);
-      setVerViajeSumarse(false);
-      setUsersList([]);
+      if (verViaje) {
+        setVerViaje(null);
+        handleVerViaje(viajeId);
+      }
+      if (misViajes) {
+        setMisViajes(null);
+        handleBuscarMisViajes();
+      }
+      if (misViajesPasajero) {
+        setMisViajesPasajero(null);
+        handleBuscarMisViajesPasajero();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -474,11 +485,11 @@ function Home() {
   //Funcion Boton Mostrar View Crear Viajes
   const handleBotonCrearViaje = () => {
     if (verViajeSumarse) {
-      setVerViajeSumarse(false);
+      setVerViajeSumarse(null);
       setUsersList([]);
     }
     if (verViajePasajero) {
-      setVerViajePasajero(false);
+      setVerViajePasajero(null);
       setUsersList([]);
     }
     if (misViajesPasajero) {
@@ -506,11 +517,11 @@ function Home() {
   //Funcion Boton Mostrar View Buscar Viajes
   const handleBotonBuscarViajes = () => {
     if (verViajeSumarse) {
-      setVerViajeSumarse(false);
+      setVerViajeSumarse(null);
       setUsersList([]);
     }
     if (verViajePasajero) {
-      setVerViajePasajero(false);
+      setVerViajePasajero(null);
       setUsersList([]);
     }
     if (misViajesPasajero) {
@@ -886,11 +897,7 @@ function Home() {
                   <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
                   <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
                 </View>
-                <Button
-                  title="Borrar"
-                  style={{ width: 150, marginLeft: 40, backgroundColor: '#E95638' }}
-                  onPress={() => handleBorrarPasajero(verViaje.id, user.user.id)}
-                />
+                <Button title="Borrar" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#E95638' }} onPress={() => handleBorrarPasajero(verViaje.id, user.user.id)} />
               </View>
             ))}
           </Surface>
