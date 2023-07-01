@@ -613,7 +613,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 400,
         height: 100,
-        padding: 20
+        padding: 15,
+        backgroundColor: "#302f2f"
     },
 
     surfaceTituloMisViajesPasajero: {
@@ -621,8 +622,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 20,
         width: 400,
-        height: 150,
-        padding: 20
+        height: 100,
+        padding: 15,
+        backgroundColor: "#302f2f"
     },
 
     surfaceBuscarViajes: {
@@ -740,7 +742,8 @@ const styles = StyleSheet.create({
         fontFamily: 'BebasNeue',
         fontSize: 45,
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        color: '#ef2356'
     },
 
     PickerTurno: {
@@ -855,13 +858,33 @@ const styles = StyleSheet.create({
         width: 400
     },
 
+    surfaceViewMisViajes: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+        marginTop: 20,
+        padding: 20,
+        width: 400,
+        backgroundColor: "#e0f9ed"
+    },
+
+    surfaceViewMisViajesPasajero: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+        marginTop: 20,
+        padding: 20,
+        width: 400,
+        backgroundColor: "#def2f7"
+    },
+
     surfaceViewViaje: {
         justifyContent: "center",
         alignItems: "center",
         flex: 1,
         marginTop: 20,
         padding: 20,
-        width: 450
+        width: 400
     },
 
     textBuscarViajesHome: {
@@ -935,9 +958,26 @@ const styles = StyleSheet.create({
     },
 
     textSubTitulo: {
+        marginBottom: 10,
         marginTop: 20,
         fontSize: 22,
         fontFamily: 'BebasNeue',
+    },
+
+    textSubTituloPasajeros: {
+        marginBottom: 10,
+        marginTop: 20,
+        fontSize: 26,
+        fontFamily: 'BebasNeue',
+        textDecorationLine: 'underline'
+    },
+
+    profileImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 10,
+        marginBottom: 10
     }
 
 });

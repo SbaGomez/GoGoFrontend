@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Surface, Stack, Button, Text } from "@react-native-material/core";
-import { ScrollView, View, Switch, Modal } from 'react-native';
+import { ScrollView, View, Switch, Image, Modal } from 'react-native';
 import { TextInput } from "react-native-paper";
 import * as Font from 'expo-font';
 import styles from './Utils/Styles';
@@ -9,6 +9,9 @@ import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Picker } from '@react-native-picker/picker';
+
+import Femenino from '../assets/FotoPerfilFem.png';
+import Masculino from '../assets/FotoPerfilMas.png';
 
 function Home() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -265,6 +268,14 @@ function Home() {
     if (viajes) {
       setViajes(null);
     }
+    if(misViajesPasajero)
+    {
+      setMisViajesPasajero(false);
+    }
+    if(misViajes)
+    {
+      return setMisViajes(false);
+    }
     try {
       const id = user.id;
       const response = await axios.get(baseURL + `/viaje/buscarMisViajes/${id}`);
@@ -294,6 +305,13 @@ function Home() {
     }
     if (viajes) {
       setViajes(null);
+    }
+    if (misViajes) {
+      setMisViajes(false);
+    }
+    if(misViajesPasajero)
+    {
+      return setMisViajesPasajero(false);
     }
     try {
       const pasajeroId = user.id;
@@ -796,7 +814,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -819,14 +837,14 @@ function Home() {
         }
 
         {misViajes && misViajesMostrados.map((item) => (
-          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewMisViajes}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -847,14 +865,14 @@ function Home() {
         }
 
         {misViajesPasajero && misViajesPasajeroMostrados.map((item) => (
-          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewViaje}>
+          <Surface key={item.id} elevation={4} category="medium" style={styles.surfaceViewMisViajesPasajero}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.textFont20}>Chofer: <Text style={styles.textInicioBuscarViajesHome}>{item.nombre + " " + item.apellido} </Text></Text>
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -874,7 +892,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.capacidad - verViaje.users.split(',').length} / {verViaje.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViaje.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -888,12 +906,13 @@ function Home() {
               </View>
             </View>
             {usersList.length > 0 && (
-              <Text style={styles.textSubTitulo}>Pasajeros</Text>
+              <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
             )}
 
             {usersList.map((user, index) => (
-              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <View style={{ flex: 1, marginBottom: 10 }}>
+              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <View style={{ flex: 1, marginBottom: 10, marginTop: 10, alignItems: 'center' }}>
+                  <Image source={user.user.sexo === 'F' ? Femenino : Masculino} style={styles.profileImage} />
                   <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
                   <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
                 </View>
@@ -911,7 +930,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.capacidad - verViajeSumarse.users.split(',').length} / {verViajeSumarse.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajeSumarse.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -926,12 +945,13 @@ function Home() {
               </View>
             </View>
             {usersList.length > 0 && (
-              <Text style={styles.textSubTitulo}>Pasajeros</Text>
+              <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
             )}
 
             {usersList.map((user, index) => (
-              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <View style={{ flex: 1, marginBottom: 10 }}>
+              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <View style={{ flex: 1, marginBottom: 10, marginTop: 10, alignItems: 'center' }}>
+                  <Image source={user.user.sexo === 'F' ? Femenino : Masculino} style={styles.profileImage} />
                   <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
                   <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
                 </View>
@@ -949,7 +969,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.capacidad - verViajePasajero.users.split(',').length} / {verViajePasajero.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajePasajero.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -963,12 +983,13 @@ function Home() {
               </View>
             </View>
             {usersList.length > 0 && (
-              <Text style={styles.textSubTitulo}>Pasajeros</Text>
+              <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
             )}
 
             {usersList.map((user, index) => (
-              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <View style={{ flex: 1, marginBottom: 10 }}>
+              <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <View style={{ flex: 1, marginBottom: 10, marginTop: 10, alignItems: 'center' }}>
+                  <Image source={user.user.sexo === 'F' ? Femenino : Masculino} style={styles.profileImage} />
                   <Text style={styles.textFont20}>Nombre: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.nombre}</Text></Text>
                   <Text style={styles.textFont20}>Apellido: <Text style={styles.textTurnoBuscarViajesHome}>{user.user.apellido}</Text></Text>
                 </View>
