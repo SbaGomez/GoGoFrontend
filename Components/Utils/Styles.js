@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
         width: 400,
         height: 100,
         padding: 15,
-        backgroundColor: "#302f2f"
+        backgroundColor: "#eff7f3"
     },
 
     surfaceTituloMisViajesPasajero: {
@@ -624,7 +624,7 @@ const styles = StyleSheet.create({
         width: 400,
         height: 100,
         padding: 15,
-        backgroundColor: "#302f2f"
+        backgroundColor: "#edf3f4"
     },
 
     surfaceBuscarViajes: {
@@ -743,7 +743,7 @@ const styles = StyleSheet.create({
         fontSize: 45,
         display: 'flex',
         justifyContent: 'center',
-        color: '#ef2356'
+        color: '#000'
     },
 
     PickerTurno: {
