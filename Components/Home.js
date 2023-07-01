@@ -37,6 +37,7 @@ function Home() {
   const [turno, setTurno] = useState("");
   const [inicio, setInicio] = useState('UADE');
   const [destino, setDestino] = useState('UADE');
+  const [detalle, setDetalle] = useState("");
   const [viajes, setViajes] = useState(null);
   const [misViajes, setMisViajes] = useState(null);
   const [misViajesPasajero, setMisViajesPasajero] = useState(null);
@@ -170,6 +171,10 @@ function Home() {
       erroresTemp.push('Por favor, seleccione un horario.');
     }
 
+    if (!detalle) {
+      erroresTemp.push('Por favor, debe ingresar un detalle.');
+    }
+
     /* if (user.auto === null) {
       erroresTemp.push('Para crear un viaje necesitas declarar un vehiculo.');
     } */
@@ -212,7 +217,7 @@ function Home() {
         const userId = user.id;
         const autoId = user.auto.id;
         const response = await axios.post(baseURL + "/viaje/addViaje", {
-          userId, autoId, horarioSalida, turno, inicio, destino, capacidad
+          userId, autoId, horarioSalida, turno, inicio, destino, capacidad, detalle
         });
         console.log("ViajeCreado: " + "ID: " + response.data.id + " Horario: " + response.data.horarioSalida + " Turno: " + response.data.turno + " Inicio: " + response.data.inicio + " Destino: " + response.data.destino)
         handleBuscarMisViajes();
@@ -748,6 +753,9 @@ function Home() {
               </Picker>
             </View>
 
+            <Text style={styles.textSubTitulo}>Detalle del viaje</Text>
+            <TextInput name="detalle" label="Detalle" mode="outlined" value={detalle} maxLength={255} onChangeText={setDetalle} right={<TextInput.Affix text="/255" />} style={styles.textInputDetalle} />
+
             <Button title="Crear Viaje" onPress={handleCrearViaje} style={styles.buttonRegAuto} />
           </Surface>
         )}
@@ -811,7 +819,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -841,7 +849,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -869,7 +877,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -889,7 +897,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.capacidad - verViaje.users.split(',').length} / {verViaje.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.capacidad - verViaje.users.split(',').length} / {verViaje.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViaje.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -902,6 +910,10 @@ function Home() {
                 <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViaje} />
               </View>
             </View>
+
+            <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
+            <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.detalle}</Text>
+
             {usersList.length > 0 && (
               <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
             )}
@@ -927,7 +939,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.capacidad - verViajeSumarse.users.split(',').length} / {verViajeSumarse.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.capacidad - verViajeSumarse.users.split(',').length} / {verViajeSumarse.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajeSumarse.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -941,6 +953,10 @@ function Home() {
                 <Button title="Sumarse" style={{ width: 150, marginLeft: 40, marginTop: 15, backgroundColor: '#2DCCE9' }} onPress={() => handleSumarse(verViajeSumarse.id, user.id)} />
               </View>
             </View>
+
+            <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
+            <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.detalle}</Text>
+
             {usersList.length > 0 && (
               <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
             )}
@@ -966,7 +982,7 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad Max: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.capacidad - verViajePasajero.users.split(',').length} / {verViajePasajero.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.capacidad - verViajePasajero.users.split(',').length} / {verViajePasajero.capacidad}</Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajePasajero.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -979,6 +995,10 @@ function Home() {
                 <Button title="Cerrar" style={{ width: 150, marginLeft: 40 }} onPress={handlerCerrarVerViajePasajero} />
               </View>
             </View>
+
+            <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
+            <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.detalle}</Text>
+
             {usersList.length > 0 && (
               <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
             )}

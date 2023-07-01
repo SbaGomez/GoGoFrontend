@@ -865,7 +865,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         padding: 20,
         width: 400,
-        backgroundColor: "#e0f9ed"
+        backgroundColor: "#f2e9d5"
     },
 
     surfaceViewMisViajesPasajero: {
@@ -978,6 +978,16 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         marginRight: 10,
         marginBottom: 10
+    },
+
+    textInputDetalle: {
+        width: '60%',
+        maxWidth: "50%",
+        minWidth: "30%",
+        height: 50,
+        marginBottom: 15,
+        display: 'flex',
+        justifyContent: 'center'
     }
 
 });
