@@ -268,12 +268,10 @@ function Home() {
     if (viajes) {
       setViajes(null);
     }
-    if(misViajesPasajero)
-    {
+    if (misViajesPasajero) {
       setMisViajesPasajero(false);
     }
-    if(misViajes)
-    {
+    if (misViajes) {
       return setMisViajes(false);
     }
     try {
@@ -309,8 +307,7 @@ function Home() {
     if (misViajes) {
       setMisViajes(false);
     }
-    if(misViajesPasajero)
-    {
+    if (misViajesPasajero) {
       return setMisViajesPasajero(false);
     }
     try {
