@@ -819,7 +819,9 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>
+                {item.users ? (item.capacidad - item.users.split(',').length) : item.capacidad} / {item.capacidad}
+                </Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -849,7 +851,9 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>
+                  {item.users ? (item.capacidad - item.users.split(',').length) : item.capacidad} / {item.capacidad}
+                </Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -877,7 +881,9 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{item.capacidad - item.users.split(',').length} / {item.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>
+                  {item.users ? (item.capacidad - item.users.split(',').length) : item.capacidad} / {item.capacidad}
+                </Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
               </View>
@@ -897,7 +903,9 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViaje.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.capacidad - verViaje.users.split(',').length} / {verViaje.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>
+                  {verViaje.users ? (verViaje.capacidad - verViaje.users.split(',').length) : verViaje.capacidad} / {verViaje.capacidad}
+                </Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViaje.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViaje.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -939,7 +947,9 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajeSumarse.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.capacidad - verViajeSumarse.users.split(',').length} / {verViajeSumarse.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>
+                  {verViajeSumarse.users ? (verViajeSumarse.capacidad - verViajeSumarse.users.split(',').length) : verViajeSumarse.capacidad} / {verViajeSumarse.capacidad}
+                </Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajeSumarse.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajeSumarse.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
@@ -982,7 +992,9 @@ function Home() {
                 <Text style={styles.textFont20}>Fecha: <Text style={styles.textFechaBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleDateString()}</Text></Text>
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(verViajePasajero.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.turno}</Text></Text>
-                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.capacidad - verViajePasajero.users.split(',').length} / {verViajePasajero.capacidad}</Text></Text>
+                <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>
+                  {verViajePasajero.users ? (verViajePasajero.capacidad - verViajePasajero.users.split(',').length) : verViajePasajero.capacidad} / {verViajePasajero.capacidad}
+                </Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{verViajePasajero.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{verViajePasajero.ubicacionDestino}</Text></Text>
                 <Text style={styles.textSubTitulo}>Datos del Vehiculo</Text>
