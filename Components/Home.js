@@ -820,7 +820,7 @@ function Home() {
                 <Text style={styles.textFont20}>Hora: <Text style={styles.textHoraBuscarViajesHome}>{new Date(item.horarioSalida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text></Text>
                 <Text style={styles.textFont20}>Turno: <Text style={styles.textTurnoBuscarViajesHome}>{item.turno}</Text></Text>
                 <Text style={styles.textFont20}>Capacidad: <Text style={styles.textTurnoBuscarViajesHome}>
-                {item.users ? (item.capacidad - item.users.split(',').length) : item.capacidad} / {item.capacidad}
+                  {item.users ? (item.capacidad - item.users.split(',').length) : item.capacidad} / {item.capacidad}
                 </Text></Text>
                 <Text style={styles.textFont20}>Inicio: <Text style={styles.textInicioBuscarViajesHome}>{item.ubicacionInicio}</Text></Text>
                 <Text style={styles.textFont20}>Destino: <Text style={styles.textDestinoBuscarViajesHome}>{item.ubicacionDestino}</Text></Text>
@@ -919,8 +919,12 @@ function Home() {
               </View>
             </View>
 
-            <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
-            <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.detalle}</Text>
+            {verViaje.detalle.length > 0 && (
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
+                <Text style={styles.textTurnoBuscarViajesHome}>{verViaje.detalle}</Text>
+              </View>
+            )}
 
             {usersList.length > 0 && (
               <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
@@ -964,8 +968,12 @@ function Home() {
               </View>
             </View>
 
-            <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
-            <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.detalle}</Text>
+            {verViajeSumarse.detalle.length > 0 && (
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
+                <Text style={styles.textTurnoBuscarViajesHome}>{verViajeSumarse.detalle}</Text>
+              </View>
+            )}
 
             {usersList.length > 0 && (
               <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
@@ -1008,8 +1016,12 @@ function Home() {
               </View>
             </View>
 
-            <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
-            <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.detalle}</Text>
+            {verViajePasajero.detalle.length > 0 && (
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.textSubTituloPasajeros}>Detalle Ubicacion</Text>
+                <Text style={styles.textTurnoBuscarViajesHome}>{verViajePasajero.detalle}</Text>
+              </View>
+            )}
 
             {usersList.length > 0 && (
               <Text style={styles.textSubTituloPasajeros}>Pasajeros</Text>
